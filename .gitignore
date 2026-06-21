@@ -1,0 +1,32 @@
+# Xcode
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+DerivedData/
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# CocoaPods
+Pods/
+*.xcworkspace
+!default.xcworkspace
+
+# Firebase - NEVER commit these
+FaisTrack/Supporting/GoogleService-Info.plist
+
+# macOS
+.DS_Store
+
+# Codemagic
+.codemagic/
+
+# Swift Package Manager
+.swiftpm/
+.build/
+
+# Environment
+*.env
+.env.local

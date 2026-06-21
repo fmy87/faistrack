@@ -1,0 +1,57 @@
+workflows:
+  ios-release:
+    name: FaisTrack iOS Release
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.faistrack.app
+      vars:
+        XCODE_PROJECT: "FaisTrack.xcodeproj"
+        XCODE_SCHEME: "FaisTrack"
+        BUNDLE_ID: "com.faistrack.app"
+        APP_STORE_APPLE_ID: "REPLACE_WITH_APP_STORE_ID"
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Set up code signing
+        script: |
+          keychain initialize
+      - name: Install CocoaPods
+        script: |
+          pod install
+      - name: Build IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace "FaisTrack.xcworkspace" \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        submit_to_app_store: false
+
+  ios-debug:
+    name: FaisTrack iOS Debug
+    max_build_duration: 30
+    instance_type: mac_mini_m1
+    environment:
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install CocoaPods
+        script: pod install
+      - name: Build Debug
+        script: |
+          xcodebuild \
+            -workspace FaisTrack.xcworkspace \
+            -scheme FaisTrack \
+            -configuration Debug \
+            -destination generic/platform=iOS \
+            build
+    artifacts:
+      - /tmp/xcodebuild_logs/*.log

@@ -1,0 +1,134 @@
+/* App */
+"app.name" = "فيس تراك";
+
+/* Tabs */
+"tab.drives" = "رحلاتي";
+"tab.friends" = "الأصدقاء";
+"tab.stats" = "الإحصائيات";
+"tab.leaderboard" = "المتصدرون";
+
+/* Onboarding */
+"onboarding.continue" = "متابعة";
+"onboarding.page1.title" = "تتبع رحلاتك تلقائياً";
+"onboarding.page1.subtitle" = "فيس تراك يكتشف عندما تبدأ القيادة ويسجل كل التفاصيل تلقائياً.";
+"onboarding.page2.title" = "تنافس مع الأصدقاء";
+"onboarding.page2.subtitle" = "أضف أصدقاءك لمقارنة الإحصائيات والتنافس في قوائم المتصدرين.";
+"onboarding.page3.title" = "شاهد إحصائياتك";
+"onboarding.page3.subtitle" = "تابع نمو إحصائياتك بعد كل رحلة.";
+
+/* Auth */
+"auth.tagline" = "سجّل كل رحلة، تلقائياً";
+"auth.appleSignIn" = "تسجيل الدخول بـ Apple";
+"auth.googleSignIn" = "تسجيل الدخول بـ Google";
+
+/* Safety */
+"safety.title" = "السلامة أولاً";
+"safety.subtitle" = "فيس تراك مبني للقيادة المسؤولة.";
+"safety.rule1" = "اتبع قوانين المرور وحدود السرعة المقررة.";
+"safety.rule2" = "استخدم حاملاً للهاتف إذا احتجت لرؤية التطبيق.";
+"safety.rule3" = "لا تمسك هاتفك أثناء القيادة.";
+"safety.rule4" = "فيس تراك لا يشجع على التسابق أو السلوك المخالف للقانون.";
+"safety.agree" = "أقر بإرشادات السلامة وأوافق على شروط الخدمة وسياسة الخصوصية.";
+"safety.continue" = "أوافق وأتابع";
+
+/* Permissions */
+"permissions.title" = "تفعيل الصلاحيات";
+"permissions.subtitle" = "فعّل الصلاحيات لكي يعمل تتبع الرحلات تلقائياً.";
+"permissions.location" = "السماح دائماً بالموقع";
+"permissions.location.desc" = "مطلوب لتتبع الرحلات في الخلفية.";
+"permissions.motion" = "تفعيل الحركة";
+"permissions.motion.desc" = "يساعد في التأكد من أنك تقود سيارة.";
+"permissions.notifications" = "تفعيل الإشعارات";
+"permissions.notifications.desc" = "احصل على ملخص رحلاتك وتنبيهات أصدقائك.";
+"permissions.enable" = "تفعيل ومتابعة";
+
+/* Garage */
+"garage.title" = "الجراج";
+"garage.addCar" = "أضف سيارة";
+"garage.activeCar" = "السيارة النشطة";
+"garage.active" = "نشطة";
+"garage.setActive" = "تعيين كنشطة";
+"garage.delete" = "حذف السيارة";
+"garage.saveCar" = "حفظ السيارة";
+"garage.shareCard" = "مشاركة بطاقة السيارة";
+"garage.addPhoto" = "إضافة صورة";
+"garage.empty.title" = "جراجك فارغ";
+"garage.empty.subtitle" = "أضف سيارتك الأولى لبدء تسجيل الرحلات.";
+"garage.nickname" = "اللقب";
+"garage.make" = "الماركة";
+"garage.model" = "الموديل";
+"garage.year" = "السنة";
+"garage.engineSize" = "حجم المحرك";
+"garage.hp" = "الحصان";
+"garage.torque" = "عزم الدوران (Nm)";
+"garage.forced" = "الشاحن الهوائي";
+"garage.turbo" = "تيربو";
+"garage.supercharged" = "سوبرشارجر";
+"garage.suspension" = "التعليق";
+"garage.wheels" = "الإطارات";
+"garage.engine" = "المحرك";
+"garage.mods" = "التعديلات";
+"garage.step.basic" = "المعلومات الأساسية";
+"garage.step.specs" = "مواصفات المحرك";
+"garage.step.mods" = "التعديلات";
+"garage.step.photo" = "إضافة صورة";
+
+/* Drives */
+"drives.empty.title" = "لا توجد رحلات بعد";
+"drives.empty.subtitle" = "ابدأ القيادة وسيسجل فيس تراك رحلاتك تلقائياً.";
+"drives.tracking" = "جارٍ التسجيل";
+"drives.unknownLocation" = "موقع غير معروف";
+"drive.topSpeed" = "أعلى سرعة";
+"drive.avgSpeed" = "متوسط السرعة";
+"drive.distance" = "المسافة";
+"drive.duration" = "المدة";
+"drive.night" = "قيادة ليلية";
+"drive.detail" = "تفاصيل الرحلة";
+
+/* Friends */
+"friends.empty.title" = "لا يوجد أصدقاء بعد";
+"friends.empty.subtitle" = "ادعُ أصدقاءك لرؤية رحلاتهم وإحصائياتهم.";
+"friends.add" = "إضافة أصدقاء";
+"friends.search.title" = "البحث عن مستخدمين";
+"friends.search.placeholder" = "ابحث باسم المستخدم...";
+
+/* Stats */
+"stats.empty.title" = "لا توجد إحصائيات بعد";
+"stats.empty.subtitle" = "أكمل رحلتك الأولى لترى إحصائياتك هنا.";
+"stats.behaviorScore" = "نقاط الأمان";
+
+/* Leaderboard */
+"leaderboard.empty" = "لا يوجد بيانات بعد. ابدأ القيادة!";
+"leaderboard.global" = "عالمي";
+"leaderboard.friends" = "الأصدقاء";
+"leaderboard.weekly" = "أسبوعي";
+"leaderboard.monthly" = "شهري";
+"leaderboard.allTime" = "كل الأوقات";
+"leaderboard.miles" = "المسافة";
+"leaderboard.topSpeed" = "أعلى سرعة";
+"leaderboard.avgSpeed" = "متوسط السرعة";
+"leaderboard.hours" = "الساعات";
+"leaderboard.drives" = "الرحلات";
+
+/* Pro */
+"pro.unlock" = "ترقية للبرو";
+"pro.feature.garage" = "سيارات غير محدودة في الجراج";
+"pro.feature.score" = "نقاط سلوك القيادة والأمان";
+"pro.startTrial" = "ابدأ التجربة المجانية لمدة 7 أيام";
+
+/* Notifications */
+"notification.driveStart.title" = "بدأت الرحلة";
+"notification.driveStart.body" = "فيس تراك يسجل رحلتك الآن.";
+"notification.driveEnd.title" = "تم حفظ الرحلة";
+"notification.driveEnd.body" = "اكتملت الرحلة: %@ • أعلى سرعة %@";
+
+/* CarPlay */
+"carplay.speed" = "السرعة الحالية";
+"carplay.distance" = "المسافة";
+
+/* General */
+"general.back" = "رجوع";
+"general.next" = "التالي";
+"general.cancel" = "إلغاء";
+"general.share" = "مشاركة";
+"general.save" = "حفظ";

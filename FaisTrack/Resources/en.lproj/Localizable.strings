@@ -1,0 +1,134 @@
+/* App */
+"app.name" = "FaisTrack";
+
+/* Tabs */
+"tab.drives" = "Drives";
+"tab.friends" = "Friends";
+"tab.stats" = "Statistics";
+"tab.leaderboard" = "Leaderboard";
+
+/* Onboarding */
+"onboarding.continue" = "Continue";
+"onboarding.page1.title" = "Automatically Track Your Drives";
+"onboarding.page1.subtitle" = "FaisTrack detects when you start driving and records every detail automatically.";
+"onboarding.page2.title" = "Compete with Friends";
+"onboarding.page2.subtitle" = "Add friends to compare stats and compete on leaderboards.";
+"onboarding.page3.title" = "See Your Stats";
+"onboarding.page3.subtitle" = "Watch your stats grow after every drive.";
+
+/* Auth */
+"auth.tagline" = "Track every drive, automatically";
+"auth.appleSignIn" = "Sign in with Apple";
+"auth.googleSignIn" = "Sign in with Google";
+
+/* Safety */
+"safety.title" = "Safety First";
+"safety.subtitle" = "FaisTrack is built for responsible driving.";
+"safety.rule1" = "Obey all traffic laws and posted speed limits.";
+"safety.rule2" = "Use a proper phone mount if you need to view the app.";
+"safety.rule3" = "Never hold or interact with your phone while driving.";
+"safety.rule4" = "FaisTrack does not condone racing or illegal road behavior.";
+"safety.agree" = "I acknowledge the safety guidelines and agree to the Terms of Service and Privacy Policy.";
+"safety.continue" = "I Agree & Continue";
+
+/* Permissions */
+"permissions.title" = "Enable Permissions";
+"permissions.subtitle" = "Turn on permissions for automatic drive tracking to work properly.";
+"permissions.location" = "Enable Always Allow";
+"permissions.location.desc" = "Required for background drive tracking.";
+"permissions.motion" = "Enable Motion Access";
+"permissions.motion.desc" = "Helps confirm you are in a moving car.";
+"permissions.notifications" = "Enable Notifications";
+"permissions.notifications.desc" = "Get drive recaps and friend activity alerts.";
+"permissions.enable" = "Enable & Continue";
+
+/* Garage */
+"garage.title" = "Garage";
+"garage.addCar" = "Add Car";
+"garage.activeCar" = "Active Car";
+"garage.active" = "Active";
+"garage.setActive" = "Set as Active";
+"garage.delete" = "Delete Car";
+"garage.saveCar" = "Save Car";
+"garage.shareCard" = "Share Car Card";
+"garage.addPhoto" = "Add Photo";
+"garage.empty.title" = "Your Garage is Empty";
+"garage.empty.subtitle" = "Add your first car to start tracking drives.";
+"garage.nickname" = "Nickname";
+"garage.make" = "Make";
+"garage.model" = "Model";
+"garage.year" = "Year";
+"garage.engineSize" = "Engine Size";
+"garage.hp" = "Horsepower";
+"garage.torque" = "Torque (Nm)";
+"garage.forced" = "Forced Induction";
+"garage.turbo" = "Turbocharged";
+"garage.supercharged" = "Supercharged";
+"garage.suspension" = "Suspension";
+"garage.wheels" = "Wheels";
+"garage.engine" = "Engine";
+"garage.mods" = "Modifications";
+"garage.step.basic" = "Basic Info";
+"garage.step.specs" = "Engine Specs";
+"garage.step.mods" = "Modifications";
+"garage.step.photo" = "Add a Photo";
+
+/* Drives */
+"drives.empty.title" = "No Drives Yet";
+"drives.empty.subtitle" = "Start driving and FaisTrack will automatically record your drives.";
+"drives.tracking" = "Tracking";
+"drives.unknownLocation" = "Unknown Location";
+"drive.topSpeed" = "Top Speed";
+"drive.avgSpeed" = "Avg Speed";
+"drive.distance" = "Distance";
+"drive.duration" = "Duration";
+"drive.night" = "Night Drive";
+"drive.detail" = "Drive Detail";
+
+/* Friends */
+"friends.empty.title" = "No Friends Yet";
+"friends.empty.subtitle" = "Invite friends to see their drives and stats, and keep up with live activity.";
+"friends.add" = "Add Friends";
+"friends.search.title" = "Search Users";
+"friends.search.placeholder" = "Search by username...";
+
+/* Stats */
+"stats.empty.title" = "No Statistics Yet";
+"stats.empty.subtitle" = "Complete your first drive to see stats here.";
+"stats.behaviorScore" = "Safety Score";
+
+/* Leaderboard */
+"leaderboard.empty" = "No entries yet. Start driving!";
+"leaderboard.global" = "Global";
+"leaderboard.friends" = "Friends";
+"leaderboard.weekly" = "Weekly";
+"leaderboard.monthly" = "Monthly";
+"leaderboard.allTime" = "All Time";
+"leaderboard.miles" = "Distance";
+"leaderboard.topSpeed" = "Top Speed";
+"leaderboard.avgSpeed" = "Avg Speed";
+"leaderboard.hours" = "Hours";
+"leaderboard.drives" = "Drives";
+
+/* Pro */
+"pro.unlock" = "Upgrade to Pro";
+"pro.feature.garage" = "Unlimited cars in your garage";
+"pro.feature.score" = "Drive behavior & safety score";
+"pro.startTrial" = "Start 7-Day Free Trial";
+
+/* Notifications */
+"notification.driveStart.title" = "Drive Started";
+"notification.driveStart.body" = "FaisTrack is recording your drive.";
+"notification.driveEnd.title" = "Drive Saved";
+"notification.driveEnd.body" = "Drive complete: %@ • Top speed %@";
+
+/* CarPlay */
+"carplay.speed" = "Current Speed";
+"carplay.distance" = "Distance";
+
+/* General */
+"general.back" = "Back";
+"general.next" = "Next";
+"general.cancel" = "Cancel";
+"general.share" = "Share";
+"general.save" = "Save";

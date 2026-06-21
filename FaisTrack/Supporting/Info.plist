@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>FaisTrack</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.faistrack.app</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleDisplayName</key>
+    <string>FaisTrack</string>
+    <key>MinimumOSVersion</key>
+    <string>15.0</string>
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>
+    <key>UIApplicationSceneManifest</key>
+    <dict>
+        <key>UIApplicationSupportsMultipleScenes</key>
+        <true/>
+        <key>UISceneConfigurations</key>
+        <dict>
+            <key>CPTemplateApplicationSceneSessionRoleApplication</key>
+            <array>
+                <dict>
+                    <key>UISceneClassName</key>
+                    <string>CPTemplateApplicationScene</string>
+                    <key>UISceneDelegateClassName</key>
+                    <string>$(PRODUCT_MODULE_NAME).CarPlaySceneDelegate</string>
+                    <key>UISceneConfigurationName</key>
+                    <string>CarPlay Configuration</string>
+                </dict>
+            </array>
+        </dict>
+    </dict>
+    <!-- Location Permissions -->
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>FaisTrack needs your location to automatically track your drives in the background.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>FaisTrack needs your location to track your drives.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>FaisTrack needs your location to automatically track your drives in the background.</string>
+    <!-- Motion Permission -->
+    <key>NSMotionUsageDescription</key>
+    <string>FaisTrack uses motion data to detect when you start and stop driving.</string>
+    <!-- Photo Library -->
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>FaisTrack needs access to your photo library to add a photo to your car.</string>
+    <!-- Camera -->
+    <key>NSCameraUsageDescription</key>
+    <string>FaisTrack needs camera access to take a photo of your car.</string>
+    <!-- Background Modes -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>location</string>
+        <string>fetch</string>
+        <string>remote-notification</string>
+    </array>
+    <!-- Google Maps URL Scheme -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>comgooglemaps</string>
+    </array>
+</dict>
+</plist>
