@@ -1,4 +1,4 @@
-# Xcode
+# Xcode user data
 *.xcuserstate
 xcuserdata/
 *.xcscmblueprint
@@ -11,17 +11,13 @@ build/
 
 # CocoaPods
 Pods/
-*.xcworkspace
-!default.xcworkspace
+Podfile.lock
 
-# Firebase - NEVER commit these
+# Firebase - NEVER commit
 FaisTrack/Supporting/GoogleService-Info.plist
 
 # macOS
 .DS_Store
-
-# Codemagic
-.codemagic/
 
 # Swift Package Manager
 .swiftpm/
