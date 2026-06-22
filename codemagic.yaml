@@ -3,20 +3,20 @@ workflows:
     name: FaisTrack iOS Release
     max_build_duration: 60
     instance_type: mac_mini_m1
+    integrations:
+      app_store_connect: Codemagic
     environment:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.faistrack.app
       vars:
-        XCODE_PROJECT: "FaisTrack.xcodeproj"
         XCODE_SCHEME: "FaisTrack"
         BUNDLE_ID: "com.faistrack.app"
-        APP_STORE_APPLE_ID: "REPLACE_WITH_APP_STORE_ID"
         GOOGLE_MAPS_API_KEY: "REPLACE_WITH_GOOGLE_MAPS_KEY"
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Install GoogleService-Info.plist from Codemagic env
+      - name: Install GoogleService-Info.plist
         script: |
           echo $GOOGLE_SERVICE_INFO_PLIST | base64 --decode > $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist
       - name: Install CocoaPods
@@ -32,7 +32,6 @@ workflows:
       - /tmp/xcodebuild_logs/*.log
     publishing:
       app_store_connect:
-        auth: integration
         submit_to_testflight: true
         submit_to_app_store: false
 
@@ -44,7 +43,7 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Install GoogleService-Info.plist from Codemagic env
+      - name: Install GoogleService-Info.plist
         script: |
           echo $GOOGLE_SERVICE_INFO_PLIST | base64 --decode > $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist
       - name: Install CocoaPods
