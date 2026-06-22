@@ -12,19 +12,20 @@ workflows:
         XCODE_SCHEME: "FaisTrack"
         BUNDLE_ID: "com.faistrack.app"
         APP_STORE_APPLE_ID: "REPLACE_WITH_APP_STORE_ID"
+        GOOGLE_MAPS_API_KEY: "REPLACE_WITH_GOOGLE_MAPS_KEY"
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Set up code signing
+      - name: Install GoogleService-Info.plist from Codemagic env
         script: |
-          keychain initialize
+          echo $GOOGLE_SERVICE_INFO_PLIST | base64 --decode > $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist
       - name: Install CocoaPods
         script: |
-          pod install
+          cd $CM_BUILD_DIR && pod install
       - name: Build IPA
         script: |
           xcode-project build-ipa \
-            --workspace "FaisTrack.xcworkspace" \
+            --workspace "$CM_BUILD_DIR/FaisTrack.xcworkspace" \
             --scheme "$XCODE_SCHEME"
     artifacts:
       - build/ios/ipa/*.ipa
@@ -43,12 +44,16 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
+      - name: Install GoogleService-Info.plist from Codemagic env
+        script: |
+          echo $GOOGLE_SERVICE_INFO_PLIST | base64 --decode > $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist
       - name: Install CocoaPods
-        script: pod install
+        script: |
+          cd $CM_BUILD_DIR && pod install
       - name: Build Debug
         script: |
           xcodebuild \
-            -workspace FaisTrack.xcworkspace \
+            -workspace $CM_BUILD_DIR/FaisTrack.xcworkspace \
             -scheme FaisTrack \
             -configuration Debug \
             -destination generic/platform=iOS \

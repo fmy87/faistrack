@@ -1,11 +1,9 @@
 import Foundation
 import FirebaseFirestore
-import FirebaseStorage
 
 class FirebaseService {
     static let shared = FirebaseService()
     let db = Firestore.firestore()
-    let storage = Storage.storage()
 
     // MARK: - User
     func saveUser(_ user: FTUser) async throws {
@@ -26,13 +24,16 @@ class FirebaseService {
     }
 
     func getCars(uid: String) async throws -> [Car] {
-        let snapshot = try await db.collection("users").document(uid).collection("cars")
-            .order(by: "createdAt", descending: true).getDocuments()
+        let snapshot = try await db.collection("users").document(uid)
+            .collection("cars")
+            .order(by: "createdAt", descending: true)
+            .getDocuments()
         return snapshot.documents.compactMap { try? $0.data(as: Car.self) }
     }
 
     func deleteCar(carId: String, uid: String) async throws {
-        try await db.collection("users").document(uid).collection("cars").document(carId).delete()
+        try await db.collection("users").document(uid)
+            .collection("cars").document(carId).delete()
     }
 
     func setActiveCar(carId: String, uid: String) async throws {
@@ -55,16 +56,28 @@ class FirebaseService {
     }
 
     func getDrives(uid: String, limit: Int = 20) async throws -> [Drive] {
-        let snapshot = try await db.collection("users").document(uid).collection("drives")
-            .order(by: "startTime", descending: true).limit(to: limit).getDocuments()
+        let snapshot = try await db.collection("users").document(uid)
+            .collection("drives")
+            .order(by: "startTime", descending: true)
+            .limit(to: limit)
+            .getDocuments()
         return snapshot.documents.compactMap { try? $0.data(as: Drive.self) }
     }
 
-    // MARK: - Photo Upload
+    // MARK: - Photo Upload (disabled until Firebase Storage is enabled on Blaze plan)
     func uploadCarPhoto(uid: String, carId: String, imageData: Data) async throws -> String {
-        let ref = storage.reference().child("cars/\(uid)/\(carId).jpg")
-        let _ = try await ref.putDataAsync(imageData)
-        let url = try await ref.downloadURL()
-        return url.absoluteString
+        // Storage requires Blaze plan — store photo locally for now
+        // TODO: enable when upgrading to Blaze
+        throw FirebaseServiceError.storageNotEnabled
+    }
+}
+
+enum FirebaseServiceError: LocalizedError {
+    case storageNotEnabled
+    var errorDescription: String? {
+        switch self {
+        case .storageNotEnabled:
+            return "Photo upload will be available in a future update."
+        }
     }
 }
