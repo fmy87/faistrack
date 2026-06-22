@@ -1,938 +1,904 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
-	classes = {
-	};
+	classes = {};
 	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1536CDADC93445F496D50C53 /* PBXBuildFile */ = {
+		03F51F41DBAD41D89333C0A9 = {
 			isa = PBXBuildFile;
-			fileRef = E6F1D17EE81C408CAE64EBC7;
+			fileRef = B26F7A38B8774C0BA5BF1F25;
 		};
-		15E6B51B2E29441CB2346CC1 /* PBXBuildFile */ = {
+		086E41C16379491586AF8131 = {
 			isa = PBXBuildFile;
-			fileRef = B597689DDB614495ACCF1502;
+			fileRef = 452E71E021E34AAEBC658167;
 		};
-		19EB66248F8E488F8AA70066 /* PBXBuildFile */ = {
+		0C4A1342EB774CCBA9551822 = {
 			isa = PBXBuildFile;
-			fileRef = 1C946B63C8574A629A0E1613;
+			fileRef = BCA9791D398A48439A520338;
 		};
-		1E556DEFA73B4283A6282FC6 /* PBXBuildFile */ = {
+		181038B0CA1D43BEAB3C0176 = {
 			isa = PBXBuildFile;
-			fileRef = CE824C85657941DCA715934B;
+			fileRef = 1A929F9C68EE45DDAB866AEA;
 		};
-		29384F4345F14041BD3CDD02 /* PBXBuildFile */ = {
+		1AFDB208D898443492DFA616 = {
 			isa = PBXBuildFile;
-			fileRef = 3DB675E61528419E890BF381;
+			fileRef = AF05E0ACD6504716B6E62F76;
 		};
-		2CB2E5DB5EAD4E76AD7ADB6A /* PBXBuildFile */ = {
+		1F0E56FFA7C14780B2D603FF = {
 			isa = PBXBuildFile;
-			fileRef = 24D154C2C5314A6BAD4BBF8A;
+			fileRef = 666864A38C8647EB98B3CF4F;
 		};
-		2E1B26A7F21543E7980301C6 /* PBXBuildFile */ = {
+		2252862154B745CE8BC571CD = {
 			isa = PBXBuildFile;
-			fileRef = 39FF906A4D1E4447853C7D31;
+			fileRef = 3E25CF4196C24A8B96A0164D;
 		};
-		351F25D63B404DDE8D7B4632 /* PBXBuildFile */ = {
+		25D47C9892FA41199F396A06 = {
 			isa = PBXBuildFile;
-			fileRef = B061438B59F44E0B81BFB4E6;
+			fileRef = 019CA2284BB64639AB13D6D1;
 		};
-		355FBEE8D6414131A70913B6 /* PBXBuildFile */ = {
+		279F3F73120544E48712B639 = {
 			isa = PBXBuildFile;
-			fileRef = 24E5B329DAFC429CB391F34A;
+			fileRef = AF6529D818D44B14A4E090CF;
 		};
-		422FFDD180C744EAB769DA8C /* PBXBuildFile */ = {
+		2A65BC685E4E479CA1E3F260 = {
 			isa = PBXBuildFile;
-			fileRef = C8F1153DD9744041B72DE0AA;
+			fileRef = 7758CD5091D84F958A11E5BE;
 		};
-		439FA6455F084D2582A309D0 /* PBXBuildFile */ = {
+		2B81CF93C60C4996AB4553FF = {
 			isa = PBXBuildFile;
-			fileRef = DAC48F4BF6904A89A96824DC;
+			fileRef = 568761AEEF27463D858EE0E2;
 		};
-		463830659BE44C689F3586EC /* PBXBuildFile */ = {
+		2F026D5EC3EA44B5BDCF7E7B = {
 			isa = PBXBuildFile;
-			fileRef = 4965251E73394885A6793A70;
+			fileRef = FF4D1140604349258A1187B1;
 		};
-		4FD387650D114DE2BBE72CA5 /* PBXBuildFile */ = {
+		2F9BF050E7D94509B80B67EC = {
 			isa = PBXBuildFile;
-			fileRef = 38B8C204B8324A8AB0B9D340;
+			fileRef = F6F2316C70794EDD89923834;
 		};
-		50EA363F479A4F88ABBA76D6 /* PBXBuildFile */ = {
+		301125AD9E354CCFB4223C99 = {
 			isa = PBXBuildFile;
-			fileRef = CA64C3CDEBF2484186B77F5A;
+			fileRef = D793BFA7AF214609B5ACEA73;
 		};
-		57C3C83C8DC14A7EB51C34C5 /* PBXBuildFile */ = {
+		39035093CB304C85AA583E97 = {
 			isa = PBXBuildFile;
-			fileRef = A8677E079CD649B5B60553B7;
+			fileRef = 6440B54911AA40AABAB8DB47;
 		};
-		5C3E4E67BE9F460484F992FF /* PBXBuildFile */ = {
+		3B8843B5D78343DF8916A954 = {
 			isa = PBXBuildFile;
-			fileRef = 83FFF559BEDD43C3AE3227B2;
+			fileRef = 5BD39A1262F04CE5A38E26A9;
 		};
-		63193C5C413A472783D454FB /* PBXBuildFile */ = {
+		3D835C77240F43D2B707FF9E = {
 			isa = PBXBuildFile;
-			fileRef = 08D1113EE0C34910BAF5C4FD;
+			fileRef = 74F8EEE614FF41A3A6BA7FBB;
 		};
-		6B78903819E6460E803C74BC /* PBXBuildFile */ = {
+		4691CB7236C44E2EBFC92E2E = {
 			isa = PBXBuildFile;
-			fileRef = F40A8E62F1254C55AA8B5A66;
+			fileRef = BF4FACA95A4845E1BC55F931;
 		};
-		75BB0D36752548AAB411A25B /* PBXBuildFile */ = {
+		47C5A94B36E64713846B9BD4 = {
 			isa = PBXBuildFile;
-			fileRef = 7BAE9BCECF504FCE9628A9CC;
+			fileRef = 1449946DAA2748AAA88D5C07;
 		};
-		79A5C582247F405E86E427F9 /* PBXBuildFile */ = {
+		49D9C82CF8BC47E9B4F4B756 = {
 			isa = PBXBuildFile;
-			fileRef = 3CD91E2E50C740C9B40899F0;
+			fileRef = 0BABC92FED514094A50C4083;
 		};
-		7C8281D8684545CFAEC33427 /* PBXBuildFile */ = {
+		4C588BDCD8064111BA8326B2 = {
 			isa = PBXBuildFile;
-			fileRef = 0C7EF721F0F54B45B6AB8CE2;
+			fileRef = 6F691898859E4172B452775E;
 		};
-		821B173BB1E4418DABFCEA45 /* PBXBuildFile */ = {
+		4CFF81C7E42C4F9BA65309A4 = {
 			isa = PBXBuildFile;
-			fileRef = AAFE9C95402A4C7985BA2508;
+			fileRef = 861771DBBD5343F39CE74B83;
 		};
-		8713A833833F47759B4FF972 /* PBXBuildFile */ = {
+		58AF7031E3E440DE9D7CD819 = {
 			isa = PBXBuildFile;
-			fileRef = A9C2A4108D004F80AFF8E2A6;
+			fileRef = D7F940E9DF35445A98D2607A;
 		};
-		8ABF9AC5CF8D42969AFD8B3B /* PBXBuildFile */ = {
+		5B31A0DB1260442E93883192 = {
 			isa = PBXBuildFile;
-			fileRef = 0FAFEE2A69A84BAABDFB8E20;
+			fileRef = CEDCF79962094638938D719E;
 		};
-		914CC72134674BAAAF2A459C /* PBXBuildFile */ = {
+		5E0CCCF55FD94EC382CA20C5 = {
 			isa = PBXBuildFile;
-			fileRef = 1815BF02C9004A08B8F1ED91;
+			fileRef = A6ED003E998347488D87FBB1;
 		};
-		982E9A7095714E2385E1C4B4 /* PBXBuildFile */ = {
+		73BB3725E3E542E18D0EE2EA = {
 			isa = PBXBuildFile;
-			fileRef = 530159A29500466CAF44B01A;
+			fileRef = C7ECD6F4722B4168953A7902;
 		};
-		9CAFFC4C55154DE48F99C59B /* PBXBuildFile */ = {
+		7828525AFF7A4771A2A5638F = {
 			isa = PBXBuildFile;
-			fileRef = 32B354F3F05146E189DFC34A;
+			fileRef = B33D658EB2CD4036BAFB60C1;
 		};
-		ADA0C184980E4488A04063EB /* PBXBuildFile */ = {
+		8E49DDD8A5A44BB19B582FB7 = {
 			isa = PBXBuildFile;
-			fileRef = BE65DD26CAC04551A1E89C87;
+			fileRef = C05CD0A0ABD742E5B2BDB12A;
 		};
-		B81EFE3B22A34A038D7A4992 /* PBXBuildFile */ = {
+		902CEDCA14CA4101AFB56F68 = {
 			isa = PBXBuildFile;
-			fileRef = C86D0C116B4C44C9A53F923E;
+			fileRef = 173B334BB6194882941201EB;
 		};
-		BA2C4C888D4E43F693A9993F /* PBXBuildFile */ = {
+		92E78CE96BFF4E038C299EFD = {
 			isa = PBXBuildFile;
-			fileRef = DFA62769624B4E8581B15DF5;
+			fileRef = 52FCBDEA52D84E09B61B58E8;
 		};
-		BCD32A3CDE794D1BBC2C64FE /* PBXBuildFile */ = {
+		9719E7DD9642499BA2A94C71 = {
 			isa = PBXBuildFile;
-			fileRef = 3E0C4756745049ABAE598752;
+			fileRef = 6B8A285E22CE40A993BAEE17;
 		};
-		C4385BF51CBE4903BB94694B /* PBXBuildFile */ = {
+		9FF2CAFA3B7644ECB279C56A = {
 			isa = PBXBuildFile;
-			fileRef = EFB6292BB2CF4B1EA648122E;
+			fileRef = 6788B844799A44198EA745AD;
 		};
-		C67EDF239F8A460F9D4DBA9B /* PBXBuildFile */ = {
+		A2D3294390104662891625A2 = {
 			isa = PBXBuildFile;
-			fileRef = 37B95B959A91456BB7443B38;
+			fileRef = EC5FFBE44D3A4E4B84555874;
 		};
-		C7355ED413584C0F88F1B108 /* PBXBuildFile */ = {
+		B24B1C3760C84B9BA3FE7DAA = {
 			isa = PBXBuildFile;
-			fileRef = 562D2F6C71E44545B9CFBC0B;
+			fileRef = 29AC8DE5AFF54C99A426A417;
 		};
-		CAAE53DB8ECD449BB9835FFA /* PBXBuildFile */ = {
+		B9E8559402CE4B9E924792EE = {
 			isa = PBXBuildFile;
-			fileRef = 08F1606630AD4D58B5FA31C2;
+			fileRef = D374CAD4D29E48EA951E052B;
 		};
-		CDB5C389962E4B7FAE0F3F58 /* PBXBuildFile */ = {
+		BE25FC7632A64D46951019E7 = {
 			isa = PBXBuildFile;
-			fileRef = E2031723D21240849C938407;
+			fileRef = 69834B3D17C04B23B7419086;
 		};
-		CEB52442B74F42C4902F4BAF /* PBXBuildFile */ = {
+		CB851FA4277A4332B22A3D11 = {
 			isa = PBXBuildFile;
-			fileRef = 1015702310924908A2FD3369;
+			fileRef = 445EABCCFA474303B0AFB19C;
 		};
-		D39FE1121E8040FC9C9B44AC /* PBXBuildFile */ = {
+		D6207C38B1084D29BD3AB86A = {
 			isa = PBXBuildFile;
-			fileRef = 8C768CD5EE1A417CBB100AD4;
+			fileRef = 29CCFC702EDD4FEABBEBDB13;
 		};
-		EACD4305AD01415DB004518F /* PBXBuildFile */ = {
+		D6FCF9418AAF4D1F8A9B07CF = {
 			isa = PBXBuildFile;
-			fileRef = 33C76785269044739A13FC59;
+			fileRef = 79E4E35110C448E480E838F1;
 		};
-		ECEB2D980C714261B48EA4C9 /* PBXBuildFile */ = {
+		D79FB7509DF24D518EC88C69 = {
 			isa = PBXBuildFile;
-			fileRef = 70C2480DA35D4341BB64C859;
+			fileRef = AD5F66D56D3042DAABB5E3E7;
 		};
-		F134C8528A044AF180D50C64 /* PBXBuildFile */ = {
+		E22D88614F854C489DC0E11B = {
 			isa = PBXBuildFile;
-			fileRef = E94223D66B0C41DB83D5BCF6;
+			fileRef = A620ABD0078344D7AF9CE678;
 		};
-		F1EED7FF390A45C482C7055F /* PBXBuildFile */ = {
+		E714F91999FF44369FDFEAD4 = {
 			isa = PBXBuildFile;
-			fileRef = 436B2C551BAE41A6A317A27E;
+			fileRef = F4E76975621A45E9944808BA;
 		};
-		F49DC05E4B154745B3769DAF /* PBXBuildFile */ = {
+		F55A9FE2B35B4C7FB653200B = {
 			isa = PBXBuildFile;
-			fileRef = FB198D3FA62746FEAFE9A2E3;
-		};
-		F8118BC48AFA414BB37A851D /* PBXBuildFile */ = {
-			isa = PBXBuildFile;
-			fileRef = 0F1829B6F42144348065D70D;
+			fileRef = C94471B24D17440882AB0913;
 		};
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		08D1113EE0C34910BAF5C4FD /* PBXFileReference */ = {
+		019CA2284BB64639AB13D6D1 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "ReferralService.swift";
-			path = "FaisTrack/Services/ReferralService.swift";
+			path = AppState.swift;
 			sourceTree = "<group>";
 		};
-		08F1606630AD4D58B5FA31C2 /* PBXFileReference */ = {
+		0BABC92FED514094A50C4083 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "AppState.swift";
-			path = "FaisTrack/App/AppState.swift";
+			path = GarageView.swift;
 			sourceTree = "<group>";
 		};
-		0C7EF721F0F54B45B6AB8CE2 /* PBXFileReference */ = {
+		1449946DAA2748AAA88D5C07 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "StatsView.swift";
-			path = "FaisTrack/Modules/Statistics/StatsView.swift";
+			path = ShareCarCardView.swift;
 			sourceTree = "<group>";
 		};
-		0F1829B6F42144348065D70D /* PBXFileReference */ = {
+		173B334BB6194882941201EB = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = BehaviorScoreView.swift;
+			sourceTree = "<group>";
+		};
+		1A929F9C68EE45DDAB866AEA = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = DrivesView.swift;
+			sourceTree = "<group>";
+		};
+		29AC8DE5AFF54C99A426A417 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = StoreKitService.swift;
+			sourceTree = "<group>";
+		};
+		29CCFC702EDD4FEABBEBDB13 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = ProPaywallView.swift;
+			sourceTree = "<group>";
+		};
+		3E25CF4196C24A8B96A0164D = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = LeaderboardService.swift;
+			sourceTree = "<group>";
+		};
+		445EABCCFA474303B0AFB19C = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = RootView.swift;
+			sourceTree = "<group>";
+		};
+		452E71E021E34AAEBC658167 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = AddCarView.swift;
+			sourceTree = "<group>";
+		};
+		52FCBDEA52D84E09B61B58E8 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = LeaderboardView.swift;
+			sourceTree = "<group>";
+		};
+		568761AEEF27463D858EE0E2 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = Drive.swift;
+			sourceTree = "<group>";
+		};
+		5BD39A1262F04CE5A38E26A9 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = FTCard.swift;
+			sourceTree = "<group>";
+		};
+		5C28814525044FBCB16012B6 = {
 			isa = PBXFileReference;
 			lastKnownFileType = text.plist.strings;
-			name = "Localizable.strings";
-			path = "FaisTrack/Resources/ar.lproj/Localizable.strings";
+			path = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		0FAFEE2A69A84BAABDFB8E20 /* PBXFileReference */ = {
+		6440B54911AA40AABAB8DB47 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "FirebaseService.swift";
-			path = "FaisTrack/Services/FirebaseService.swift";
+			path = MainTabView.swift;
 			sourceTree = "<group>";
 		};
-		1015702310924908A2FD3369 /* PBXFileReference */ = {
+		666864A38C8647EB98B3CF4F = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "ShareCarCardView.swift";
-			path = "FaisTrack/Modules/Garage/ShareCarCardView.swift";
+			path = Car.swift;
 			sourceTree = "<group>";
 		};
-		1815BF02C9004A08B8F1ED91 /* PBXFileReference */ = {
+		6788B844799A44198EA745AD = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "FTStatBadge.swift";
-			path = "FaisTrack/DesignSystem/Components/FTStatBadge.swift";
+			path = LocationService.swift;
 			sourceTree = "<group>";
 		};
-		1C946B63C8574A629A0E1613 /* PBXFileReference */ = {
+		69834B3D17C04B23B7419086 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "CarCardView.swift";
-			path = "FaisTrack/Modules/Garage/CarCardView.swift";
+			path = DriveDetailView.swift;
 			sourceTree = "<group>";
 		};
-		24D154C2C5314A6BAD4BBF8A /* PBXFileReference */ = {
+		6B8A285E22CE40A993BAEE17 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "FTCard.swift";
-			path = "FaisTrack/DesignSystem/Components/FTCard.swift";
+			path = FaisTrackApp.swift;
 			sourceTree = "<group>";
 		};
-		24E5B329DAFC429CB391F34A /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "DriveDetailView.swift";
-			path = "FaisTrack/Modules/Drives/DriveDetailView.swift";
-			sourceTree = "<group>";
-		};
-		32B354F3F05146E189DFC34A /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "NotificationService.swift";
-			path = "FaisTrack/Services/NotificationService.swift";
-			sourceTree = "<group>";
-		};
-		33C76785269044739A13FC59 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "AuthView.swift";
-			path = "FaisTrack/Modules/Auth/AuthView.swift";
-			sourceTree = "<group>";
-		};
-		37B95B959A91456BB7443B38 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "FTButton.swift";
-			path = "FaisTrack/DesignSystem/Components/FTButton.swift";
-			sourceTree = "<group>";
-		};
-		38B8C204B8324A8AB0B9D340 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "DrivesView.swift";
-			path = "FaisTrack/Modules/Drives/DrivesView.swift";
-			sourceTree = "<group>";
-		};
-		39FF906A4D1E4447853C7D31 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "FriendsView.swift";
-			path = "FaisTrack/Modules/Friends/FriendsView.swift";
-			sourceTree = "<group>";
-		};
-		3CD91E2E50C740C9B40899F0 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "Car.swift";
-			path = "FaisTrack/Models/Car.swift";
-			sourceTree = "<group>";
-		};
-		3DB675E61528419E890BF381 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "LeaderboardView.swift";
-			path = "FaisTrack/Modules/Leaderboard/LeaderboardView.swift";
-			sourceTree = "<group>";
-		};
-		3E0C4756745049ABAE598752 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = file.storyboard;
-			name = "LaunchScreen.storyboard";
-			path = "FaisTrack/Resources/LaunchScreen.storyboard";
-			sourceTree = "<group>";
-		};
-		436B2C551BAE41A6A317A27E /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "UserSearchView.swift";
-			path = "FaisTrack/Modules/Friends/UserSearchView.swift";
-			sourceTree = "<group>";
-		};
-		4965251E73394885A6793A70 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "GarageViewModel.swift";
-			path = "FaisTrack/Modules/Garage/GarageViewModel.swift";
-			sourceTree = "<group>";
-		};
-		530159A29500466CAF44B01A /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = text.plist.strings;
-			name = "Localizable.strings";
-			path = "FaisTrack/Resources/en.lproj/Localizable.strings";
-			sourceTree = "<group>";
-		};
-		562D2F6C71E44545B9CFBC0B /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "LeaderboardEntry.swift";
-			path = "FaisTrack/Models/LeaderboardEntry.swift";
-			sourceTree = "<group>";
-		};
-		70C2480DA35D4341BB64C859 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "SafetyView.swift";
-			path = "FaisTrack/Modules/Auth/SafetyView.swift";
-			sourceTree = "<group>";
-		};
-		7BAE9BCECF504FCE9628A9CC /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "PermissionsView.swift";
-			path = "FaisTrack/Modules/Auth/PermissionsView.swift";
-			sourceTree = "<group>";
-		};
-		83FFF559BEDD43C3AE3227B2 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "AppDelegate.swift";
-			path = "FaisTrack/App/AppDelegate.swift";
-			sourceTree = "<group>";
-		};
-		8C768CD5EE1A417CBB100AD4 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "MainTabView.swift";
-			path = "FaisTrack/App/MainTabView.swift";
-			sourceTree = "<group>";
-		};
-		A8677E079CD649B5B60553B7 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "LocationService.swift";
-			path = "FaisTrack/Services/LocationService.swift";
-			sourceTree = "<group>";
-		};
-		A9C2A4108D004F80AFF8E2A6 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "LeaderboardService.swift";
-			path = "FaisTrack/Services/LeaderboardService.swift";
-			sourceTree = "<group>";
-		};
-		AAFE9C95402A4C7985BA2508 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "FaisTrackApp.swift";
-			path = "FaisTrack/App/FaisTrackApp.swift";
-			sourceTree = "<group>";
-		};
-		B061438B59F44E0B81BFB4E6 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "AuthService.swift";
-			path = "FaisTrack/Services/AuthService.swift";
-			sourceTree = "<group>";
-		};
-		B597689DDB614495ACCF1502 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "User.swift";
-			path = "FaisTrack/Models/User.swift";
-			sourceTree = "<group>";
-		};
-		BE65DD26CAC04551A1E89C87 /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "StoreKitService.swift";
-			path = "FaisTrack/Services/StoreKitService.swift";
-			sourceTree = "<group>";
-		};
-		C86D0C116B4C44C9A53F923E /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "ProPaywallView.swift";
-			path = "FaisTrack/Modules/Auth/ProPaywallView.swift";
-			sourceTree = "<group>";
-		};
-		C8F1153DD9744041B72DE0AA /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = folder.assetcatalog;
-			name = "Assets.xcassets";
-			path = "FaisTrack/Resources/Assets.xcassets";
-			sourceTree = "<group>";
-		};
-		CA64C3CDEBF2484186B77F5A /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "CarDetailView.swift";
-			path = "FaisTrack/Modules/Garage/CarDetailView.swift";
-			sourceTree = "<group>";
-		};
-		CE824C85657941DCA715934B /* PBXFileReference */ = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			name = "RootView.swift";
-			path = "FaisTrack/App/RootView.swift";
-			sourceTree = "<group>";
-		};
-		D27E8ADE8CCA45B68E06311E /* PBXFileReference */ = {
+		6EDB2182566C4990950BFEF4 = {
 			isa = PBXFileReference;
 			explicitFileType = wrapper.application;
 			includeInIndex = 0;
 			path = "FaisTrack.app";
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		DAC48F4BF6904A89A96824DC /* PBXFileReference */ = {
+		6F691898859E4172B452775E = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "Colors.swift";
-			path = "FaisTrack/DesignSystem/Colors.swift";
+			path = UserSearchView.swift;
 			sourceTree = "<group>";
 		};
-		DFA62769624B4E8581B15DF5 /* PBXFileReference */ = {
+		74F8EEE614FF41A3A6BA7FBB = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "CarPlaySceneDelegate.swift";
-			path = "FaisTrack/Modules/CarPlay/CarPlaySceneDelegate.swift";
+			path = Colors.swift;
 			sourceTree = "<group>";
 		};
-		E2031723D21240849C938407 /* PBXFileReference */ = {
+		7758CD5091D84F958A11E5BE = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "DriveDetectionService.swift";
-			path = "FaisTrack/Services/DriveDetectionService.swift";
+			path = CarPlaySceneDelegate.swift;
 			sourceTree = "<group>";
 		};
-		E6F1D17EE81C408CAE64EBC7 /* PBXFileReference */ = {
+		79E4E35110C448E480E838F1 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "BehaviorScoreView.swift";
-			path = "FaisTrack/Modules/Statistics/BehaviorScoreView.swift";
+			path = FirebaseService.swift;
 			sourceTree = "<group>";
 		};
-		E94223D66B0C41DB83D5BCF6 /* PBXFileReference */ = {
+		861771DBBD5343F39CE74B83 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "AddCarView.swift";
-			path = "FaisTrack/Modules/Garage/AddCarView.swift";
+			path = GarageViewModel.swift;
 			sourceTree = "<group>";
 		};
-		EFB6292BB2CF4B1EA648122E /* PBXFileReference */ = {
+		A620ABD0078344D7AF9CE678 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "Drive.swift";
-			path = "FaisTrack/Models/Drive.swift";
+			path = FTButton.swift;
 			sourceTree = "<group>";
 		};
-		F40A8E62F1254C55AA8B5A66 /* PBXFileReference */ = {
+		A6ED003E998347488D87FBB1 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "OnboardingView.swift";
-			path = "FaisTrack/Modules/Auth/OnboardingView.swift";
+			path = NotificationService.swift;
 			sourceTree = "<group>";
 		};
-		FB198D3FA62746FEAFE9A2E3 /* PBXFileReference */ = {
+		AF05E0ACD6504716B6E62F76 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
-			name = "GarageView.swift";
-			path = "FaisTrack/Modules/Garage/GarageView.swift";
+			path = CarDetailView.swift;
+			sourceTree = "<group>";
+		};
+		AF6529D818D44B14A4E090CF = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = SafetyView.swift;
+			sourceTree = "<group>";
+		};
+		B26F7A38B8774C0BA5BF1F25 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = ReferralService.swift;
+			sourceTree = "<group>";
+		};
+		B33D658EB2CD4036BAFB60C1 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = LeaderboardEntry.swift;
+			sourceTree = "<group>";
+		};
+		BCA9791D398A48439A520338 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = AppDelegate.swift;
+			sourceTree = "<group>";
+		};
+		BF4FACA95A4845E1BC55F931 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = CarCardView.swift;
+			sourceTree = "<group>";
+		};
+		C05CD0A0ABD742E5B2BDB12A = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = StatsView.swift;
+			sourceTree = "<group>";
+		};
+		C7ECD6F4722B4168953A7902 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = DriveDetectionService.swift;
+			sourceTree = "<group>";
+		};
+		C94471B24D17440882AB0913 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = PermissionsView.swift;
+			sourceTree = "<group>";
+		};
+		CEDCF79962094638938D719E = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = OnboardingView.swift;
+			sourceTree = "<group>";
+		};
+		D374CAD4D29E48EA951E052B = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = FriendsView.swift;
+			sourceTree = "<group>";
+		};
+		D793BFA7AF214609B5ACEA73 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file.storyboard;
+			path = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		D7F940E9DF35445A98D2607A = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = User.swift;
+			sourceTree = "<group>";
+		};
+		EC5FFBE44D3A4E4B84555874 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = FTStatBadge.swift;
+			sourceTree = "<group>";
+		};
+		EF9826631EF64EBA8BC3D967 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.strings;
+			path = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		F4E76975621A45E9944808BA = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = AuthService.swift;
+			sourceTree = "<group>";
+		};
+		F6F2316C70794EDD89923834 = {
+			isa = PBXFileReference;
+			lastKnownFileType = folder.assetcatalog;
+			path = Assets.xcassets;
+			sourceTree = "<group>";
+		};
+		FF4D1140604349258A1187B1 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = AuthView.swift;
 			sourceTree = "<group>";
 		};
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		0E159E617A1A4D2CB4CB118D /* PBXFrameworksBuildPhase */ = {
+		2DCD0462BC00429393CD67B3 = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
-			files = (
-			);
+			files = ();
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		08C030988F1F4C23825A1DE9 /* PBXGroup */ = {
+		13456C7EC6F542C6AECD6D72 = {
 			isa = PBXGroup;
 			children = (
-				EA5629BE95694ECA9A8879AF,
-				F16D1601775A47969E2EE940,
-				93DB5022A942419DAC3EDA13,
-				6DA41CBC070F4377AC91FAA2,
-				9407AD5E59904560B2E853D7,
-				84376D6A83F1417BB1A8DF3C,
-				2AFEEB3E1047452E8FAF0F1E,
-			);
-			name = "Modules";
+					F4E76975621A45E9944808BA,
+					C7ECD6F4722B4168953A7902,
+					79E4E35110C448E480E838F1,
+					3E25CF4196C24A8B96A0164D,
+					6788B844799A44198EA745AD,
+					A6ED003E998347488D87FBB1,
+					B26F7A38B8774C0BA5BF1F25,
+					29AC8DE5AFF54C99A426A417,
+				);
+			name = "Services";
+			path = "Services";
 			sourceTree = "<group>";
 		};
-		16CB8E0470144225AB10CF42 /* PBXGroup */ = {
+		17C5DD76EEB0467CB3886C6D = {
 			isa = PBXGroup;
 			children = (
-				0F1829B6F42144348065D70D,
-			);
-			name = "ar.lproj";
+					74F8EEE614FF41A3A6BA7FBB,
+					6184B7AF3D6E45C09BEF9CC6,
+				);
+			name = "DesignSystem";
+			path = "DesignSystem";
 			sourceTree = "<group>";
 		};
-		2AFEEB3E1047452E8FAF0F1E /* PBXGroup */ = {
+		19C4EE7CF83B40E585EAAE44 = {
 			isa = PBXGroup;
 			children = (
-				E6F1D17EE81C408CAE64EBC7,
-				0C7EF721F0F54B45B6AB8CE2,
-			);
+					69834B3D17C04B23B7419086,
+					1A929F9C68EE45DDAB866AEA,
+				);
+			name = "Drives";
+			path = "Drives";
+			sourceTree = "<group>";
+		};
+		1C6347AB2D014DDCA2371D32 = {
+			isa = PBXGroup;
+			children = (
+					BCA9791D398A48439A520338,
+					019CA2284BB64639AB13D6D1,
+					6B8A285E22CE40A993BAEE17,
+					6440B54911AA40AABAB8DB47,
+					445EABCCFA474303B0AFB19C,
+				);
+			name = "App";
+			path = "App";
+			sourceTree = "<group>";
+		};
+		44501FC11B2D461EBC71240D = {
+			isa = PBXGroup;
+			children = (
+					F6F2316C70794EDD89923834,
+					D793BFA7AF214609B5ACEA73,
+					AD5F66D56D3042DAABB5E3E7,
+				);
+			name = "Resources";
+			path = "Resources";
+			sourceTree = "<group>";
+		};
+		5E8AC6ED7F67468FABC03430 = {
+			isa = PBXGroup;
+			children = (
+					173B334BB6194882941201EB,
+					C05CD0A0ABD742E5B2BDB12A,
+				);
 			name = "Statistics";
+			path = "Statistics";
 			sourceTree = "<group>";
 		};
-		3460174CDA844C85930658DA /* PBXGroup */ = {
+		6184B7AF3D6E45C09BEF9CC6 = {
 			isa = PBXGroup;
 			children = (
-				58D24CFC41CF44108B5E7808,
-				3750561EDB6E4E55B2FBA280,
-				BE5A74F88793455881038EB1,
-				08C030988F1F4C23825A1DE9,
-				5AAC4110658C4BCAB8714F61,
-				B5E983E8BEAD4431930FE3D2,
-			);
+					A620ABD0078344D7AF9CE678,
+					5BD39A1262F04CE5A38E26A9,
+					EC5FFBE44D3A4E4B84555874,
+				);
+			name = "Components";
+			path = "Components";
+			sourceTree = "<group>";
+		};
+		6BBCCE5730BA40C88C389413 = {
+			isa = PBXGroup;
+			children = (
+					666864A38C8647EB98B3CF4F,
+					568761AEEF27463D858EE0E2,
+					B33D658EB2CD4036BAFB60C1,
+					D7F940E9DF35445A98D2607A,
+				);
+			name = "Models";
+			path = "Models";
+			sourceTree = "<group>";
+		};
+		7280E55A639645E08983DDB1 = {
+			isa = PBXGroup;
+			children = (
+					452E71E021E34AAEBC658167,
+					BF4FACA95A4845E1BC55F931,
+					AF05E0ACD6504716B6E62F76,
+					0BABC92FED514094A50C4083,
+					861771DBBD5343F39CE74B83,
+					1449946DAA2748AAA88D5C07,
+				);
+			name = "Garage";
+			path = "Garage";
+			sourceTree = "<group>";
+		};
+		92172B065E934CA6B3F5BAF6 = {
+			isa = PBXGroup;
+			children = (
+					FF4D1140604349258A1187B1,
+					CEDCF79962094638938D719E,
+					C94471B24D17440882AB0913,
+					29CCFC702EDD4FEABBEBDB13,
+					AF6529D818D44B14A4E090CF,
+				);
+			name = "Auth";
+			path = "Auth";
+			sourceTree = "<group>";
+		};
+		9E7A1E5421CA4A8CB8341F56 = {
+			isa = PBXGroup;
+			children = (
+					BEC155098B394109988EEAFE,
+					EF637428ED1043DEA0E99749,
+				);
+			sourceTree = "<group>";
+		};
+		A219B6D3379744CC92331E57 = {
+			isa = PBXGroup;
+			children = (
+					92172B065E934CA6B3F5BAF6,
+					AACB84F2AF61410280711BC7,
+					19C4EE7CF83B40E585EAAE44,
+					D40A48053BBE4F17BDFFC1EE,
+					7280E55A639645E08983DDB1,
+					DC2A603B83934E7B81C044C8,
+					5E8AC6ED7F67468FABC03430,
+				);
+			name = "Modules";
+			path = "Modules";
+			sourceTree = "<group>";
+		};
+		AACB84F2AF61410280711BC7 = {
+			isa = PBXGroup;
+			children = (
+					7758CD5091D84F958A11E5BE,
+				);
+			name = "CarPlay";
+			path = "CarPlay";
+			sourceTree = "<group>";
+		};
+		ADB190A0BD334BED9B11DCBF = {
+			isa = PBXGroup;
+			children = ();
+			name = "Supporting";
+			path = "Supporting";
+			sourceTree = "<group>";
+		};
+		BEC155098B394109988EEAFE = {
+			isa = PBXGroup;
+			children = (
+					1C6347AB2D014DDCA2371D32,
+					17C5DD76EEB0467CB3886C6D,
+					6BBCCE5730BA40C88C389413,
+					A219B6D3379744CC92331E57,
+					44501FC11B2D461EBC71240D,
+					13456C7EC6F542C6AECD6D72,
+					ADB190A0BD334BED9B11DCBF,
+				);
 			name = "FaisTrack";
 			path = "FaisTrack";
 			sourceTree = "<group>";
 		};
-		3750561EDB6E4E55B2FBA280 /* PBXGroup */ = {
+		D40A48053BBE4F17BDFFC1EE = {
 			isa = PBXGroup;
 			children = (
-				DAC48F4BF6904A89A96824DC,
-				461C178F0A244186B322A514,
-			);
-			name = "DesignSystem";
-			sourceTree = "<group>";
-		};
-		461C178F0A244186B322A514 /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				37B95B959A91456BB7443B38,
-				24D154C2C5314A6BAD4BBF8A,
-				1815BF02C9004A08B8F1ED91,
-			);
-			name = "Components";
-			sourceTree = "<group>";
-		};
-		466D7EC7E9084ECDA0483B19 /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				530159A29500466CAF44B01A,
-			);
-			name = "en.lproj";
-			sourceTree = "<group>";
-		};
-		58D24CFC41CF44108B5E7808 /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				83FFF559BEDD43C3AE3227B2,
-				08F1606630AD4D58B5FA31C2,
-				AAFE9C95402A4C7985BA2508,
-				8C768CD5EE1A417CBB100AD4,
-				CE824C85657941DCA715934B,
-			);
-			name = "App";
-			sourceTree = "<group>";
-		};
-		5AAC4110658C4BCAB8714F61 /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				C8F1153DD9744041B72DE0AA,
-				3E0C4756745049ABAE598752,
-				16CB8E0470144225AB10CF42,
-				466D7EC7E9084ECDA0483B19,
-			);
-			name = "Resources";
-			sourceTree = "<group>";
-		};
-		6BD2147EE1514FA29681481C /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				3460174CDA844C85930658DA,
-				F9D53263B7524E759F081EF2,
-			);
-			sourceTree = "<group>";
-		};
-		6DA41CBC070F4377AC91FAA2 /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				39FF906A4D1E4447853C7D31,
-				436B2C551BAE41A6A317A27E,
-			);
+					D374CAD4D29E48EA951E052B,
+					6F691898859E4172B452775E,
+				);
 			name = "Friends";
+			path = "Friends";
 			sourceTree = "<group>";
 		};
-		84376D6A83F1417BB1A8DF3C /* PBXGroup */ = {
+		DC2A603B83934E7B81C044C8 = {
 			isa = PBXGroup;
 			children = (
-				3DB675E61528419E890BF381,
-			);
+					52FCBDEA52D84E09B61B58E8,
+				);
 			name = "Leaderboard";
+			path = "Leaderboard";
 			sourceTree = "<group>";
 		};
-		93DB5022A942419DAC3EDA13 /* PBXGroup */ = {
+		EF637428ED1043DEA0E99749 = {
 			isa = PBXGroup;
 			children = (
-				24E5B329DAFC429CB391F34A,
-				38B8C204B8324A8AB0B9D340,
-			);
-			name = "Drives";
-			sourceTree = "<group>";
-		};
-		9407AD5E59904560B2E853D7 /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				E94223D66B0C41DB83D5BCF6,
-				1C946B63C8574A629A0E1613,
-				CA64C3CDEBF2484186B77F5A,
-				FB198D3FA62746FEAFE9A2E3,
-				4965251E73394885A6793A70,
-				1015702310924908A2FD3369,
-			);
-			name = "Garage";
-			sourceTree = "<group>";
-		};
-		B5E983E8BEAD4431930FE3D2 /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				B061438B59F44E0B81BFB4E6,
-				E2031723D21240849C938407,
-				0FAFEE2A69A84BAABDFB8E20,
-				A9C2A4108D004F80AFF8E2A6,
-				A8677E079CD649B5B60553B7,
-				32B354F3F05146E189DFC34A,
-				08D1113EE0C34910BAF5C4FD,
-				BE65DD26CAC04551A1E89C87,
-			);
-			name = "Services";
-			sourceTree = "<group>";
-		};
-		BE5A74F88793455881038EB1 /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				3CD91E2E50C740C9B40899F0,
-				EFB6292BB2CF4B1EA648122E,
-				562D2F6C71E44545B9CFBC0B,
-				B597689DDB614495ACCF1502,
-			);
-			name = "Models";
-			sourceTree = "<group>";
-		};
-		EA5629BE95694ECA9A8879AF /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				33C76785269044739A13FC59,
-				F40A8E62F1254C55AA8B5A66,
-				7BAE9BCECF504FCE9628A9CC,
-				C86D0C116B4C44C9A53F923E,
-				70C2480DA35D4341BB64C859,
-			);
-			name = "Auth";
-			sourceTree = "<group>";
-		};
-		F16D1601775A47969E2EE940 /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				DFA62769624B4E8581B15DF5,
-			);
-			name = "CarPlay";
-			sourceTree = "<group>";
-		};
-		F9D53263B7524E759F081EF2 /* PBXGroup */ = {
-			isa = PBXGroup;
-			children = (
-				D27E8ADE8CCA45B68E06311E,
-			);
+					6EDB2182566C4990950BFEF4,
+				);
 			name = "Products";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3C78B54056754915B1B378FF /* PBXNativeTarget */ = {
+		5D10EC855340411C9848B92C = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3709FAA4D6064AFB8FD3EA15;
+			buildConfigurationList = E541F898CC734B84A4E93CD2;
 			buildPhases = (
-				AB2798A22E864644852B36F0,
-				2491E7A5E8F64E70BE30BDEF,
-				0E159E617A1A4D2CB4CB118D,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
+					11E1E8AF818F493DB1F3DF41,
+					92B82D5F06EE4DE88531951D,
+					2DCD0462BC00429393CD67B3,
+				);
+			buildRules = ();
+			dependencies = ();
 			name = "FaisTrack";
 			productName = "FaisTrack";
-			productReference = D27E8ADE8CCA45B68E06311E;
+			productReference = 6EDB2182566C4990950BFEF4;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		783C28AD9BB2405E87D49B3D /* PBXProject */ = {
+		DBF28CC3133240CEA2E184BA = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
-				TargetAttributes = {
-					3C78B54056754915B1B378FF = {
-						CreatedOnToolsVersion = 15.0;
-						DevelopmentTeam = 5GY9D93K6Y;
+					BuildIndependentTargetsInParallel = YES;
+					LastSwiftUpdateCheck = 1500;
+					LastUpgradeCheck = 1500;
+					TargetAttributes = {
+						5D10EC855340411C9848B92C = {
+							CreatedOnToolsVersion = 15.0;
+							DevelopmentTeam = 5GY9D93K6Y;
+						};
 					};
 				};
-			};
-			buildConfigurationList = EF167791A98F4C60B81A7A73;
+			buildConfigurationList = C8E658270EB04742941D5DE5;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
-				ar,
-				Base,
-			);
-			mainGroup = 6BD2147EE1514FA29681481C;
-			productRefGroup = F9D53263B7524E759F081EF2;
+					Base,
+					en,
+					ar,
+				);
+			mainGroup = 9E7A1E5421CA4A8CB8341F56;
+			productRefGroup = EF637428ED1043DEA0E99749;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3C78B54056754915B1B378FF,
-			);
+					5D10EC855340411C9848B92C,
+				);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2491E7A5E8F64E70BE30BDEF /* PBXResourcesBuildPhase */ = {
+		92B82D5F06EE4DE88531951D = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				422FFDD180C744EAB769DA8C,
-				BCD32A3CDE794D1BBC2C64FE,
-				982E9A7095714E2385E1C4B4,
-				F8118BC48AFA414BB37A851D,
-			);
+					2F9BF050E7D94509B80B67EC,
+					301125AD9E354CCFB4223C99,
+					D79FB7509DF24D518EC88C69,
+				);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		AB2798A22E864644852B36F0 /* PBXSourcesBuildPhase */ = {
+		11E1E8AF818F493DB1F3DF41 = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79A5C582247F405E86E427F9,
-				C4385BF51CBE4903BB94694B,
-				C7355ED413584C0F88F1B108,
-				15E6B51B2E29441CB2346CC1,
-				F134C8528A044AF180D50C64,
-				19EB66248F8E488F8AA70066,
-				50EA363F479A4F88ABBA76D6,
-				F49DC05E4B154745B3769DAF,
-				463830659BE44C689F3586EC,
-				CEB52442B74F42C4902F4BAF,
-				29384F4345F14041BD3CDD02,
-				EACD4305AD01415DB004518F,
-				6B78903819E6460E803C74BC,
-				75BB0D36752548AAB411A25B,
-				B81EFE3B22A34A038D7A4992,
-				ECEB2D980C714261B48EA4C9,
-				355FBEE8D6414131A70913B6,
-				4FD387650D114DE2BBE72CA5,
-				BA2C4C888D4E43F693A9993F,
-				2E1B26A7F21543E7980301C6,
-				F1EED7FF390A45C482C7055F,
-				1536CDADC93445F496D50C53,
-				7C8281D8684545CFAEC33427,
-				351F25D63B404DDE8D7B4632,
-				CDB5C389962E4B7FAE0F3F58,
-				8ABF9AC5CF8D42969AFD8B3B,
-				8713A833833F47759B4FF972,
-				57C3C83C8DC14A7EB51C34C5,
-				9CAFFC4C55154DE48F99C59B,
-				63193C5C413A472783D454FB,
-				ADA0C184980E4488A04063EB,
-				5C3E4E67BE9F460484F992FF,
-				CAAE53DB8ECD449BB9835FFA,
-				821B173BB1E4418DABFCEA45,
-				D39FE1121E8040FC9C9B44AC,
-				1E556DEFA73B4283A6282FC6,
-				439FA6455F084D2582A309D0,
-				C67EDF239F8A460F9D4DBA9B,
-				2CB2E5DB5EAD4E76AD7ADB6A,
-				914CC72134674BAAAF2A459C,
-			);
+					0C4A1342EB774CCBA9551822,
+					25D47C9892FA41199F396A06,
+					9719E7DD9642499BA2A94C71,
+					39035093CB304C85AA583E97,
+					CB851FA4277A4332B22A3D11,
+					3D835C77240F43D2B707FF9E,
+					E22D88614F854C489DC0E11B,
+					3B8843B5D78343DF8916A954,
+					A2D3294390104662891625A2,
+					1F0E56FFA7C14780B2D603FF,
+					2B81CF93C60C4996AB4553FF,
+					7828525AFF7A4771A2A5638F,
+					58AF7031E3E440DE9D7CD819,
+					2F026D5EC3EA44B5BDCF7E7B,
+					5B31A0DB1260442E93883192,
+					F55A9FE2B35B4C7FB653200B,
+					D6207C38B1084D29BD3AB86A,
+					279F3F73120544E48712B639,
+					2A65BC685E4E479CA1E3F260,
+					BE25FC7632A64D46951019E7,
+					181038B0CA1D43BEAB3C0176,
+					B9E8559402CE4B9E924792EE,
+					4C588BDCD8064111BA8326B2,
+					086E41C16379491586AF8131,
+					4691CB7236C44E2EBFC92E2E,
+					1AFDB208D898443492DFA616,
+					49D9C82CF8BC47E9B4F4B756,
+					4CFF81C7E42C4F9BA65309A4,
+					47C5A94B36E64713846B9BD4,
+					92E78CE96BFF4E038C299EFD,
+					902CEDCA14CA4101AFB56F68,
+					8E49DDD8A5A44BB19B582FB7,
+					E714F91999FF44369FDFEAD4,
+					73BB3725E3E542E18D0EE2EA,
+					D6FCF9418AAF4D1F8A9B07CF,
+					2252862154B745CE8BC571CD,
+					9FF2CAFA3B7644ECB279C56A,
+					5E0CCCF55FD94EC382CA20C5,
+					03F51F41DBAD41D89333C0A9,
+					B24B1C3760C84B9BA3FE7DAA,
+				);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		AD5F66D56D3042DAABB5E3E7 = {
+			isa = PBXVariantGroup;
+			children = (
+					5C28814525044FBCB16012B6,
+					EF9826631EF64EBA8BC3D967,
+				);
+			name = "Localizable.strings";
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
-		132B9470EEF748FEA8EF4EBF /* XCBuildConfiguration */ = {
+		655932B2CFAF426D873F55A2 = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_MODULES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = "15.0";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
-			};
+					ALWAYS_SEARCH_USER_PATHS = NO;
+					COPY_PHASE_STRIP = NO;
+					DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+					ENABLE_NS_ASSERTIONS = NO;
+					ENABLE_STRICT_OBJC_MSGSEND = YES;
+					GCC_NO_COMMON_BLOCKS = YES;
+					IPHONEOS_DEPLOYMENT_TARGET = "15.0";
+					MTL_ENABLE_DEBUG_INFO = NO;
+					SDKROOT = iphoneos;
+					VALIDATE_PRODUCT = YES;
+				};
 			name = Release;
 		};
-		39E4956114234454A2AA49A6 /* XCBuildConfiguration */ = {
+		968795DAC5AC45DA9E70A663 = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "FaisTrack/Supporting/FaisTrack.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "5GY9D93K6Y";
-				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "FaisTrack/Supporting/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = "15.0";
-				MARKETING_VERSION = "1.0";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.faistrack.app";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = "5.9";
-				TARGETED_DEVICE_FAMILY = "1";
-				ENABLE_PREVIEWS = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_TESTABILITY = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-			};
+					ALWAYS_SEARCH_USER_PATHS = NO;
+					ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+					CODE_SIGN_ENTITLEMENTS = "FaisTrack/Supporting/FaisTrack.entitlements";
+					CODE_SIGN_STYLE = Automatic;
+					CURRENT_PROJECT_VERSION = 1;
+					DEVELOPMENT_TEAM = "5GY9D93K6Y";
+					ENABLE_BITCODE = NO;
+					INFOPLIST_FILE = "FaisTrack/Supporting/Info.plist";
+					IPHONEOS_DEPLOYMENT_TARGET = "15.0";
+					MARKETING_VERSION = "1.0";
+					PRODUCT_BUNDLE_IDENTIFIER = "com.faistrack.app";
+					PRODUCT_NAME = "$(TARGET_NAME)";
+					SWIFT_EMIT_LOC_STRINGS = YES;
+					SWIFT_VERSION = "5.9";
+					TARGETED_DEVICE_FAMILY = "1";
+					ENABLE_PREVIEWS = YES;
+					DEBUG_INFORMATION_FORMAT = dwarf;
+					ENABLE_TESTABILITY = YES;
+					SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+					SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				};
 			name = Debug;
 		};
-		609C516E9B38480F90DC741F /* XCBuildConfiguration */ = {
+		EA6488E76A6049DD83ACB01C = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "FaisTrack/Supporting/FaisTrack.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "5GY9D93K6Y";
-				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "FaisTrack/Supporting/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = "15.0";
-				MARKETING_VERSION = "1.0";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.faistrack.app";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = "5.9";
-				TARGETED_DEVICE_FAMILY = "1";
-				ENABLE_PREVIEWS = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				VALIDATE_PRODUCT = YES;
-			};
+					ALWAYS_SEARCH_USER_PATHS = NO;
+					COPY_PHASE_STRIP = NO;
+					DEBUG_INFORMATION_FORMAT = dwarf;
+					ENABLE_STRICT_OBJC_MSGSEND = YES;
+					GCC_NO_COMMON_BLOCKS = YES;
+					IPHONEOS_DEPLOYMENT_TARGET = "15.0";
+					MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+					ONLY_ACTIVE_ARCH = YES;
+					SDKROOT = iphoneos;
+					SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				};
+			name = Debug;
+		};
+		F6FA5FA747984FAD93F06482 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+					ALWAYS_SEARCH_USER_PATHS = NO;
+					ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+					CODE_SIGN_ENTITLEMENTS = "FaisTrack/Supporting/FaisTrack.entitlements";
+					CODE_SIGN_STYLE = Automatic;
+					CURRENT_PROJECT_VERSION = 1;
+					DEVELOPMENT_TEAM = "5GY9D93K6Y";
+					ENABLE_BITCODE = NO;
+					INFOPLIST_FILE = "FaisTrack/Supporting/Info.plist";
+					IPHONEOS_DEPLOYMENT_TARGET = "15.0";
+					MARKETING_VERSION = "1.0";
+					PRODUCT_BUNDLE_IDENTIFIER = "com.faistrack.app";
+					PRODUCT_NAME = "$(TARGET_NAME)";
+					SWIFT_EMIT_LOC_STRINGS = YES;
+					SWIFT_VERSION = "5.9";
+					TARGETED_DEVICE_FAMILY = "1";
+					ENABLE_PREVIEWS = YES;
+					DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+					SWIFT_OPTIMIZATION_LEVEL = "-O";
+					VALIDATE_PRODUCT = YES;
+				};
 			name = Release;
-		};
-		B529E18AA3544B5681958D9A /* XCBuildConfiguration */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_MODULES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				IPHONEOS_DEPLOYMENT_TARGET = "15.0";
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-			};
-			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3709FAA4D6064AFB8FD3EA15 /* XCConfigurationList */ = {
+		C8E658270EB04742941D5DE5 = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				39E4956114234454A2AA49A6,
-				609C516E9B38480F90DC741F,
-			);
+					EA6488E76A6049DD83ACB01C,
+					655932B2CFAF426D873F55A2,
+				);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EF167791A98F4C60B81A7A73 /* XCConfigurationList */ = {
+		E541F898CC734B84A4E93CD2 = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B529E18AA3544B5681958D9A,
-				132B9470EEF748FEA8EF4EBF,
-			);
+					968795DAC5AC45DA9E70A663,
+					F6FA5FA747984FAD93F06482,
+				);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 783C28AD9BB2405E87D49B3D;
+	rootObject = DBF28CC3133240CEA2E184BA;
 }
