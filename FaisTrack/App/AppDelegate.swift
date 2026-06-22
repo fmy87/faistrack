@@ -2,20 +2,35 @@ import UIKit
 import Firebase
 import FirebaseMessaging
 import GoogleMaps
+import GoogleSignIn
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
-        GMSServices.provideAPIKey("YOUR_GOOGLE_MAPS_API_KEY")
+        GMSServices.provideAPIKey("REPLACE_WITH_GOOGLE_MAPS_API_KEY")
         UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
+        application.registerForRemoteNotifications()
         return true
+    }
+
+    // MARK: - Handle Google Sign-In redirect URL (uses REVERSED_CLIENT_ID scheme)
+    func application(_ app: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        return GIDSignIn.sharedInstance.handle(url)
     }
 
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
+    }
+
+    func application(_ application: UIApplication,
+                     didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for remote notifications: \(error)")
     }
 }
 

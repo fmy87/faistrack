@@ -16,6 +16,21 @@
     <string>15.0</string>
     <key>UILaunchStoryboardName</key>
     <string>LaunchScreen</string>
+
+    <!-- Google Sign-In URL Scheme (REVERSED_CLIENT_ID) -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.591835402983-jpa0lr4tl7isuhlh9vp7nt1vuhvafui0</string>
+            </array>
+        </dict>
+    </array>
+
+    <!-- CarPlay Scene -->
     <key>UIApplicationSceneManifest</key>
     <dict>
         <key>UIApplicationSupportsMultipleScenes</key>
@@ -35,6 +50,7 @@
             </array>
         </dict>
     </dict>
+
     <!-- Location Permissions -->
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>FaisTrack needs your location to automatically track your drives in the background.</string>
@@ -42,15 +58,19 @@
     <string>FaisTrack needs your location to track your drives.</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>FaisTrack needs your location to automatically track your drives in the background.</string>
+
     <!-- Motion Permission -->
     <key>NSMotionUsageDescription</key>
     <string>FaisTrack uses motion data to detect when you start and stop driving.</string>
+
     <!-- Photo Library -->
     <key>NSPhotoLibraryUsageDescription</key>
     <string>FaisTrack needs access to your photo library to add a photo to your car.</string>
+
     <!-- Camera -->
     <key>NSCameraUsageDescription</key>
     <string>FaisTrack needs camera access to take a photo of your car.</string>
+
     <!-- Background Modes -->
     <key>UIBackgroundModes</key>
     <array>
@@ -58,10 +78,13 @@
         <string>fetch</string>
         <string>remote-notification</string>
     </array>
-    <!-- Google Maps URL Scheme -->
+
+    <!-- Google Maps + Sign-In URL Queries -->
     <key>LSApplicationQueriesSchemes</key>
     <array>
         <string>comgooglemaps</string>
+        <string>googlegmail</string>
+        <string>googleplus</string>
     </array>
 </dict>
 </plist>
