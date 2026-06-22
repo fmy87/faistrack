@@ -1,20 +1,46 @@
 workflows:
+  ios-debug:
+    name: FaisTrack iOS Debug
+    max_build_duration: 30
+    instance_type: mac_mini_m1
+    environment:
+      xcode: latest
+      cocoapods: default
+      vars:
+        XCODE_SCHEME: "FaisTrack"
+        BUNDLE_ID: "com.faistrack.app"
+    scripts:
+      - name: Install GoogleService-Info.plist
+        script: |
+          echo $GOOGLE_SERVICE_INFO_PLIST | base64 --decode > $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist
+      - name: Install CocoaPods
+        script: |
+          cd $CM_BUILD_DIR && pod install
+      - name: Build Debug
+        script: |
+          xcodebuild \
+            -workspace "$CM_BUILD_DIR/FaisTrack.xcworkspace" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Debug \
+            -destination generic/platform=iOS \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+    artifacts:
+      - /tmp/xcodebuild_logs/*.log
+
   ios-release:
-    name: FaisTrack iOS Release
+    name: FaisTrack iOS Release (configure App Store Connect first)
     max_build_duration: 60
     instance_type: mac_mini_m1
-    integrations:
-      app_store_connect: Codemagic
     environment:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.faistrack.app
+      xcode: latest
+      cocoapods: default
       vars:
         XCODE_SCHEME: "FaisTrack"
         BUNDLE_ID: "com.faistrack.app"
-        GOOGLE_MAPS_API_KEY: "REPLACE_WITH_GOOGLE_MAPS_KEY"
-      xcode: latest
-      cocoapods: default
     scripts:
       - name: Install GoogleService-Info.plist
         script: |
@@ -29,33 +55,4 @@ workflows:
             --scheme "$XCODE_SCHEME"
     artifacts:
       - build/ios/ipa/*.ipa
-      - /tmp/xcodebuild_logs/*.log
-    publishing:
-      app_store_connect:
-        submit_to_testflight: true
-        submit_to_app_store: false
-
-  ios-debug:
-    name: FaisTrack iOS Debug
-    max_build_duration: 30
-    instance_type: mac_mini_m1
-    environment:
-      xcode: latest
-      cocoapods: default
-    scripts:
-      - name: Install GoogleService-Info.plist
-        script: |
-          echo $GOOGLE_SERVICE_INFO_PLIST | base64 --decode > $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist
-      - name: Install CocoaPods
-        script: |
-          cd $CM_BUILD_DIR && pod install
-      - name: Build Debug
-        script: |
-          xcodebuild \
-            -workspace $CM_BUILD_DIR/FaisTrack.xcworkspace \
-            -scheme FaisTrack \
-            -configuration Debug \
-            -destination generic/platform=iOS \
-            build
-    artifacts:
       - /tmp/xcodebuild_logs/*.log
