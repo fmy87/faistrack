@@ -195,13 +195,6 @@
 			path = "AuthView.swift";
 			sourceTree = "<group>";
 		};
-		1260ED1DF6E848A797444369 = {
-			isa = PBXFileReference;
-			lastKnownFileType = file.storyboard;
-			name = "LaunchScreen.storyboard";
-			path = "LaunchScreen.storyboard";
-			sourceTree = "<group>";
-		};
 		12B195761EA54B8DBCDA474D = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
@@ -557,7 +550,6 @@
 			isa = PBXGroup;
 			children = (
 					966408711FA246DC8FFA930B,
-					1260ED1DF6E848A797444369,
 					A9AC9D12B19B480DA62966CF,
 				);
 			name = "Resources";
