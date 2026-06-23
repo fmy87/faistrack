@@ -269,7 +269,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
 			name = "FTButton.swift";
-			path = "FTButton.swift";
+			path = "Components/FTButton.swift";
 			sourceTree = "<group>";
 		};
 		678C2E972160475DA7598576 = {
@@ -388,7 +388,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
 			name = "FTStatBadge.swift";
-			path = "FTStatBadge.swift";
+			path = "Components/FTStatBadge.swift";
 			sourceTree = "<group>";
 		};
 		C6BF4A5613304A679C499225 = {
@@ -402,7 +402,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
 			name = "FTCard.swift";
-			path = "FTCard.swift";
+			path = "Components/FTCard.swift";
 			sourceTree = "<group>";
 		};
 		CC41065721DB4C75872B45D9 = {
