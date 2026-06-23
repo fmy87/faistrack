@@ -11,7 +11,7 @@ class AppState: ObservableObject {
     @Published var currentScreen: AppScreen = .onboarding
     @Published var currentUser: FTUser?
     @Published var isProUser: Bool = false
-    @Published var selectedLanguage: String = Locale.current.language.languageCode?.identifier == "ar" ? "ar" : "en"
+    @Published var selectedLanguage: String = Locale.current.languageCode == "ar" ? "ar" : "en"
 
     var isArabic: Bool { selectedLanguage == "ar" }
 

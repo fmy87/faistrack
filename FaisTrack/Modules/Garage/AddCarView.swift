@@ -6,7 +6,6 @@ struct AddCarView: View {
     @Environment(\.dismiss) var dismiss
     @State private var step = 0
     @State private var car = Car(ownerUID: "", nickname: "", make: "", model: "", year: Calendar.current.component(.year, from: Date()))
-    @State private var selectedPhoto: PhotosPickerItem?
     @State private var photoData: Data?
     @State private var isSaving = false
 
@@ -22,7 +21,7 @@ struct AddCarView: View {
                         BasicInfoStep(car: $car).tag(0)
                         SpecsStep(car: $car).tag(1)
                         ModsStep(car: $car).tag(2)
-                        PhotoStep(car: $car, selectedPhoto: $selectedPhoto, photoData: $photoData).tag(3)
+                        PhotoStep(car: $car, photoData: $photoData).tag(3)
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
 
@@ -138,10 +137,45 @@ struct ModsStep: View {
     }
 }
 
+// UIImagePickerController wrapper for iOS 15 compatibility
+struct ImagePicker: UIViewControllerRepresentable {
+    @Binding var imageData: Data?
+    @Environment(\.dismiss) var dismiss
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.delegate = context.coordinator
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        let parent: ImagePicker
+        init(_ parent: ImagePicker) { self.parent = parent }
+
+        func imagePickerController(_ picker: UIImagePickerController,
+                                   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+            if let image = info[.originalImage] as? UIImage {
+                parent.imageData = image.jpegData(compressionQuality: 0.8)
+            }
+            parent.dismiss()
+        }
+
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            parent.dismiss()
+        }
+    }
+}
+
 struct PhotoStep: View {
     @Binding var car: Car
-    @Binding var selectedPhoto: PhotosPickerItem?
     @Binding var photoData: Data?
+    @State private var showPicker = false
+
     var body: some View {
         VStack(spacing: 24) {
             Text(NSLocalizedString("garage.step.photo", comment: ""))
@@ -154,14 +188,14 @@ struct PhotoStep: View {
                     .frame(width: 240, height: 160)
                     .overlay(Image(systemName: "camera.fill").font(.system(size: 40)).foregroundColor(.ftAccent))
             }
-            PhotosPicker(selection: $selectedPhoto, matching: .images) {
+            Button {
+                showPicker = true
+            } label: {
                 Text(NSLocalizedString("garage.addPhoto", comment: ""))
                     .font(.system(size: 16, weight: .semibold)).foregroundColor(.ftAccent)
             }
-            .onChange(of: selectedPhoto) { item in
-                Task {
-                    photoData = try? await item?.loadTransferable(type: Data.self)
-                }
+            .sheet(isPresented: $showPicker) {
+                ImagePicker(imageData: $photoData)
             }
         }.padding(24)
     }
