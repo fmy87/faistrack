@@ -25,7 +25,7 @@ class NotificationService {
         content.body = NSLocalizedString("notification.driveStart.body", comment: "")
         content.sound = .default
         let request = UNNotificationRequest(identifier: "driveStart", content: content, trigger: nil)
-        try? await UNUserNotificationCenter.current().add(request)
+        Task { try? await UNUserNotificationCenter.current().add(request) }
     }
 
     func sendDriveEndNotification(drive: Drive) async {
