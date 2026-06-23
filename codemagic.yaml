@@ -2,7 +2,7 @@ workflows:
   ios-debug:
     name: FaisTrack iOS Debug
     max_build_duration: 30
-    instance_type: mac_mini_m1
+    instance_type: mac_mini_m2
     environment:
       xcode: latest
       cocoapods: default
@@ -18,20 +18,21 @@ workflows:
           cd $CM_BUILD_DIR && pod install
       - name: Build Debug
         script: |
+          mkdir -p /tmp/xcodebuild_logs
           xcodebuild \
             -workspace "$CM_BUILD_DIR/FaisTrack.xcworkspace" \
             -scheme "$XCODE_SCHEME" \
             -configuration Debug \
             -destination generic/platform=iOS \
             CODE_SIGNING_ALLOWED=NO \
-            build
+            build 2>&1 | tee /tmp/xcodebuild_logs/build.log; exit ${PIPESTATUS[0]}
     artifacts:
       - /tmp/xcodebuild_logs/*.log
 
   ios-release:
     name: FaisTrack iOS Release (configure App Store Connect first)
     max_build_duration: 60
-    instance_type: mac_mini_m1
+    instance_type: mac_mini_m2
     environment:
       ios_signing:
         distribution_type: app_store
