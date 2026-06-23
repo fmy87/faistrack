@@ -101,10 +101,10 @@ struct SpecsStep: View {
                                 set: { car.engineSize = $0 }))
                 FTInputField(title: NSLocalizedString("garage.hp", comment: ""),
                              placeholder: "e.g. 300", text: $hpString, keyboardType: .numberPad)
-                    .onChange(of: hpString) { car.horsepower = Int($0) }
+                    .onChange(of: hpString) { _, newVal in car.horsepower = Int(newVal) }
                 FTInputField(title: NSLocalizedString("garage.torque", comment: ""),
                              placeholder: "e.g. 400 Nm", text: $torqueString, keyboardType: .numberPad)
-                    .onChange(of: torqueString) { car.torque = Int($0) }
+                    .onChange(of: torqueString) { _, newVal in car.torque = Int(newVal) }
                 VStack(alignment: .leading, spacing: 8) {
                     Text(NSLocalizedString("garage.forced", comment: ""))
                         .font(.system(size: 14, weight: .medium)).foregroundColor(.ftTextSecondary)
