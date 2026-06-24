@@ -7,7 +7,7 @@ class FirebaseService {
 
     // MARK: - User
     func saveUser(_ user: FTUser) async throws {
-        try db.collection("users").document(user.uid).setData(from: user)
+        try await db.collection("users").document(user.uid).setData(from: user)
     }
 
     func getUser(uid: String) async throws -> FTUser? {
@@ -20,7 +20,7 @@ class FirebaseService {
         let ref = car.id == nil
             ? db.collection("users").document(uid).collection("cars").document()
             : db.collection("users").document(uid).collection("cars").document(car.id!)
-        try ref.setData(from: car)
+        try await ref.setData(from: car)
     }
 
     func getCars(uid: String) async throws -> [Car] {
@@ -52,7 +52,7 @@ class FirebaseService {
         let ref = drive.id == nil
             ? db.collection("users").document(uid).collection("drives").document()
             : db.collection("users").document(uid).collection("drives").document(drive.id!)
-        try ref.setData(from: drive)
+        try await ref.setData(from: drive)
     }
 
     func getDrives(uid: String, limit: Int = 20) async throws -> [Drive] {

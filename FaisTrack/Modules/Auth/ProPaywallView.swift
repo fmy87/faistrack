@@ -2,7 +2,7 @@ import SwiftUI
 import StoreKit
 
 struct ProPaywallView: View {
-    @StateObject private var store = StoreKitService.shared
+    @ObservedObject private var store = StoreKitService.shared
     @Environment(\.dismiss) var dismiss
 
     var body: some View {

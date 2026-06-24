@@ -20,14 +20,22 @@ struct ShareCarCardView: View {
     }
 
     private func shareCard() {
-        let renderer = ImageRenderer(content: CarShareCard(car: car))
-        if let image = renderer.uiImage {
-            let av = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-            UIApplication.shared.connectedScenes
-                .compactMap { $0 as? UIWindowScene }
-                .first?.windows.first?.rootViewController?
-                .present(av, animated: true)
+        // Use UIGraphicsImageRenderer for iOS 15 compatibility (ImageRenderer is iOS 16+)
+        let cardView = CarShareCard(car: car)
+        let controller = UIHostingController(rootView: cardView)
+        controller.view.bounds = CGRect(x: 0, y: 0, width: 320, height: 180)
+        controller.view.backgroundColor = .clear
+
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 320, height: 180))
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
         }
+
+        let av = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows.first?.rootViewController?
+            .present(av, animated: true)
     }
 }
 

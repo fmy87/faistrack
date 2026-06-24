@@ -7,7 +7,7 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
                                    didConnect interfaceController: CPInterfaceController) {
         self.interfaceController = interfaceController
         let template = buildDashboard()
-        interfaceController.setRootTemplate(template, animated: false)
+        interfaceController.setRootTemplate(template, animated: false, completion: nil)
     }
 
     private func buildDashboard() -> CPInformationTemplate {
