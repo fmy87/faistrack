@@ -55,11 +55,7 @@ workflows:
 
       - name: Prepare signing keys
         script: |
-          # Decode ASC API key
           echo "$APP_STORE_CONNECT_PRIVATE_KEY" | base64 --decode > /tmp/asc_key.p8
-
-          # Generate certificate private key and export to CM_ENV so all
-          # subsequent app-store-connect calls pick it up automatically
           openssl genrsa -out /tmp/cert_key.pem 2048
           echo "CERTIFICATE_PRIVATE_KEY<<EOF" >> $CM_ENV
           cat /tmp/cert_key.pem >> $CM_ENV
@@ -67,8 +63,6 @@ workflows:
 
       - name: Create iOS Distribution certificate
         script: |
-          # CERTIFICATE_PRIVATE_KEY is now set in env — tool uses it automatically
-          # Also saves a .p12 we can add to keychain
           app-store-connect certificates create \
             --type IOS_DISTRIBUTION \
             --p12-password codemagic \
@@ -83,7 +77,6 @@ workflows:
 
       - name: Fetch or create provisioning profile
         script: |
-          # CERTIFICATE_PRIVATE_KEY still in env — tool bundles cert+key automatically
           app-store-connect fetch-signing-files \
             "$BUNDLE_ID" \
             --type IOS_APP_STORE \
@@ -107,14 +100,34 @@ workflows:
 
       - name: Build IPA
         script: |
+          mkdir -p /tmp/xcodebuild_logs
           xcode-project use-profiles
-          xcode-project build-ipa \
-            --workspace "$CM_BUILD_DIR/FaisTrack.xcworkspace" \
-            --scheme "$XCODE_SCHEME" \
-            --config Release
+          # Run archive directly so we capture full output including errors
+          xcodebuild \
+            -workspace "$CM_BUILD_DIR/FaisTrack.xcworkspace" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -archivePath /tmp/FaisTrack.xcarchive \
+            archive \
+            COMPILER_INDEX_STORE_ENABLE=NO \
+            DEVELOPMENT_TEAM=5GY9D93K6Y \
+            CODE_SIGN_STYLE=Manual \
+            "CODE_SIGN_IDENTITY=iPhone Distribution" \
+            2>&1 | tee /tmp/xcodebuild_logs/archive.log
+          ARCHIVE_EXIT=${PIPESTATUS[0]}
+          if [ $ARCHIVE_EXIT -ne 0 ]; then
+            echo "=== ERRORS ===" && grep "error:" /tmp/xcodebuild_logs/archive.log | grep -v "^note:" | head -50
+            exit $ARCHIVE_EXIT
+          fi
+          # Export IPA
+          xcodebuild -exportArchive \
+            -archivePath /tmp/FaisTrack.xcarchive \
+            -exportOptionsPlist /Users/builder/export_options.plist \
+            -exportPath /tmp/ipa \
+            2>&1 | tee -a /tmp/xcodebuild_logs/archive.log
 
     artifacts:
-      - build/ios/ipa/*.ipa
+      - /tmp/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
 
     publishing:
