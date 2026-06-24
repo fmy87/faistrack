@@ -47,7 +47,6 @@ workflows:
         APP_STORE_APP_ID: "6783632037"
       groups:
         - faistrack
-        - appstore_credentials
     scripts:
       - name: Install GoogleService-Info.plist
         script: |
@@ -79,4 +78,7 @@ workflows:
       - /tmp/xcodebuild_logs/*.log
     publishing:
       app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
