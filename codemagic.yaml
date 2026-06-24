@@ -9,6 +9,8 @@ workflows:
       vars:
         XCODE_SCHEME: "FaisTrack"
         BUNDLE_ID: "com.faistrack.app"
+      groups:
+        - faistrack
     scripts:
       - name: Install GoogleService-Info.plist
         script: |
@@ -29,10 +31,12 @@ workflows:
     artifacts:
       - /tmp/xcodebuild_logs/*.log
 
-  ios-release:
-    name: FaisTrack iOS Release (configure App Store Connect first)
+  ios-testflight:
+    name: FaisTrack TestFlight
     max_build_duration: 60
     instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: Codemagic
     environment:
       ios_signing:
         distribution_type: app_store
@@ -42,6 +46,11 @@ workflows:
       vars:
         XCODE_SCHEME: "FaisTrack"
         BUNDLE_ID: "com.faistrack.app"
+        APP_STORE_CONNECT_ISSUER_ID: "c8d73362-6800-4b1d-92fb-1af2a4c78c9a"
+        APP_STORE_CONNECT_KEY_IDENTIFIER: "89P5CDXFPH"
+        APP_STORE_APP_ID: "6783632037"
+      groups:
+        - faistrack
     scripts:
       - name: Install GoogleService-Info.plist
         script: |
@@ -49,11 +58,22 @@ workflows:
       - name: Install CocoaPods
         script: |
           cd $CM_BUILD_DIR && pod install
+      - name: Set build number
+        script: |
+          BUILD_NUMBER=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APP_ID" --pre-release-version 1.0.0 2>/dev/null || echo 0)
+          agvtool new-version -all $((BUILD_NUMBER + 1))
       - name: Build IPA
         script: |
           xcode-project build-ipa \
             --workspace "$CM_BUILD_DIR/FaisTrack.xcworkspace" \
-            --scheme "$XCODE_SCHEME"
+            --scheme "$XCODE_SCHEME" \
+            --config Release
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - "External Testers"
