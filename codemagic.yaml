@@ -51,11 +51,17 @@ workflows:
       - name: Set up keychain
         script: |
           keychain initialize
+      - name: Decode ASC private key
+        script: |
+          echo $APP_STORE_CONNECT_PRIVATE_KEY | base64 --decode > /tmp/asc_key.p8
       - name: Fetch signing files
         script: |
           app-store-connect fetch-signing-files \
             "$BUNDLE_ID" \
             --type IOS_APP_STORE \
+            --private-key @file:/tmp/asc_key.p8 \
+            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
             --create
       - name: Add certificates to keychain
         script: |
@@ -66,7 +72,10 @@ workflows:
       - name: Set build number
         script: |
           BUILD_NUMBER=$(app-store-connect get-latest-testflight-build-number \
-            "$APP_STORE_APP_ID" 2>/dev/null || echo 0)
+            "$APP_STORE_APP_ID" \
+            --private-key @file:/tmp/asc_key.p8 \
+            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" 2>/dev/null || echo 0)
           agvtool new-version -all $((BUILD_NUMBER + 1))
       - name: Build IPA
         script: |
