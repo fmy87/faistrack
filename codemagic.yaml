@@ -67,10 +67,10 @@ workflows:
         script: |
           ASC_ARGS="--private-key @file:/tmp/asc_key.p8 --key-id $APP_STORE_CONNECT_KEY_IDENTIFIER --issuer-id $APP_STORE_CONNECT_ISSUER_ID"
           # Revoke any existing IOS_DISTRIBUTION certs to avoid the 409
-          EXISTING_IDS=$(app-store-connect certificates list --type IOS_DISTRIBUTION $ASC_ARGS --json 2>/dev/null | python3 -c "import sys,json; [print(c['id']) for c in json.load(sys.stdin).get('data',[])]" 2>/dev/null || true)
+          EXISTING_IDS=$(app-store-connect certificates list --type IOS_DISTRIBUTION $ASC_ARGS --json 2>/dev/null | python3 -c "import sys,json; data=json.load(sys.stdin); [print(c['id']) for c in (data if isinstance(data,list) else data.get('data',[]))]" 2>/dev/null || true)
           for CERT_ID in $EXISTING_IDS; do
             echo "Revoking cert: $CERT_ID"
-            app-store-connect certificates revoke "$CERT_ID" $ASC_ARGS 2>/dev/null || true
+            app-store-connect certificates delete "$CERT_ID" $ASC_ARGS --ignore-not-found 2>/dev/null || true
           done
           # Create fresh cert — CERTIFICATE_PRIVATE_KEY is in env, tool uses it automatically
           app-store-connect certificates create \
