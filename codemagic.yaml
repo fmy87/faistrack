@@ -44,11 +44,10 @@ workflows:
       vars:
         XCODE_SCHEME: "FaisTrack"
         BUNDLE_ID: "com.faistrack.app"
-        APP_STORE_CONNECT_ISSUER_ID: "c8d73362-6800-4b1d-92fb-1af2a4c78c9a"
-        APP_STORE_CONNECT_KEY_IDENTIFIER: "FB9PM367UD"
         APP_STORE_APP_ID: "6783632037"
       groups:
         - faistrack
+        - appstore_credentials
     scripts:
       - name: Install GoogleService-Info.plist
         script: |
@@ -58,8 +57,6 @@ workflows:
           app-store-connect fetch-signing-files \
             "$BUNDLE_ID" \
             --type IOS_APP_STORE \
-            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
-            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
             --create
           keychain add-certificates
       - name: Install CocoaPods
@@ -68,9 +65,7 @@ workflows:
       - name: Set build number
         script: |
           BUILD_NUMBER=$(app-store-connect get-latest-testflight-build-number \
-            "$APP_STORE_APP_ID" \
-            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
-            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" 2>/dev/null || echo 0)
+            "$APP_STORE_APP_ID" 2>/dev/null || echo 0)
           agvtool new-version -all $((BUILD_NUMBER + 1))
       - name: Build IPA
         script: |
@@ -84,6 +79,4 @@ workflows:
       - /tmp/xcodebuild_logs/*.log
     publishing:
       app_store_connect:
-        api_key: $APP_STORE_CONNECT_KEY_IDENTIFIER
-        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
