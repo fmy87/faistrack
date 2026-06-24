@@ -44,8 +44,8 @@ struct LeaderboardView: View {
             }
             .navigationTitle(NSLocalizedString("tab.leaderboard", comment: ""))
             .task { await loadEntries() }
-            .onChange(of: metric) { _, _ in Task { await loadEntries() } }
-            .onChange(of: period) { _, _ in Task { await loadEntries() } }
+            .onChange(of: metric) { _ in Task { await loadEntries() } }
+            .onChange(of: period) { _ in Task { await loadEntries() } }
         }
     }
 
