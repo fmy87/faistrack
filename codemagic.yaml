@@ -53,48 +53,25 @@ workflows:
         script: |
           keychain initialize
 
-      - name: Decode ASC private key
+      - name: Decode ASC private key and set env
         script: |
           echo "$APP_STORE_CONNECT_PRIVATE_KEY" | base64 --decode > /tmp/asc_key.p8
+          # Generate the certificate signing key (separate from ASC key)
+          openssl genrsa -out /tmp/cert_key.pem 2048
 
       - name: Create iOS Distribution certificate
         script: |
-          cd /tmp
-
-          # Generate private key for signing cert
-          openssl genrsa -out /tmp/dist_key.pem 2048
-
-          # Create CSR file on disk (--csr-path needs a file, not inline content)
-          openssl req -new \
-            -key /tmp/dist_key.pem \
-            -out /tmp/dist_req.csr \
-            -subj "/emailAddress=fmy87@hotmail.com/CN=iPhone Distribution/C=US"
-
-          # Submit to Apple; --save writes the .cer to current dir (/tmp)
+          # app-store-connect generates the CSR internally from --certificate-key
+          # and saves a .p12 directly — no manual openssl needed
           app-store-connect certificates create \
             --type IOS_DISTRIBUTION \
-            --csr-path /tmp/dist_req.csr \
+            --certificate-key @file:/tmp/cert_key.pem \
+            --p12-password codemagic \
+            --p12-path /tmp/dist_cert.p12 \
             --private-key @file:/tmp/asc_key.p8 \
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
             --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
             --save
-
-          # Find the .cer saved to /tmp
-          CER=$(find /tmp -name "*.cer" | head -1)
-          echo "Downloaded cert: $CER"
-
-          # Convert DER .cer -> PEM
-          openssl x509 -inform DER -in "$CER" -out /tmp/dist_cert.pem
-
-          # Bundle cert + private key -> .p12
-          openssl pkcs12 -export \
-            -inkey /tmp/dist_key.pem \
-            -in /tmp/dist_cert.pem \
-            -out /tmp/dist_cert.p12 \
-            -passout pass:codemagic \
-            -legacy
-
-          # Install into keychain
           keychain add-certificates \
             --certificate /tmp/dist_cert.p12 \
             --certificate-password codemagic
