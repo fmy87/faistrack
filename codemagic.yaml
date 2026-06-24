@@ -63,22 +63,54 @@ workflows:
           cat /tmp/cert_key.pem >> $CM_ENV
           echo "EOF" >> $CM_ENV
 
-      - name: Revoke old and create iOS Distribution certificate
+      - name: Delete existing and create iOS Distribution certificate
         script: |
-          ASC_ARGS="--private-key @file:/tmp/asc_key.p8 --key-id $APP_STORE_CONNECT_KEY_IDENTIFIER --issuer-id $APP_STORE_CONNECT_ISSUER_ID"
-          # Revoke any existing IOS_DISTRIBUTION certs to avoid the 409
-          EXISTING_IDS=$(app-store-connect certificates list --type IOS_DISTRIBUTION $ASC_ARGS --json 2>/dev/null | python3 -c "import sys,json; data=json.load(sys.stdin); [print(c['id']) for c in (data if isinstance(data,list) else data.get('data',[]))]" 2>/dev/null || true)
+          # Decode ASC key path
+          ASC_KEY="@file:/tmp/asc_key.p8"
+          KEY_ID="$APP_STORE_CONNECT_KEY_IDENTIFIER"
+          ISS_ID="$APP_STORE_CONNECT_ISSUER_ID"
+
+          # List existing IOS_DISTRIBUTION certs with verbose output to stderr
+          echo "Listing existing certs..."
+          RAW=$(app-store-connect certificates list \
+            --type IOS_DISTRIBUTION \
+            --private-key $ASC_KEY \
+            --key-id "$KEY_ID" \
+            --issuer-id "$ISS_ID" \
+            --json 2>&1)
+          echo "List output: $RAW"
+
+          # Extract IDs and delete each one
+          EXISTING_IDS=$(echo "$RAW" | python3 -c "
+import sys,json
+try:
+    data=json.load(sys.stdin)
+    items = data if isinstance(data,list) else data.get('data',data.get('certificates',[]))
+    for c in items:
+        cid = c.get('id') or c.get('attributes',{}).get('serialNumber','')
+        if cid: print(cid)
+except: pass
+" 2>/dev/null || true)
+
           for CERT_ID in $EXISTING_IDS; do
-            echo "Revoking cert: $CERT_ID"
-            app-store-connect certificates delete "$CERT_ID" $ASC_ARGS --ignore-not-found 2>/dev/null || true
+            echo "Deleting cert: $CERT_ID"
+            app-store-connect certificates delete "$CERT_ID" \
+              --private-key $ASC_KEY \
+              --key-id "$KEY_ID" \
+              --issuer-id "$ISS_ID" \
+              --ignore-not-found 2>/dev/null || true
           done
-          # Create fresh cert — CERTIFICATE_PRIVATE_KEY is in env, tool uses it automatically
+
+          # Create new cert — CERTIFICATE_PRIVATE_KEY env var provides the signing key
           app-store-connect certificates create \
             --type IOS_DISTRIBUTION \
             --p12-password codemagic \
             --p12-path /tmp/dist_cert.p12 \
-            $ASC_ARGS \
+            --private-key $ASC_KEY \
+            --key-id "$KEY_ID" \
+            --issuer-id "$ISS_ID" \
             --save
+
           keychain add-certificates \
             --certificate /tmp/dist_cert.p12 \
             --certificate-password codemagic
