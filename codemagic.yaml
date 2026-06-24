@@ -90,6 +90,38 @@ workflows:
             --certificate /tmp/dist_cert.p12 \
             --certificate-password codemagic
 
+      - name: Enable capabilities and delete stale profiles
+        script: |
+          ASC_KEY="@file:/tmp/asc_key.p8"
+          KEY_ID="$APP_STORE_CONNECT_KEY_IDENTIFIER"
+          ISS_ID="$APP_STORE_CONNECT_ISSUER_ID"
+
+          # Get bundle ID resource ID
+          BUNDLE_RESOURCE_ID=$(app-store-connect bundle-ids list \
+            --identifier "$BUNDLE_ID" \
+            --private-key $ASC_KEY --key-id "$KEY_ID" --issuer-id "$ISS_ID" \
+            --json 2>/dev/null \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); items=d if isinstance(d,list) else d.get('data',[]); print(items[0]['id'] if items else '')" 2>/dev/null || true)
+
+          echo "Bundle resource ID: $BUNDLE_RESOURCE_ID"
+
+          if [ -n "$BUNDLE_RESOURCE_ID" ]; then
+            # Enable Push Notifications capability
+            app-store-connect bundle-ids enable-capabilities "$BUNDLE_RESOURCE_ID" \
+              --capability "Push Notifications" \
+              --private-key $ASC_KEY --key-id "$KEY_ID" --issuer-id "$ISS_ID" || true
+          fi
+
+          # Delete stale profiles so a fresh one is created with capabilities
+          app-store-connect profiles list \
+            --profile-type IOS_APP_STORE \
+            --private-key $ASC_KEY --key-id "$KEY_ID" --issuer-id "$ISS_ID" \
+            --json 2>/dev/null \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); [print(x['id']) for x in (d if isinstance(d,list) else d.get('data',[]))]" 2>/dev/null \
+            | xargs -I{} app-store-connect profiles delete "{}" \
+              --private-key $ASC_KEY --key-id "$KEY_ID" --issuer-id "$ISS_ID" \
+              --ignore-not-found 2>/dev/null || true
+
       - name: Fetch or create provisioning profile
         script: |
           app-store-connect fetch-signing-files \
