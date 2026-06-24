@@ -65,27 +65,32 @@ workflows:
 
       - name: Setup iOS Distribution certificate
         script: |
-          # Delete existing certs then create fresh one with persistent key
+          ASC_KEY="@file:/tmp/asc_key.p8"
+          KEY_ID="$APP_STORE_CONNECT_KEY_IDENTIFIER"
+          ISS_ID="$APP_STORE_CONNECT_ISSUER_ID"
+
+          # Decode the persistent cert key from base64 to PEM file
+          echo "$CERTIFICATE_PRIVATE_KEY" | base64 --decode > /tmp/cert_key.pem
+
+          # Delete any existing IOS_DISTRIBUTION certs (ignore errors if none exist)
           app-store-connect certificates list \
             --type IOS_DISTRIBUTION \
-            --private-key @file:/tmp/asc_key.p8 \
-            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
-            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
+            --private-key $ASC_KEY --key-id "$KEY_ID" --issuer-id "$ISS_ID" \
             --json 2>/dev/null \
-            | python3 -c "import sys,json; d=json.load(sys.stdin); [print(x['id']) for x in (d if isinstance(d,list) else d.get('data',[]))]" \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); [print(x['id']) for x in (d if isinstance(d,list) else d.get('data',[]))]" 2>/dev/null \
             | xargs -I{} app-store-connect certificates delete "{}" \
-              --private-key @file:/tmp/asc_key.p8 \
-              --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
-              --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
+              --private-key $ASC_KEY --key-id "$KEY_ID" --issuer-id "$ISS_ID" \
               --ignore-not-found 2>/dev/null || true
+
+          # Create new cert — pass cert key as file reference (not inline)
           app-store-connect certificates create \
             --type IOS_DISTRIBUTION \
+            --certificate-key @file:/tmp/cert_key.pem \
             --p12-password codemagic \
             --p12-path /tmp/dist_cert.p12 \
-            --private-key @file:/tmp/asc_key.p8 \
-            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
-            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
+            --private-key $ASC_KEY --key-id "$KEY_ID" --issuer-id "$ISS_ID" \
             --save
+
           keychain add-certificates \
             --certificate /tmp/dist_cert.p12 \
             --certificate-password codemagic
