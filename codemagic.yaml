@@ -59,32 +59,34 @@ workflows:
 
       - name: Create iOS Distribution certificate
         script: |
-          # Generate private key for the signing certificate
+          cd /tmp
+
+          # Generate private key for signing cert
           openssl genrsa -out /tmp/dist_key.pem 2048
 
-          # Create CSR
+          # Create CSR file on disk (--csr-path needs a file, not inline content)
           openssl req -new \
             -key /tmp/dist_key.pem \
             -out /tmp/dist_req.csr \
             -subj "/emailAddress=fmy87@hotmail.com/CN=iPhone Distribution/C=US"
 
-          # Submit to Apple Developer and save the .cer
+          # Submit to Apple; --save writes the .cer to current dir (/tmp)
           app-store-connect certificates create \
             --type IOS_DISTRIBUTION \
-            --csr-content "$(cat /tmp/dist_req.csr)" \
+            --csr-path /tmp/dist_req.csr \
             --private-key @file:/tmp/asc_key.p8 \
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
             --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
             --save
 
-          # Find the downloaded cert
-          CER=$(find "$CM_BUILD_DIR" -name "*.cer" | head -1)
+          # Find the .cer saved to /tmp
+          CER=$(find /tmp -name "*.cer" | head -1)
           echo "Downloaded cert: $CER"
 
-          # Convert .cer (DER) -> .pem
+          # Convert DER .cer -> PEM
           openssl x509 -inform DER -in "$CER" -out /tmp/dist_cert.pem
 
-          # Bundle cert + private key into .p12 for keychain
+          # Bundle cert + private key -> .p12
           openssl pkcs12 -export \
             -inkey /tmp/dist_key.pem \
             -in /tmp/dist_cert.pem \
@@ -92,7 +94,7 @@ workflows:
             -passout pass:codemagic \
             -legacy
 
-          # Add to keychain
+          # Install into keychain
           keychain add-certificates \
             --certificate /tmp/dist_cert.p12 \
             --certificate-password codemagic
