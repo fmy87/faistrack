@@ -55,21 +55,29 @@ workflows:
 
       - name: Prepare signing keys
         script: |
+          # Decode ASC API key
           echo "$APP_STORE_CONNECT_PRIVATE_KEY" | base64 --decode > /tmp/asc_key.p8
-          openssl genrsa -out /tmp/cert_key.pem 2048
+          # Decode the persistent cert private key and export for all subsequent steps
+          echo "$CERTIFICATE_PRIVATE_KEY" | base64 --decode > /tmp/cert_key.pem
           echo "CERTIFICATE_PRIVATE_KEY<<EOF" >> $CM_ENV
           cat /tmp/cert_key.pem >> $CM_ENV
           echo "EOF" >> $CM_ENV
 
-      - name: Create iOS Distribution certificate
+      - name: Revoke old and create iOS Distribution certificate
         script: |
+          ASC_ARGS="--private-key @file:/tmp/asc_key.p8 --key-id $APP_STORE_CONNECT_KEY_IDENTIFIER --issuer-id $APP_STORE_CONNECT_ISSUER_ID"
+          # Revoke any existing IOS_DISTRIBUTION certs to avoid the 409
+          EXISTING_IDS=$(app-store-connect certificates list --type IOS_DISTRIBUTION $ASC_ARGS --json 2>/dev/null | python3 -c "import sys,json; [print(c['id']) for c in json.load(sys.stdin).get('data',[])]" 2>/dev/null || true)
+          for CERT_ID in $EXISTING_IDS; do
+            echo "Revoking cert: $CERT_ID"
+            app-store-connect certificates revoke "$CERT_ID" $ASC_ARGS 2>/dev/null || true
+          done
+          # Create fresh cert — CERTIFICATE_PRIVATE_KEY is in env, tool uses it automatically
           app-store-connect certificates create \
             --type IOS_DISTRIBUTION \
             --p12-password codemagic \
             --p12-path /tmp/dist_cert.p12 \
-            --private-key @file:/tmp/asc_key.p8 \
-            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
-            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
+            $ASC_ARGS \
             --save
           keychain add-certificates \
             --certificate /tmp/dist_cert.p12 \
@@ -102,7 +110,6 @@ workflows:
         script: |
           mkdir -p /tmp/xcodebuild_logs
           xcode-project use-profiles
-          # Run archive directly so we capture full output including errors
           xcodebuild \
             -workspace "$CM_BUILD_DIR/FaisTrack.xcworkspace" \
             -scheme "$XCODE_SCHEME" \
@@ -116,10 +123,9 @@ workflows:
             2>&1 | tee /tmp/xcodebuild_logs/archive.log
           ARCHIVE_EXIT=${PIPESTATUS[0]}
           if [ $ARCHIVE_EXIT -ne 0 ]; then
-            echo "=== ERRORS ===" && grep "error:" /tmp/xcodebuild_logs/archive.log | grep -v "^note:" | head -50
+            echo "=== BUILD ERRORS ===" && grep "error:" /tmp/xcodebuild_logs/archive.log | grep -v "^note:" | head -60
             exit $ARCHIVE_EXIT
           fi
-          # Export IPA
           xcodebuild -exportArchive \
             -archivePath /tmp/FaisTrack.xcarchive \
             -exportOptionsPlist /Users/builder/export_options.plist \
