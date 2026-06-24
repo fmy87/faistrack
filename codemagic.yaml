@@ -53,19 +53,24 @@ workflows:
         script: |
           keychain initialize
 
-      - name: Decode ASC private key and set env
+      - name: Prepare signing keys
         script: |
+          # Decode ASC API key
           echo "$APP_STORE_CONNECT_PRIVATE_KEY" | base64 --decode > /tmp/asc_key.p8
-          # Generate the certificate signing key (separate from ASC key)
+
+          # Generate certificate private key and export to CM_ENV so all
+          # subsequent app-store-connect calls pick it up automatically
           openssl genrsa -out /tmp/cert_key.pem 2048
+          echo "CERTIFICATE_PRIVATE_KEY<<EOF" >> $CM_ENV
+          cat /tmp/cert_key.pem >> $CM_ENV
+          echo "EOF" >> $CM_ENV
 
       - name: Create iOS Distribution certificate
         script: |
-          # app-store-connect generates the CSR internally from --certificate-key
-          # and saves a .p12 directly — no manual openssl needed
+          # CERTIFICATE_PRIVATE_KEY is now set in env — tool uses it automatically
+          # Also saves a .p12 we can add to keychain
           app-store-connect certificates create \
             --type IOS_DISTRIBUTION \
-            --certificate-key @file:/tmp/cert_key.pem \
             --p12-password codemagic \
             --p12-path /tmp/dist_cert.p12 \
             --private-key @file:/tmp/asc_key.p8 \
@@ -78,6 +83,7 @@ workflows:
 
       - name: Fetch or create provisioning profile
         script: |
+          # CERTIFICATE_PRIVATE_KEY still in env — tool bundles cert+key automatically
           app-store-connect fetch-signing-files \
             "$BUNDLE_ID" \
             --type IOS_APP_STORE \
