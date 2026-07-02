@@ -57,11 +57,11 @@ workflows:
         script: |
           # Decode ASC API key
           echo "$APP_STORE_CONNECT_PRIVATE_KEY" | base64 --decode > /tmp/asc_key.p8
-          # Decode the persistent cert private key and export for all subsequent steps
+          # Decode the persistent cert private key to a PEM file (used by later steps).
+          # Intentionally NOT re-exported back into $CERTIFICATE_PRIVATE_KEY via CM_ENV —
+          # doing so previously overwrote the base64 value with raw PEM and broke any
+          # later step that tried to base64-decode it again.
           echo "$CERTIFICATE_PRIVATE_KEY" | base64 --decode > /tmp/cert_key.pem
-          echo "CERTIFICATE_PRIVATE_KEY<<EOF" >> $CM_ENV
-          cat /tmp/cert_key.pem >> $CM_ENV
-          echo "EOF" >> $CM_ENV
 
       - name: Setup iOS Distribution certificate
         script: |
@@ -69,8 +69,9 @@ workflows:
           KEY_ID="$APP_STORE_CONNECT_KEY_IDENTIFIER"
           ISS_ID="$APP_STORE_CONNECT_ISSUER_ID"
 
-          # Decode the persistent cert key from base64 to PEM file
-          echo "$CERTIFICATE_PRIVATE_KEY" | base64 --decode > /tmp/cert_key.pem
+          # /tmp/cert_key.pem was already created in the "Prepare signing keys" step.
+          # Do NOT re-decode $CERTIFICATE_PRIVATE_KEY here — that step re-exported it
+          # to CM_ENV as raw PEM content (not base64), so decoding it again fails.
 
           # Delete any existing IOS_DISTRIBUTION certs (ignore errors if none exist)
           app-store-connect certificates list \
