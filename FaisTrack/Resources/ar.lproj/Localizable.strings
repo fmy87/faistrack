@@ -198,3 +198,7 @@
 // Duration formatting
 "drive.duration.minutes" = "%d دقيقة";
 "drive.duration.hoursMinutes" = "%dس %dد";
+"garage.saveFailed" = "تعذر حفظ سيارتك. يرجى التحقق من الاتصال والمحاولة مرة أخرى.";
+"profile.privateProfile" = "ملف شخصي خاص";
+"profile.privateProfile.desc" = "يمكن للأصدقاء المعتمدين فقط رؤية رحلاتك وإحصائياتك.";
+"profile.publicProfile.desc" = "يمكن لأي شخص العثور على ملفك الشخصي ورؤية نشاطك العام.";
