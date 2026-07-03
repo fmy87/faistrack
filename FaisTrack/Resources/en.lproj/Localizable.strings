@@ -56,6 +56,9 @@
 "garage.setActive" = "Set as Active";
 "garage.delete" = "Delete Car";
 "garage.saveCar" = "Save Car";
+"garage.editCar" = "Edit Car";
+"garage.edit" = "Edit";
+"garage.saveChanges" = "Save Changes";
 "garage.shareCard" = "Share Car Card";
 "garage.addPhoto" = "Add Photo";
 "garage.empty.title" = "Your Garage is Empty";
@@ -157,6 +160,8 @@
 "compete.distanceAway" = "%d m away";
 "compete.arrived" = "You've arrived at the start line!";
 "compete.start" = "Start";
+"compete.startManually" = "Start Now (Skip GPS)";
+"compete.endRace" = "End Race";
 "compete.distanceToFinish" = "%d m to finish";
 "compete.finished" = "Finished!";
 "compete.newRecord" = "New track record!";
@@ -212,3 +217,4 @@
 "settings.units" = "Units";
 "settings.units.km" = "Kilometers";
 "settings.units.mi" = "Miles";
+
