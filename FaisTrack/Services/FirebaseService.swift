@@ -170,6 +170,10 @@ class FirebaseService {
         if currentBest == nil || result.duration < currentBest! {
             updates["bestTime"] = result.duration
             updates["bestTimeUsername"] = result.username
+            // bestTimeUid lets the "record broken" Cloud Function (see
+            // functions/index.js) look up the *previous* holder's fcmToken
+            // and notify them — this write alone doesn't send anything.
+            updates["bestTimeUid"] = result.uid
         }
         try await trackRef.updateData(updates)
     }
@@ -183,12 +187,153 @@ class FirebaseService {
         return snapshot.documents.compactMap { try? $0.data(as: TrackResult.self) }
     }
 
-    /// Deletes a track. Note: this does not cascade-delete the track's
-    /// "results" subcollection (Firestore doesn't do this automatically for
-    /// client SDKs) — those documents become orphaned but harmless. A Cloud
-    /// Function could clean these up later if it becomes worth the cost.
+    /// Deletes a track and cascade-deletes its "results" subcollection first
+    /// — Firestore's client SDK has no recursive delete, so previously those
+    /// documents were left behind as permanent orphans every time a track
+    /// was deleted.
     func deleteTrack(trackId: String) async throws {
+        let resultsRef = db.collection("tracks").document(trackId).collection("results")
+        try await deleteAllDocuments(in: resultsRef)
         try await db.collection("tracks").document(trackId).delete()
+    }
+
+    /// Deletes every document in a collection in batches of 400 (Firestore's
+    /// batch limit is 500 writes; 400 leaves headroom). Used anywhere a
+    /// subcollection needs a full wipe — track results, and every
+    /// subcollection under a deleted user account.
+    private func deleteAllDocuments(in collection: CollectionReference) async throws {
+        let snapshot = try await collection.getDocuments()
+        var batch = db.batch()
+        var opCount = 0
+        for doc in snapshot.documents {
+            batch.deleteDocument(doc.reference)
+            opCount += 1
+            if opCount == 400 {
+                try await batch.commit()
+                batch = db.batch()
+                opCount = 0
+            }
+        }
+        if opCount > 0 { try await batch.commit() }
+    }
+
+    // MARK: - Friends
+    /// Prefix search on username. Firestore has no native substring search;
+    /// this relies on lexicographic range querying, which only matches from
+    /// the start of the username (not the middle) — acceptable for a
+    /// "search by username" field rather than a fuzzy people-search.
+    func searchUsers(query: String, excludingUid: String, limit: Int = 20) async throws -> [FTUser] {
+        let lowered = query.lowercased().trimmingCharacters(in: .whitespaces)
+        guard !lowered.isEmpty else { return [] }
+        let snapshot = try await db.collection("users")
+            .order(by: "username")
+            .start(at: [lowered])
+            .end(at: [lowered + "\u{f8ff}"])
+            .limit(to: limit)
+            .getDocuments()
+        return snapshot.documents
+            .compactMap { try? $0.data(as: FTUser.self) }
+            .filter { $0.uid != excludingUid }
+    }
+
+    func sendFriendRequest(from: FTUser, toUid: String) async throws {
+        let ref = db.collection("users").document(toUid)
+            .collection("friendRequests").document(from.uid)
+        let request = FriendRequest(fromUid: from.uid, fromUsername: from.username, fromPhotoURL: from.photoURL)
+        try ref.setData(from: request)
+    }
+
+    func getFriendRequests(uid: String) async throws -> [FriendRequest] {
+        let snapshot = try await db.collection("users").document(uid)
+            .collection("friendRequests")
+            .order(by: "createdAt", descending: true)
+            .getDocuments()
+        return snapshot.documents.compactMap { try? $0.data(as: FriendRequest.self) }
+    }
+
+    /// Writes the friendship to both users' `friends` subcollections and
+    /// removes the request in one batch, so the two sides never end up
+    /// inconsistent (e.g. accepted on my side but not showing on theirs).
+    func acceptFriendRequest(uid: String, myUsername: String, myPhotoURL: String?, request: FriendRequest) async throws {
+        let batch = db.batch()
+        let myFriendRef = db.collection("users").document(uid).collection("friends").document(request.fromUid)
+        let theirFriendRef = db.collection("users").document(request.fromUid).collection("friends").document(uid)
+        let requestRef = db.collection("users").document(uid).collection("friendRequests").document(request.fromUid)
+
+        try batch.setData(from: Friend(uid: request.fromUid, username: request.fromUsername, photoURL: request.fromPhotoURL), forDocument: myFriendRef)
+        try batch.setData(from: Friend(uid: uid, username: myUsername, photoURL: myPhotoURL), forDocument: theirFriendRef)
+        batch.deleteDocument(requestRef)
+        try await batch.commit()
+    }
+
+    func declineFriendRequest(uid: String, fromUid: String) async throws {
+        try await db.collection("users").document(uid).collection("friendRequests").document(fromUid).delete()
+    }
+
+    func getFriends(uid: String) async throws -> [Friend] {
+        let snapshot = try await db.collection("users").document(uid).collection("friends")
+            .order(by: "addedAt", descending: true)
+            .getDocuments()
+        return snapshot.documents.compactMap { try? $0.data(as: Friend.self) }
+    }
+
+    func removeFriend(uid: String, friendUid: String) async throws {
+        let batch = db.batch()
+        batch.deleteDocument(db.collection("users").document(uid).collection("friends").document(friendUid))
+        batch.deleteDocument(db.collection("users").document(friendUid).collection("friends").document(uid))
+        try await batch.commit()
+    }
+
+    /// Used to decide what the "Add" button in search results should say —
+    /// without this, tapping Add repeatedly would create duplicate pending
+    /// request documents.
+    func friendshipStatus(myUid: String, otherUid: String) async throws -> FriendshipStatus {
+        let friendDoc = try await db.collection("users").document(myUid).collection("friends").document(otherUid).getDocument()
+        if friendDoc.exists { return .friends }
+        let sentDoc = try await db.collection("users").document(otherUid).collection("friendRequests").document(myUid).getDocument()
+        if sentDoc.exists { return .requestSent }
+        let receivedDoc = try await db.collection("users").document(myUid).collection("friendRequests").document(otherUid).getDocument()
+        if receivedDoc.exists { return .requestReceived }
+        return .none
+    }
+
+    // MARK: - Account deletion
+    /// Deletes everything tied to an account: profile, cars, drives,
+    /// leaderboard entries, friendships on both sides, and every track this
+    /// user owns (with its results, via the same cascade as deleteTrack).
+    /// Does NOT delete the Firebase Auth account itself — see
+    /// AuthService.deleteAccount(), which calls this first and then deletes
+    /// the Auth user, since the Auth SDK call needs to happen client-side
+    /// with a valid session.
+    func deleteAllUserData(uid: String) async throws {
+        let userRef = db.collection("users").document(uid)
+
+        try await deleteAllDocuments(in: userRef.collection("cars"))
+        try await deleteAllDocuments(in: userRef.collection("drives"))
+        try await deleteAllDocuments(in: userRef.collection("friendRequests"))
+
+        // Remove this uid from every friend's own friends subcollection
+        // first (while we can still read who they are), then delete our
+        // own friends subcollection.
+        if let myFriends = try? await getFriends(uid: uid) {
+            for friend in myFriends {
+                try? await db.collection("users").document(friend.uid)
+                    .collection("friends").document(uid).delete()
+            }
+        }
+        try await deleteAllDocuments(in: userRef.collection("friends"))
+
+        for period in LeaderboardPeriod.allCases {
+            try? await db.collection("leaderboard").document("\(period.rawValue)_\(uid)").delete()
+        }
+
+        if let ownedTracks = try? await db.collection("tracks").whereField("ownerUID", isEqualTo: uid).getDocuments() {
+            for doc in ownedTracks.documents {
+                try? await deleteTrack(trackId: doc.documentID)
+            }
+        }
+
+        try await userRef.delete()
     }
 
     // MARK: - Photo Upload (disabled until Firebase Storage is enabled on Blaze plan)
@@ -211,4 +356,5 @@ enum FirebaseServiceError: LocalizedError {
         }
     }
 }
+
 
