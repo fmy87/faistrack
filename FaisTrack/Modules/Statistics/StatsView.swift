@@ -3,6 +3,7 @@ import SwiftUI
 struct StatsView: View {
     @StateObject private var viewModel = StatsViewModel()
     @AppStorage("unitsPreference") private var unitsPreference: String = "km"
+    @State private var showRecap = false
 
     private var useMetric: Bool { unitsPreference == "km" }
     private func distanceText(_ km: Double) -> String {
@@ -23,12 +24,16 @@ struct StatsView: View {
                 } else {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 24) {
+                            if viewModel.showRecapBanner {
+                                recapBanner
+                            }
                             totalDistanceCard
                             comparisonBars
                             longestDriveCard
                             topSpeedCard
                             fastestDriveCard
                             totalTimeCard
+                            vehicleBreakdownSection
                             mostDrivenVehicleCard
                             personalBestsSection
                         }
@@ -38,6 +43,9 @@ struct StatsView: View {
             }
             .navigationTitle(NSLocalizedString("tab.stats", comment: ""))
             .task { await viewModel.load() }
+            .sheet(isPresented: $showRecap) {
+                MonthlyRecapView(viewModel: viewModel, useMetric: useMetric)
+            }
         }
     }
 
@@ -49,6 +57,68 @@ struct StatsView: View {
             Text(NSLocalizedString("stats.empty.subtitle", comment: ""))
                 .foregroundColor(.ftTextSecondary).multilineTextAlignment(.center)
         }.padding(32)
+    }
+
+    // MARK: - Monthly Recap banner
+
+    private var recapBanner: some View {
+        Button(action: { showRecap = true }) {
+            HStack {
+                Text("🚗").font(.system(size: 28))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(String(format: NSLocalizedString("stats.recapBanner.title", comment: ""), viewModel.previousMonthName))
+                        .font(.system(size: 15, weight: .bold)).foregroundColor(.white)
+                    Text(NSLocalizedString("stats.recapBanner.subtitle", comment: ""))
+                        .font(.system(size: 13)).foregroundColor(.white.opacity(0.85))
+                }
+                Spacer()
+                Image(systemName: "chevron.right").foregroundColor(.white)
+            }
+            .padding(16)
+            .background(LinearGradient(colors: [.blue, .ftAccent], startPoint: .leading, endPoint: .trailing))
+            .cornerRadius(18)
+        }
+    }
+
+    // MARK: - Distance by Vehicle
+
+    private var vehicleBreakdownSection: some View {
+        Group {
+            if viewModel.carStats.count > 1 {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(NSLocalizedString("stats.distanceByVehicle", comment: ""))
+                        .font(.system(size: 17, weight: .semibold))
+
+                    let total = max(viewModel.carStats.reduce(0) { $0 + $1.km }, 0.01)
+                    GeometryReader { geo in
+                        HStack(spacing: 2) {
+                            ForEach(Array(viewModel.carStats.enumerated()), id: \.1.id) { index, stat in
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(carColor(index))
+                                    .frame(width: geo.size.width * CGFloat(stat.km / total))
+                            }
+                        }
+                    }.frame(height: 14)
+
+                    VStack(spacing: 6) {
+                        ForEach(Array(viewModel.carStats.enumerated()), id: \.1.id) { index, stat in
+                            HStack {
+                                Circle().fill(carColor(index)).frame(width: 10, height: 10)
+                                Text(stat.car.displayName).font(.system(size: 13, weight: .medium))
+                                Spacer()
+                                Text("\(distanceText1dp(stat.km)) · \(Int(stat.km / total * 100))%")
+                                    .font(.system(size: 12)).foregroundColor(.ftTextSecondary)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private func carColor(_ index: Int) -> Color {
+        let palette: [Color] = [.ftAccent, .blue, .ftAccentOrange, .mint, .purple, .yellow]
+        return palette[index % palette.count]
     }
 
     // MARK: - Total Drive Distance
@@ -141,7 +211,7 @@ struct StatsView: View {
                         GeometryReader { geo in
                             RoundedRectangle(cornerRadius: 4)
                                 .fill(bucket.color)
-                                .frame(width: barWidth(bucket.count, total: viewModel.drives.count, maxWidth: geo.size.width))
+                                .frame(width: barWidth(bucket.count, total: viewModel.drivingDriveCount, maxWidth: geo.size.width))
                         }.frame(height: 10)
                         Text("\(bucket.count)").font(.system(size: 12, weight: .semibold)).frame(width: 28, alignment: .trailing)
                     }
@@ -301,6 +371,10 @@ struct StatsView: View {
                              subtitle: NSLocalizedString("stats.pb.onARoll.sub", comment: ""),
                              value: viewModel.onARollStreak > 0 ? "\(viewModel.onARollStreak) \(NSLocalizedString("stats.daysShort", comment: ""))" : "—")
 
+            PersonalBestRow(emoji: "👑", title: NSLocalizedString("stats.pb.passengerPrincess", comment: ""),
+                             subtitle: NSLocalizedString("stats.pb.passengerPrincess.sub", comment: ""),
+                             value: viewModel.passengerMiles > 0 ? distanceText1dp(viewModel.passengerMiles) : "—")
+
             PersonalBestRow(emoji: "🚗", title: NSLocalizedString("stats.pb.garageRocket", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.garageRocket.sub", comment: ""),
                              value: viewModel.garageRocketCar.map { "\($0.car.displayName)" } ?? "—")
@@ -380,3 +454,4 @@ private extension Drive {
         useMetric ? String(format: "%.0f km/h", value) : String(format: "%.0f mph", value * 0.621371)
     }
 }
+
