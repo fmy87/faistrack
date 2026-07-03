@@ -106,7 +106,8 @@ class TrackRaceService: NSObject, ObservableObject {
         state = .finished(duration: duration)
 
         Task {
-            let username = (try? await FirebaseService.shared.getUser(uid: uid))?.username ?? "Driver"
+            let username = (try? await FirebaseService.shared.getUser(uid: uid))?.username
+                ?? NSLocalizedString("general.defaultUsername", comment: "")
             let result = TrackResult(trackId: track.id ?? "", uid: uid, username: username, duration: duration)
             try? await FirebaseService.shared.saveTrackResult(result)
         }
