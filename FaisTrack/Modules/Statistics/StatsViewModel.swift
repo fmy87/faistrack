@@ -218,4 +218,27 @@ class StatsViewModel: ObservableObject {
     var previousMonthHours: Double { Double(previousMonthDrives.reduce(0) { $0 + $1.duration }) / 3600 }
     var previousMonthDriveCount: Int { previousMonthDrives.count }
     var previousMonthLongestDrive: Drive? { previousMonthDrives.max(by: { $0.distance < $1.distance }) }
+
+    // MARK: - Safety score
+
+    /// Average behaviorScore across driving drives that have one. Not every
+    /// drive necessarily has a score (older data, or if scoring logic
+    /// changes), so this only averages the ones that do rather than
+    /// treating missing scores as zero.
+    var averageSafetyScore: Int? {
+        let scores = drivingDrives.compactMap { $0.behaviorScore }
+        guard !scores.isEmpty else { return nil }
+        return scores.reduce(0, +) / scores.count
+    }
+
+    /// Chronological scores for the most recent drives, oldest first, for a
+    /// simple trend sparkline — lets the user see if their driving has been
+    /// getting safer or riskier lately, not just a single flat average.
+    var safetyScoreTrend: [Int] {
+        drivingDrives
+            .sorted { $0.startTime.dateValue() < $1.startTime.dateValue() }
+            .compactMap { $0.behaviorScore }
+            .suffix(10)
+    }
 }
+
