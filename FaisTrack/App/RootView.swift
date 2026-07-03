@@ -12,6 +12,7 @@ struct RootView: View {
             case .main:        MainTabView()
             }
         }
+        .id(appState.languageRefreshID)
         .environment(\.layoutDirection, appState.isArabic ? .rightToLeft : .leftToRight)
     }
 }
