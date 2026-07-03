@@ -287,3 +287,10 @@
 "stats.pb.passengerPrincess.sub" = "الأميال المسجّلة كراكب";
 "drive.markAsPassenger" = "كنت راكبًا وليس السائق";
 "drive.wasPassengerConfirmed" = "تم التحديد كراكب";
+
+
+// MARK: - Live Drive HUD
+"liveDrive.locating" = "جارٍ تحديد الموقع...";
+"liveDrive.recording" = "جارٍ تسجيل الرحلة";
+"liveDrive.elapsed" = "الوقت المنقضي";
+"liveDrive.distance" = "المسافة";
