@@ -66,8 +66,8 @@ struct CompeteView: View {
             Text(String(format: NSLocalizedString("compete.distanceAway", comment: ""), Int(race.distanceToStart)))
                 .font(.system(size: 32, weight: .black)).foregroundColor(.ftAccent)
 
-            // Manual fallback in case GPS proximity to the start line is
-            // slow or unreliable to trigger.
+            // Manual fallback if GPS proximity to the start line is slow to
+            // trigger — GPS tracking keeps running in the background either way.
             Button(action: { race.skipToReadyToStart() }) {
                 Text(NSLocalizedString("compete.startManually", comment: ""))
                     .font(.system(size: 15, weight: .semibold))
@@ -140,8 +140,8 @@ struct CompeteView: View {
             Text(String(format: NSLocalizedString("compete.distanceToFinish", comment: ""), Int(distanceToFinish)))
                 .font(.system(size: 16)).foregroundColor(.ftTextSecondary)
 
-            // Manual fallback in case GPS crosses the finish radius between
-            // location updates and never registers automatically.
+            // Manual fallback if GPS doesn't register crossing the finish
+            // radius — GPS tracking (and auto-finish) keeps running either way.
             Button(action: { race.endRaceManually() }) {
                 Text(NSLocalizedString("compete.endRace", comment: ""))
                     .font(.system(size: 17, weight: .bold))
