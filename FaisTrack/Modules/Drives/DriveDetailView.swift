@@ -3,6 +3,7 @@ import CoreLocation
 
 struct DriveDetailView: View {
     let drive: Drive
+    @AppStorage("unitsPreference") private var unitsPreference: String = "km"
     @State private var isPublishing = false
     @State private var publishedTrackId: String?
     @State private var publishError: String?
@@ -26,9 +27,9 @@ struct DriveDetailView: View {
                 }
                 FTCard {
                     HStack {
-                        FTStatBadge(value: drive.topSpeedKmh, label: NSLocalizedString("drive.topSpeed", comment: ""), color: Color.speedColor(for: drive.topSpeed))
+                        FTStatBadge(value: drive.topSpeedFormatted(useMetric: unitsPreference == "km"), label: NSLocalizedString("drive.topSpeed", comment: ""), color: Color.speedColor(for: drive.topSpeed))
                         Divider()
-                        FTStatBadge(value: drive.distanceKm, label: NSLocalizedString("drive.distance", comment: ""))
+                        FTStatBadge(value: drive.distanceFormatted(useMetric: unitsPreference == "km"), label: NSLocalizedString("drive.distance", comment: ""))
                         Divider()
                         FTStatBadge(value: drive.durationFormatted, label: NSLocalizedString("drive.duration", comment: ""))
                     }
