@@ -8,10 +8,12 @@ struct TracksView: View {
             ZStack {
                 Color.ftBackground.ignoresSafeArea()
                 VStack(spacing: 0) {
-                    if !viewModel.tracks.isEmpty {
-                        TracksOverviewMapView(tracks: viewModel.tracks)
-                            .frame(height: 200)
-                    }
+                    // The map always renders — previously it was only shown
+                    // when tracks existed, so a user with zero published
+                    // tracks would never see any map at all on this tab.
+                    TracksOverviewMapView(tracks: viewModel.tracks)
+                        .frame(height: 200)
+
                     if viewModel.tracks.isEmpty {
                         Spacer()
                         Image(systemName: "flag.checkered").font(.system(size: 64)).foregroundColor(.ftAccent)
@@ -32,7 +34,10 @@ struct TracksView: View {
                 }
             }
             .navigationTitle(NSLocalizedString("tab.tracks", comment: ""))
-            .task { await viewModel.load() }
+            .task {
+                LocationService.shared.startUpdating()
+                await viewModel.load()
+            }
         }
     }
 }
