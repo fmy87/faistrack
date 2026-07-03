@@ -60,6 +60,21 @@ workflows:
           plutil -extract GOOGLE_APP_ID raw $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist 2>&1
           # --- end diagnostics ---
 
+      - name: Inject Google Maps API key
+        script: |
+          # Adds/updates the GMSApiKey entry in Info.plist from the
+          # GOOGLE_MAPS_API_KEY env var (set in the "faistrack" group).
+          # AppDelegate.swift reads this key at runtime via
+          # Bundle.main.object(forInfoDictionaryKey: "GMSApiKey").
+          INFO_PLIST="$CM_BUILD_DIR/FaisTrack/Supporting/Info.plist"
+          if [ -z "$GOOGLE_MAPS_API_KEY" ]; then
+            echo "WARNING: GOOGLE_MAPS_API_KEY is not set. Map features will not work in this build."
+          else
+            /usr/libexec/PlistBuddy -c "Add :GMSApiKey string $GOOGLE_MAPS_API_KEY" "$INFO_PLIST" 2>/dev/null \
+              || /usr/libexec/PlistBuddy -c "Set :GMSApiKey $GOOGLE_MAPS_API_KEY" "$INFO_PLIST"
+            echo "GMSApiKey injected into Info.plist (length: ${#GOOGLE_MAPS_API_KEY} chars)"
+          fi
+
       - name: Set up keychain
         script: |
           keychain initialize
