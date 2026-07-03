@@ -8,6 +8,7 @@ struct AddCarView: View {
     @State private var car = Car(ownerUID: "", nickname: "", make: "", model: "", year: Calendar.current.component(.year, from: Date()))
     @State private var photoData: Data?
     @State private var isSaving = false
+    @State private var saveErrorMessage: String?
 
     var body: some View {
         NavigationView {
@@ -16,6 +17,15 @@ struct AddCarView: View {
                 VStack {
                     ProgressView(value: Double(step + 1), total: 4)
                         .tint(.ftAccent).padding(.horizontal)
+
+                    if let saveErrorMessage {
+                        Text(saveErrorMessage)
+                            .font(.system(size: 13))
+                            .foregroundColor(.speedRed)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 24)
+                            .padding(.top, 8)
+                    }
 
                     TabView(selection: $step) {
                         BasicInfoStep(car: $car).tag(0)
@@ -54,10 +64,15 @@ struct AddCarView: View {
 
     private func saveCar() {
         isSaving = true
+        saveErrorMessage = nil
         Task {
-            await viewModel.saveCar(car)
+            let success = await viewModel.saveCar(car)
             isSaving = false
-            dismiss()
+            if success {
+                dismiss()
+            } else {
+                saveErrorMessage = viewModel.errorMessage ?? NSLocalizedString("garage.saveFailed", comment: "")
+            }
         }
     }
 }
