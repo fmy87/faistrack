@@ -93,6 +93,26 @@ class AuthService: NSObject, ObservableObject {
         try Auth.auth().signOut()
     }
 
+    /// Fully deletes the account: Firestore data first (still has a valid
+    /// session to do this), then the Firebase Auth user itself. Previously
+    /// there was no equivalent of this at all — only a "delete data" idea in
+    /// the project notes, with no way to remove the Auth account.
+    ///
+    /// Firebase requires a *recent* sign-in to delete the Auth user; if the
+    /// session is old, this throws `.requiresRecentLogin` and the caller
+    /// should ask the person to sign out and back in, then retry — this
+    /// doesn't attempt a full re-authentication flow itself.
+    func deleteAccount() async throws {
+        guard let user = Auth.auth().currentUser else { throw AuthError.userNotFound }
+        let uid = user.uid
+        try await FirebaseService.shared.deleteAllUserData(uid: uid)
+        do {
+            try await user.delete()
+        } catch let error as NSError where error.code == AuthErrorCode.requiresRecentLogin.rawValue {
+            throw AuthError.requiresRecentLogin
+        }
+    }
+
     // MARK: - Helpers
     private func randomNonceString(length: Int = 32) -> String {
         var randomBytes = [UInt8](repeating: 0, count: length)
@@ -111,12 +131,15 @@ enum AuthError: Error, LocalizedError {
     case invalidCredential
     case userNotFound
     case missingClientID
+    case requiresRecentLogin
 
     var errorDescription: String? {
         switch self {
         case .invalidCredential: return NSLocalizedString("auth.error.invalidCredential", comment: "")
         case .userNotFound: return NSLocalizedString("auth.error.userNotFound", comment: "")
         case .missingClientID: return NSLocalizedString("auth.error.missingClientID", comment: "")
+        case .requiresRecentLogin: return NSLocalizedString("auth.error.requiresRecentLogin", comment: "")
         }
     }
 }
+
