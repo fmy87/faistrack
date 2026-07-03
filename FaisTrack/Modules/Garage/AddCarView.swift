@@ -70,11 +70,11 @@ struct BasicInfoStep: View {
                 Text(NSLocalizedString("garage.step.basic", comment: ""))
                     .font(.system(size: 24, weight: .bold))
                 FTInputField(title: NSLocalizedString("garage.nickname", comment: ""),
-                             placeholder: "e.g. The Beast", text: $car.nickname)
+                             placeholder: NSLocalizedString("garage.nicknamePlaceholder", comment: ""), text: $car.nickname)
                 FTInputField(title: NSLocalizedString("garage.make", comment: ""),
-                             placeholder: "e.g. Nissan", text: $car.make)
+                             placeholder: NSLocalizedString("garage.makePlaceholder", comment: ""), text: $car.make)
                 FTInputField(title: NSLocalizedString("garage.model", comment: ""),
-                             placeholder: "e.g. 350Z", text: $car.model)
+                             placeholder: NSLocalizedString("garage.modelPlaceholder", comment: ""), text: $car.model)
                 VStack(alignment: .leading, spacing: 8) {
                     Text(NSLocalizedString("garage.year", comment: ""))
                         .font(.system(size: 14, weight: .medium)).foregroundColor(.ftTextSecondary)
@@ -96,14 +96,14 @@ struct SpecsStep: View {
                 Text(NSLocalizedString("garage.step.specs", comment: ""))
                     .font(.system(size: 24, weight: .bold))
                 FTInputField(title: NSLocalizedString("garage.engineSize", comment: ""),
-                             placeholder: "e.g. 3.5L", text: Binding(
+                             placeholder: NSLocalizedString("garage.engineSizePlaceholder", comment: ""), text: Binding(
                                 get: { car.engineSize ?? "" },
                                 set: { car.engineSize = $0 }))
                 FTInputField(title: NSLocalizedString("garage.hp", comment: ""),
-                             placeholder: "e.g. 300", text: $hpString, keyboardType: .numberPad)
+                             placeholder: NSLocalizedString("garage.hpPlaceholder", comment: ""), text: $hpString, keyboardType: .numberPad)
                     .onChange(of: hpString) { newVal in car.horsepower = Int(newVal) }
                 FTInputField(title: NSLocalizedString("garage.torque", comment: ""),
-                             placeholder: "e.g. 400 Nm", text: $torqueString, keyboardType: .numberPad)
+                             placeholder: NSLocalizedString("garage.torquePlaceholder", comment: ""), text: $torqueString, keyboardType: .numberPad)
                     .onChange(of: torqueString) { newVal in car.torque = Int(newVal) }
                 VStack(alignment: .leading, spacing: 8) {
                     Text(NSLocalizedString("garage.forced", comment: ""))
@@ -125,11 +125,11 @@ struct ModsStep: View {
                 Text(NSLocalizedString("garage.step.mods", comment: ""))
                     .font(.system(size: 24, weight: .bold))
                 FTInputField(title: NSLocalizedString("garage.suspension", comment: ""),
-                             placeholder: "e.g. KW Coilovers", text: Binding(
+                             placeholder: NSLocalizedString("garage.suspensionPlaceholder", comment: ""), text: Binding(
                                 get: { car.suspensionNotes ?? "" },
                                 set: { car.suspensionNotes = $0 }))
                 FTInputField(title: NSLocalizedString("garage.wheels", comment: ""),
-                             placeholder: "e.g. 19\" Rays", text: Binding(
+                             placeholder: NSLocalizedString("garage.wheelsPlaceholder", comment: ""), text: Binding(
                                 get: { car.wheels ?? "" },
                                 set: { car.wheels = $0 }))
             }.padding(24)
