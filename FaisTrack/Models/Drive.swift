@@ -19,6 +19,11 @@ struct Drive: Identifiable, Codable {
     var behaviorScore: Int?          // Pro feature 0-100
     var startPlaceName: String?
     var endPlaceName: String?
+    /// True when the user reclassified this drive as "I was a passenger"
+    /// after the fact (auto-detection can't tell driver from passenger at
+    /// capture time). Passenger drives are excluded from all driving stats
+    /// and instead count toward the separate "Passenger Princess" stat.
+    var isPassenger: Bool = false
 
     var distanceKm: String { String(format: "%.1f km", distance) }
     var distanceMi: String { String(format: "%.1f mi", distance * 0.621371) }
@@ -46,3 +51,4 @@ struct Drive: Identifiable, Codable {
 enum SpeedColor {
     case green, orange, red
 }
+
