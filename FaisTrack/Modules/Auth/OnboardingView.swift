@@ -7,6 +7,7 @@ struct OnboardingView: View {
     var body: some View {
         ZStack {
             Color.ftBackground.ignoresSafeArea()
+            SpeedLinesBackground()
             TabView(selection: $page) {
                 OnboardingPage1().tag(0)
                 OnboardingPage2().tag(1)
