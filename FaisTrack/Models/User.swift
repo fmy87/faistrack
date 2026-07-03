@@ -9,6 +9,7 @@ struct FTUser: Identifiable, Codable {
     var email: String?
     var phone: String?
     var photoURL: String?
+    var instagramHandle: String?
     var isPro: Bool = false
     var proExpiry: Timestamp?
     var referralCode: String
