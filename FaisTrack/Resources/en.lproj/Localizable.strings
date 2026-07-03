@@ -294,3 +294,20 @@
 "liveDrive.recording" = "Recording Drive";
 "liveDrive.elapsed" = "ELAPSED";
 "liveDrive.distance" = "DISTANCE";
+
+
+// MARK: - Delete account, friends system, safety score, store sync (enhancement pass)
+"profile.deleteAccount" = "Delete Account";
+"profile.deleteAccountConfirm" = "This permanently deletes your account and all your data — drives, cars, tracks, and friends. This can't be undone.";
+"auth.error.requiresRecentLogin" = "For security, please sign out and sign back in, then try deleting your account again.";
+"general.error" = "Error";
+"general.ok" = "OK";
+"friends.requests" = "Friend Requests";
+"friends.myFriends" = "My Friends";
+"friends.requestSent" = "Requested";
+"friends.requestReceived" = "Respond in Friends";
+"friends.alreadyFriends" = "Friends";
+"friends.search.noResults" = "No users found";
+"store.proSyncError" = "Your purchase was successful, but we couldn't sync your Pro status yet. It'll sync automatically next time you're online.";
+"stats.safetyScore" = "Safety Score";
+"stats.safetyScore.trend" = "Recent drives";
