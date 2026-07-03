@@ -2,11 +2,12 @@ import SwiftUI
 import CoreLocation
 
 struct DriveDetailView: View {
-    let drive: Drive
+    @State var drive: Drive
     @AppStorage("unitsPreference") private var unitsPreference: String = "km"
     @State private var isPublishing = false
     @State private var publishedTrackId: String?
     @State private var publishError: String?
+    @State private var isSavingRole = false
 
     private var routeCoordinates: [CLLocationCoordinate2D] {
         guard let encoded = drive.polylineEncoded, !encoded.isEmpty else { return [] }
@@ -38,6 +39,27 @@ struct DriveDetailView: View {
                     BehaviorScoreView(score: score)
                 }
 
+                // Auto-detection can't tell who was actually driving, so this
+                // lets the user correct the record after the fact. Marking a
+                // drive as passenger excludes it from all driving stats
+                // (distance, top speed, personal bests, etc.) on the Stats
+                // tab and instead counts it toward "Passenger Princess."
+                Button(action: { Task { await toggleRole() } }) {
+                    HStack {
+                        if isSavingRole { ProgressView() }
+                        Image(systemName: drive.isPassenger ? "checkmark.circle.fill" : "person.fill.questionmark")
+                        Text(drive.isPassenger
+                             ? NSLocalizedString("drive.wasPassengerConfirmed", comment: "")
+                             : NSLocalizedString("drive.markAsPassenger", comment: ""))
+                            .font(.system(size: 14, weight: .semibold))
+                    }
+                    .foregroundColor(drive.isPassenger ? .speedGreen : .ftTextSecondary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.ftTextSecondary.opacity(0.3), lineWidth: 1))
+                }
+                .disabled(isSavingRole)
+
                 if canPublishAsTrack {
                     if publishedTrackId != nil {
                         Label(NSLocalizedString("drive.trackPublished", comment: ""), systemImage: "checkmark.circle.fill")
@@ -68,6 +90,21 @@ struct DriveDetailView: View {
         .navigationTitle(NSLocalizedString("drive.detail", comment: ""))
     }
 
+    private func toggleRole() async {
+        guard let uid = AuthService.shared.currentUser?.uid else { return }
+        isSavingRole = true
+        var updated = drive
+        updated.isPassenger.toggle()
+        do {
+            try await FirebaseService.shared.saveDrive(updated, uid: uid)
+            drive = updated
+        } catch {
+            // Leave the drive's role unchanged in the UI if the save failed,
+            // rather than showing a state that isn't actually persisted.
+        }
+        isSavingRole = false
+    }
+
     private func publishTrack() async {
         guard let uid = AuthService.shared.currentUser?.uid else { return }
         isPublishing = true
@@ -85,3 +122,4 @@ struct DriveDetailView: View {
         isPublishing = false
     }
 }
+
