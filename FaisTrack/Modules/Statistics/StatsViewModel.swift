@@ -20,14 +20,25 @@ class StatsViewModel: ObservableObject {
         isLoading = false
     }
 
+    /// Drives where the user was actually driving. Every stat below except
+    /// `passengerMiles` is based on this, not the raw `drives` array — a
+    /// drive reclassified as "I was a passenger" (see DriveDetailView)
+    /// shouldn't count toward the user's own distance, speed, or streak stats.
+    private var drivingDrives: [Drive] { drives.filter { !$0.isPassenger } }
+    var drivingDriveCount: Int { drivingDrives.count }
+
+    /// Total distance logged while marked as a passenger — feeds the
+    /// "Passenger Princess" personal best.
+    var passengerMiles: Double { drives.filter { $0.isPassenger }.reduce(0) { $0 + $1.distance } }
+
     // MARK: - Totals
 
-    var totalDistanceKm: Double { drives.reduce(0) { $0 + $1.distance } }
-    var averageDriveDistanceKm: Double { drives.isEmpty ? 0 : totalDistanceKm / Double(drives.count) }
-    var totalDurationSeconds: Int { drives.reduce(0) { $0 + $1.duration } }
+    var totalDistanceKm: Double { drivingDrives.reduce(0) { $0 + $1.distance } }
+    var averageDriveDistanceKm: Double { drivingDrives.isEmpty ? 0 : totalDistanceKm / Double(drivingDrives.count) }
+    var totalDurationSeconds: Int { drivingDrives.reduce(0) { $0 + $1.duration } }
     var totalDurationHours: Double { Double(totalDurationSeconds) / 3600 }
-    var averageDriveMinutes: Int { drives.isEmpty ? 0 : (totalDurationSeconds / drives.count) / 60 }
-    var topSpeedKmh: Double { drives.map(\.topSpeed).max() ?? 0 }
+    var averageDriveMinutes: Int { drivingDrives.isEmpty ? 0 : (totalDurationSeconds / drivingDrives.count) / 60 }
+    var topSpeedKmh: Double { drivingDrives.map(\.topSpeed).max() ?? 0 }
 
     // MARK: - Distance comparisons (distances in km)
 
@@ -47,10 +58,10 @@ class StatsViewModel: ObservableObject {
 
     // MARK: - Notable single drives
 
-    var longestDrive: Drive? { drives.max(by: { $0.distance < $1.distance }) }
-    var fastestDrive: Drive? { drives.max(by: { $0.topSpeed < $1.topSpeed }) }
-    var longestDriveByTime: Drive? { drives.max(by: { $0.duration < $1.duration }) }
-    var bestAvgSpeedDrive: Drive? { drives.max(by: { $0.avgSpeed < $1.avgSpeed }) }
+    var longestDrive: Drive? { drivingDrives.max(by: { $0.distance < $1.distance }) }
+    var fastestDrive: Drive? { drivingDrives.max(by: { $0.topSpeed < $1.topSpeed }) }
+    var longestDriveByTime: Drive? { drivingDrives.max(by: { $0.duration < $1.duration }) }
+    var bestAvgSpeedDrive: Drive? { drivingDrives.max(by: { $0.avgSpeed < $1.avgSpeed }) }
 
     // MARK: - Speed distribution
 
@@ -63,73 +74,73 @@ class StatsViewModel: ObservableObject {
 
     var speedDistribution: [SpeedBucket] {
         let buckets: [(String, (Double) -> Bool, Color)] = [
-            (NSLocalizedString("stats.speedBucket.city", comment: ""), { $0 < 60 }, .speedGreen),
-            (NSLocalizedString("stats.speedBucket.road", comment: ""), { $0 >= 60 && $0 < 90 }, Color.mint),
-            (NSLocalizedString("stats.speedBucket.highway", comment: ""), { $0 >= 90 && $0 < 120 }, .speedOrange),
-            (NSLocalizedString("stats.speedBucket.fast", comment: ""), { $0 >= 120 && $0 < 150 }, Color.orange),
+            (NSLocalizedString("stats.speedBucket.city", comment: ""), { $0 < 60 }, .cyan),
+            (NSLocalizedString("stats.speedBucket.road", comment: ""), { $0 >= 60 && $0 < 90 }, .speedGreen),
+            (NSLocalizedString("stats.speedBucket.highway", comment: ""), { $0 >= 90 && $0 < 120 }, .yellow),
+            (NSLocalizedString("stats.speedBucket.fast", comment: ""), { $0 >= 120 && $0 < 150 }, .speedOrange),
             (NSLocalizedString("stats.speedBucket.veryFast", comment: ""), { $0 >= 150 }, .speedRed),
         ]
         return buckets.map { label, match, color in
-            SpeedBucket(label: label, count: drives.filter { match($0.topSpeed) }.count, color: color)
+            SpeedBucket(label: label, count: drivingDrives.filter { match($0.topSpeed) }.count, color: color)
         }
     }
 
     // MARK: - Day / night time split
 
-    var dayHours: Double { Double(drives.filter { !$0.isNight }.reduce(0) { $0 + $1.duration }) / 3600 }
-    var nightHours: Double { Double(drives.filter { $0.isNight }.reduce(0) { $0 + $1.duration }) / 3600 }
+    var dayHours: Double { Double(drivingDrives.filter { !$0.isNight }.reduce(0) { $0 + $1.duration }) / 3600 }
+    var nightHours: Double { Double(drivingDrives.filter { $0.isNight }.reduce(0) { $0 + $1.duration }) / 3600 }
 
     // MARK: - Grouping helpers
 
-    private func groupedByDay() -> [Date: [Drive]] {
-        Dictionary(grouping: drives) { Calendar.current.startOfDay(for: $0.startTime.dateValue()) }
+    private func groupedByDay(_ source: [Drive]) -> [Date: [Drive]] {
+        Dictionary(grouping: source) { Calendar.current.startOfDay(for: $0.startTime.dateValue()) }
     }
 
-    private func groupedByWeek() -> [Date: [Drive]] {
-        Dictionary(grouping: drives) { drive -> Date in
+    private func groupedByWeek(_ source: [Drive]) -> [Date: [Drive]] {
+        Dictionary(grouping: source) { drive -> Date in
             let cal = Calendar.current
             let comps = cal.dateComponents([.yearForWeekOfYear, .weekOfYear], from: drive.startTime.dateValue())
             return cal.date(from: comps) ?? drive.startTime.dateValue()
         }
     }
 
-    private func groupedByMonth() -> [Date: [Drive]] {
-        Dictionary(grouping: drives) { drive -> Date in
+    private func groupedByMonth(_ source: [Drive]) -> [Date: [Drive]] {
+        Dictionary(grouping: source) { drive -> Date in
             let cal = Calendar.current
             let comps = cal.dateComponents([.year, .month], from: drive.startTime.dateValue())
             return cal.date(from: comps) ?? drive.startTime.dateValue()
         }
     }
 
-    private func groupedByCar() -> [String: [Drive]] {
-        Dictionary(grouping: drives) { $0.carId }
+    private func groupedByCar(_ source: [Drive]) -> [String: [Drive]] {
+        Dictionary(grouping: source) { $0.carId }
     }
 
     // MARK: - Personal bests
 
     var bigDayEnergyKm: Double {
-        groupedByDay().values.map { day in day.reduce(0) { $0 + $1.distance } }.max() ?? 0
+        groupedByDay(drivingDrives).values.map { day in day.reduce(0) { $0 + $1.distance } }.max() ?? 0
     }
 
     var roadWarriorHours: Double {
-        Double(groupedByDay().values.map { day in day.reduce(0) { $0 + $1.duration } }.max() ?? 0) / 3600
+        Double(groupedByDay(drivingDrives).values.map { day in day.reduce(0) { $0 + $1.duration } }.max() ?? 0) / 3600
     }
 
     var errandEraCount: Int {
-        groupedByDay().values.map { $0.count }.max() ?? 0
+        groupedByDay(drivingDrives).values.map { $0.count }.max() ?? 0
     }
 
     var hotWeekKm: Double {
-        groupedByWeek().values.map { week in week.reduce(0) { $0 + $1.distance } }.max() ?? 0
+        groupedByWeek(drivingDrives).values.map { week in week.reduce(0) { $0 + $1.distance } }.max() ?? 0
     }
 
     var mileageMonsterKm: Double {
-        groupedByMonth().values.map { month in month.reduce(0) { $0 + $1.distance } }.max() ?? 0
+        groupedByMonth(drivingDrives).values.map { month in month.reduce(0) { $0 + $1.distance } }.max() ?? 0
     }
 
     /// Longest run of consecutive calendar days with at least one drive.
     var onARollStreak: Int {
-        let days = Set(groupedByDay().keys).sorted()
+        let days = Set(groupedByDay(drivingDrives).keys).sorted()
         guard !days.isEmpty else { return 0 }
         var longest = 1
         var current = 1
@@ -144,15 +155,19 @@ class StatsViewModel: ObservableObject {
         return longest
     }
 
-    struct CarStat {
+    struct CarStat: Identifiable {
+        var id: String { car.id ?? car.nickname }
         let car: Car
         let driveCount: Int
         let km: Double
         let topSpeed: Double
     }
 
-    private var carStats: [CarStat] {
-        groupedByCar().compactMap { carId, carDrives in
+    /// Every car with at least one drive, sorted by distance descending —
+    /// backs the vehicle-distance breakdown bar as well as the personal
+    /// bests that pick a "best" car.
+    var carStats: [CarStat] {
+        groupedByCar(drivingDrives).compactMap { carId, carDrives in
             guard let car = cars.first(where: { $0.id == carId }) else { return nil }
             return CarStat(
                 car: car,
@@ -160,7 +175,7 @@ class StatsViewModel: ObservableObject {
                 km: carDrives.reduce(0) { $0 + $1.distance },
                 topSpeed: carDrives.map(\.topSpeed).max() ?? 0
             )
-        }
+        }.sorted { $0.km > $1.km }
     }
 
     /// The car with the most drives logged — shown as the "Most Driven
@@ -168,4 +183,39 @@ class StatsViewModel: ObservableObject {
     var mostDrivenCar: CarStat? { carStats.max(by: { $0.driveCount < $1.driveCount }) }
     var favoriteRideCar: CarStat? { carStats.max(by: { $0.km < $1.km }) }
     var garageRocketCar: CarStat? { carStats.max(by: { $0.topSpeed < $1.topSpeed }) }
+
+    // MARK: - Monthly recap
+
+    /// True for the first week of a new month, once there's at least one
+    /// driving drive logged in the month that just ended — mirrors the
+    /// reference app's "Your [MONTH] Recap is Here" banner.
+    var showRecapBanner: Bool {
+        Calendar.current.component(.day, from: Date()) <= 7 && !previousMonthDrives.isEmpty
+    }
+
+    var previousMonthDrives: [Drive] {
+        let cal = Calendar.current
+        guard let firstOfThisMonth = cal.date(from: cal.dateComponents([.year, .month], from: Date())),
+              let previousMonth = cal.date(byAdding: .month, value: -1, to: firstOfThisMonth) else { return [] }
+        let comps = cal.dateComponents([.year, .month], from: previousMonth)
+        return drivingDrives.filter {
+            let d = cal.dateComponents([.year, .month], from: $0.startTime.dateValue())
+            return d.year == comps.year && d.month == comps.month
+        }
+    }
+
+    var previousMonthName: String {
+        let cal = Calendar.current
+        guard let firstOfThisMonth = cal.date(from: cal.dateComponents([.year, .month], from: Date())),
+              let previousMonth = cal.date(byAdding: .month, value: -1, to: firstOfThisMonth) else { return "" }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM"
+        return formatter.string(from: previousMonth).uppercased()
+    }
+
+    var previousMonthDistanceKm: Double { previousMonthDrives.reduce(0) { $0 + $1.distance } }
+    var previousMonthTopSpeed: Double { previousMonthDrives.map(\.topSpeed).max() ?? 0 }
+    var previousMonthHours: Double { Double(previousMonthDrives.reduce(0) { $0 + $1.duration }) / 3600 }
+    var previousMonthDriveCount: Int { previousMonthDrives.count }
+    var previousMonthLongestDrive: Drive? { previousMonthDrives.max(by: { $0.distance < $1.distance }) }
 }
