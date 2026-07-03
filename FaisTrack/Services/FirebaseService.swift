@@ -160,9 +160,9 @@ enum FirebaseServiceError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .storageNotEnabled:
-            return "Photo upload will be available in a future update."
+            return NSLocalizedString("firebase.error.storageNotEnabled", comment: "")
         case .invalidTrack:
-            return "This drive doesn't have a valid route to publish as a track."
+            return NSLocalizedString("firebase.error.invalidTrack", comment: "")
         }
     }
 }
