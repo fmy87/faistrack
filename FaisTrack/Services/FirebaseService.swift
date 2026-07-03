@@ -107,6 +107,15 @@ class FirebaseService {
     }
 
     // MARK: - Tracks
+    /// Creates a new Track directly from a manually-recorded run (see
+    /// TrackCreationService) — as opposed to publishTrack(from:), which
+    /// derives one from an already-completed automatic Drive.
+    func createTrack(_ track: Track) async throws -> String {
+        let ref = db.collection("tracks").document()
+        try await ref.setData(from: track)
+        return ref.documentID
+    }
+
     /// Publishes a drive's recorded route as a competable Track. The start
     /// and end points come from the decoded polyline (the drive model only
     /// stores place-name strings, not raw coordinates).
@@ -202,3 +211,4 @@ enum FirebaseServiceError: LocalizedError {
         }
     }
 }
+
