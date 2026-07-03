@@ -198,3 +198,7 @@
 // Duration formatting
 "drive.duration.minutes" = "%d min";
 "drive.duration.hoursMinutes" = "%dh %dm";
+"garage.saveFailed" = "Couldn't save your car. Please check your connection and try again.";
+"profile.privateProfile" = "Private Profile";
+"profile.privateProfile.desc" = "Only approved friends can see your drives and stats.";
+"profile.publicProfile.desc" = "Anyone can find your profile and see your public activity.";
