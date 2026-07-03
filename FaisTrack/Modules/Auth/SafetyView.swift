@@ -31,7 +31,11 @@ struct SafetyView: View {
                 Spacer()
                 FTPrimaryButton(title: NSLocalizedString("safety.continue", comment: "")) {
                     dismiss()
-                    appState.currentScreen = .main
+                    // Location/notification permission prompts happen on the
+                    // next screen (PermissionsView) — this used to jump
+                    // straight to .main, which meant iOS never showed either
+                    // system permission dialog at all.
+                    appState.currentScreen = .permissions
                 }
                 .disabled(!agreed)
                 .opacity(agreed ? 1 : 0.5)
