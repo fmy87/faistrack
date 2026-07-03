@@ -169,7 +169,14 @@ struct LeaderboardView: View {
 
     func loadEntries() async {
         isLoading = true
-        entries = (try? await LeaderboardService.shared.getLeaderboard(metric: metric, period: period)) ?? []
+        var friendUIDs: [String]? = nil
+        if scope == .friends, let uid = AuthService.shared.currentUser?.uid {
+            let friends = (try? await FirebaseService.shared.getFriends(uid: uid)) ?? []
+            // Include yourself so "Friends" leaderboard still shows your own
+            // entry, matching what people expect from a "friends" filter.
+            friendUIDs = friends.map(\.uid) + [uid]
+        }
+        entries = (try? await LeaderboardService.shared.getLeaderboard(metric: metric, period: period, friendUIDs: friendUIDs)) ?? []
         if let uid = AuthService.shared.currentUser?.uid {
             myRank = try? await LeaderboardService.shared.getUserRank(uid: uid, metric: metric, period: period)
         }
@@ -240,3 +247,4 @@ struct YourRankRow: View {
         }
     }
 }
+
