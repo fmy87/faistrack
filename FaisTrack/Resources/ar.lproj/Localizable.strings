@@ -311,3 +311,18 @@
 "store.proSyncError" = "تمت عملية الشراء بنجاح، لكن لم نتمكن من مزامنة حالة اشتراكك بعد. ستتم المزامنة تلقائيًا عند الاتصال بالإنترنت.";
 "stats.safetyScore" = "درجة الأمان";
 "stats.safetyScore.trend" = "الرحلات الأخيرة";
+
+
+// MARK: - Live Drive HUD redesign (speedometer gauge)
+"liveDrive.speedTab" = "السرعة";
+"liveDrive.mapTab" = "الخريطة";
+"liveDrive.endDrive" = "إنهاء الرحلة";
+"liveDrive.avg" = "المتوسط";
+"liveDrive.top" = "الأعلى";
+"liveDrive.distanceShort" = "المسافة";
+"liveDrive.altitude" = "الارتفاع";
+"liveDrive.moving" = "تحرك";
+"liveDrive.stopped" = "توقف";
+"liveDrive.ghost" = "التخفي";
+"liveDrive.driver" = "سائق";
+"liveDrive.passenger" = "راكب";
