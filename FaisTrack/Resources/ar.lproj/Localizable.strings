@@ -326,3 +326,7 @@
 "liveDrive.ghost" = "التخفي";
 "liveDrive.driver" = "سائق";
 "liveDrive.passenger" = "راكب";
+
+
+// MARK: - Live friend driving status
+"friends.drivingNow" = "يقود الآن";
