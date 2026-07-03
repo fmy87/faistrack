@@ -203,3 +203,12 @@
 "profile.privateProfile.desc" = "Only approved friends can see your drives and stats.";
 "profile.publicProfile.desc" = "Anyone can find your profile and see your public activity.";
 "profile.noProfile" = "Your profile isn't loaded yet. Please try again in a moment.";
+
+// Settings
+"settings.title" = "Settings";
+"settings.language" = "Language";
+"settings.language.english" = "English";
+"settings.language.arabic" = "العربية";
+"settings.units" = "Units";
+"settings.units.km" = "Kilometers";
+"settings.units.mi" = "Miles";
