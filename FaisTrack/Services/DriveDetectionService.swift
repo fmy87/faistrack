@@ -24,12 +24,18 @@ class DriveDetectionService: ObservableObject {
 
     /// Hides this user's live driving status from friends. Persisted so it
     /// carries over between drives without needing to re-toggle every time.
-    /// Note: this only controls whether a *future* "friends can see you're
-    /// driving" feature would broadcast anything — no such broadcast exists
-    /// yet, so today this toggle doesn't have anything to actually hide
-    /// from; it's wired up ready for when that feature exists.
+    /// When on, broadcastLiveStatus() reports `isDriving: false` regardless
+    /// of the actual state, so friends' clients never see this user as
+    /// driving at all — see FriendsView/FriendsViewModel for how that's
+    /// consumed.
     @Published var isGhostMode: Bool {
-        didSet { UserDefaults.standard.set(isGhostMode, forKey: "isGhostMode") }
+        didSet {
+            UserDefaults.standard.set(isGhostMode, forKey: "isGhostMode")
+            // If this changes mid-drive, immediately reflect it — turning
+            // Ghost Mode on should hide you from friends right away, not
+            // just for your next drive.
+            if isDriving { broadcastLiveStatus(isDriving: true) }
+        }
     }
 
     /// Lets the person mark themselves as a passenger *during* the drive
@@ -114,6 +120,7 @@ class DriveDetectionService: ObservableObject {
         fastAccelCount = 0
         idleSeconds = 0
         NotificationService.shared.sendDriveStartNotification()
+        broadcastLiveStatus(isDriving: true)
 
         movingStoppedTimer?.invalidate()
         movingStoppedTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
@@ -130,6 +137,7 @@ class DriveDetectionService: ObservableObject {
         isDriving = false
         currentSpeedKmh = 0
         movingStoppedTimer?.invalidate()
+        broadcastLiveStatus(isDriving: false)
         guard let startTime = driveStartTime,
               let uid = AuthService.shared.currentUser?.uid else { return }
         let endTime = Date()
@@ -266,6 +274,20 @@ class DriveDetectionService: ObservableObject {
     private func getActiveCarId() -> String {
         return UserDefaults.standard.string(forKey: "activeCarId") ?? ""
     }
+
+    /// Reports driving status to Firestore's `liveStatus/{uid}` doc for
+    /// friends to read (see FirebaseService.updateLiveStatus /
+    /// getFriendsLiveStatus). Ghost Mode overrides the reported value to
+    /// `false` regardless of what's actually happening, rather than simply
+    /// skipping the write — this ensures a stale "still driving" status
+    /// from before Ghost Mode was turned on gets actively cleared.
+    private func broadcastLiveStatus(isDriving: Bool) {
+        guard let uid = AuthService.shared.currentUser?.uid else { return }
+        let reportedValue = isGhostMode ? false : isDriving
+        Task {
+            await FirebaseService.shared.updateLiveStatus(uid: uid, isDriving: reportedValue)
+        }
+    }
 }
 
 /// A drive that finished but failed to save to Firestore, queued to disk
@@ -274,6 +296,7 @@ private struct PendingDrive: Codable {
     let uid: String
     let drive: Drive
 }
+
 
 
 
