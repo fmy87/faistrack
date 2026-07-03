@@ -23,10 +23,10 @@ struct CarDetailView: View {
                 if let hp = car.horsepower {
                     FTCard {
                         HStack {
-                            FTStatBadge(value: "\(hp)", label: "HP", color: .ftAccent)
+                            FTStatBadge(value: "\(hp)", label: NSLocalizedString("garage.hpUnit", comment: ""), color: .ftAccent)
                             Divider()
                             if let torque = car.torque {
-                                FTStatBadge(value: "\(torque)", label: "Nm", color: .ftAccentOrange)
+                                FTStatBadge(value: "\(torque)", label: NSLocalizedString("garage.torqueUnit", comment: ""), color: .ftAccentOrange)
                                 Divider()
                             }
                             if let engine = car.engineSize {
