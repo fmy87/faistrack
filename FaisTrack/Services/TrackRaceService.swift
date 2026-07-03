@@ -6,10 +6,12 @@ import Combine
 /// run a 10-second countdown once the user taps Start, time the race, and
 /// automatically detect the finish line via GPS to stop the clock.
 ///
-/// Manual "start now" / "end race" controls exist as a fallback for when GPS
-/// proximity detection is slow or unreliable, but they don't replace GPS
-/// tracking — location updates keep flowing and can still trigger the same
-/// transitions automatically. See skipToReadyToStart() and endRaceManually().
+/// This stays GPS-only end-to-end — no manual start/end shortcuts. Competing
+/// against an already-published Track needs consistent, GPS-verified timing
+/// against that track's real recorded coordinates for results to be fair and
+/// comparable on its leaderboard. Manual start/end only exists for
+/// *creating* a brand new track, where there's no existing target to detect
+/// arrival at in the first place — see TrackCreationService.
 enum RaceState: Equatable {
     case idle
     case navigatingToStart
@@ -74,28 +76,6 @@ class TrackRaceService: NSObject, ObservableObject {
         }
     }
 
-    /// Lets the user skip *waiting* for GPS proximity to unlock the
-    /// countdown — GPS tracking itself keeps running underneath exactly as
-    /// before (handleLocationUpdate still fires on every location update),
-    /// this just removes the requirement to be within proximityRadiusMeters
-    /// before the "Start" button becomes available. Useful when GPS accuracy
-    /// near the recorded start point is poor.
-    func skipToReadyToStart() {
-        guard case .navigatingToStart = state else { return }
-        state = .readyToStart
-    }
-
-    /// Lets the user manually end the race. GPS-based finish detection stays
-    /// active the whole time this is available (handleLocationUpdate's
-    /// `.racing` case keeps computing distanceToFinish and can still trigger
-    /// finishRace() automatically) — this is just an additional way to reach
-    /// the same finishRace() call, guarded there so only one of the two
-    /// (automatic or manual) can actually complete the race.
-    func endRaceManually() {
-        guard case .racing = state else { return }
-        finishRace()
-    }
-
     /// Called when the user taps "Start" after arriving at the start line.
     func userTappedStart() {
         guard case .readyToStart = state else { return }
@@ -126,11 +106,6 @@ class TrackRaceService: NSObject, ObservableObject {
         }
     }
 
-    /// Ends the race and submits the result. Guarded on `.racing` so that if
-    /// GPS crosses the finish radius at the same moment the user taps "End
-    /// Race" manually, only the first of the two calls actually runs —
-    /// otherwise both paths could fire within the same location-update tick
-    /// and submit two results for one race.
     private func finishRace() {
         guard case .racing = state,
               let start = raceStartDate, let track = track, let uid = AuthService.shared.currentUser?.uid else { return }
@@ -156,4 +131,3 @@ class TrackRaceService: NSObject, ObservableObject {
         distanceToStart = 0
     }
 }
-
