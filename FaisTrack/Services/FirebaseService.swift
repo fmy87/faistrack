@@ -1,5 +1,6 @@
 import Foundation
 import FirebaseFirestore
+import CoreLocation
 
 class FirebaseService {
     static let shared = FirebaseService()
@@ -64,6 +65,74 @@ class FirebaseService {
         return snapshot.documents.compactMap { try? $0.data(as: Drive.self) }
     }
 
+    // MARK: - Tracks
+    /// Publishes a drive's recorded route as a competable Track. The start
+    /// and end points come from the decoded polyline (the drive model only
+    /// stores place-name strings, not raw coordinates).
+    func publishTrack(from drive: Drive, coordinates: [CLLocationCoordinate2D], ownerUID: String, ownerUsername: String) async throws -> String {
+        guard let first = coordinates.first, let last = coordinates.last,
+              let encoded = drive.polylineEncoded else {
+            throw FirebaseServiceError.invalidTrack
+        }
+        let name: String
+        if let start = drive.startPlaceName, let end = drive.endPlaceName {
+            name = "\(start) → \(end)"
+        } else {
+            name = NSLocalizedString("tracks.defaultName", comment: "")
+        }
+        let track = Track(
+            ownerUID: ownerUID,
+            ownerUsername: ownerUsername,
+            name: name,
+            startLatitude: first.latitude,
+            startLongitude: first.longitude,
+            endLatitude: last.latitude,
+            endLongitude: last.longitude,
+            distance: drive.distance * 1000,
+            polylineEncoded: encoded
+        )
+        let ref = db.collection("tracks").document()
+        try await ref.setData(from: track)
+        return ref.documentID
+    }
+
+    func getTracks(limit: Int = 50) async throws -> [Track] {
+        let snapshot = try await db.collection("tracks")
+            .order(by: "createdAt", descending: true)
+            .limit(to: limit)
+            .getDocuments()
+        return snapshot.documents.compactMap { try? $0.data(as: Track.self) }
+    }
+
+    func saveTrackResult(_ result: TrackResult) async throws {
+        guard !result.trackId.isEmpty else { return }
+        let ref = db.collection("tracks").document(result.trackId)
+            .collection("results").document()
+        try await ref.setData(from: result)
+
+        // Update the track's best time if this attempt beats it.
+        // (Simple read-then-write; fine at this scale, could be a
+        // transaction later if concurrent finishes become common.)
+        let trackRef = db.collection("tracks").document(result.trackId)
+        let trackDoc = try await trackRef.getDocument()
+        let currentBest = trackDoc.data()?["bestTime"] as? Double
+        var updates: [String: Any] = ["attemptCount": FieldValue.increment(Int64(1))]
+        if currentBest == nil || result.duration < currentBest! {
+            updates["bestTime"] = result.duration
+            updates["bestTimeUsername"] = result.username
+        }
+        try await trackRef.updateData(updates)
+    }
+
+    func getTrackLeaderboard(trackId: String, limit: Int = 20) async throws -> [TrackResult] {
+        let snapshot = try await db.collection("tracks").document(trackId)
+            .collection("results")
+            .order(by: "duration", descending: false)
+            .limit(to: limit)
+            .getDocuments()
+        return snapshot.documents.compactMap { try? $0.data(as: TrackResult.self) }
+    }
+
     // MARK: - Photo Upload (disabled until Firebase Storage is enabled on Blaze plan)
     func uploadCarPhoto(uid: String, carId: String, imageData: Data) async throws -> String {
         // Storage requires Blaze plan — store photo locally for now
@@ -74,10 +143,13 @@ class FirebaseService {
 
 enum FirebaseServiceError: LocalizedError {
     case storageNotEnabled
+    case invalidTrack
     var errorDescription: String? {
         switch self {
         case .storageNotEnabled:
             return "Photo upload will be available in a future update."
+        case .invalidTrack:
+            return "This drive doesn't have a valid route to publish as a track."
         }
     }
 }
