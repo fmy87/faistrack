@@ -44,16 +44,18 @@ struct DrivesView: View {
 
 struct DriveRowView: View {
     let drive: Drive
+    @AppStorage("unitsPreference") private var unitsPreference: String = "km"
+
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
                 Text(drive.startPlaceName ?? NSLocalizedString("drives.unknownLocation", comment: ""))
                     .font(.system(size: 16, weight: .semibold))
-                Text(drive.durationFormatted + " • " + drive.distanceKm)
+                Text(drive.durationFormatted + " • " + drive.distanceFormatted(useMetric: unitsPreference == "km"))
                     .font(.system(size: 13)).foregroundColor(.ftTextSecondary)
             }
             Spacer()
-            Text(drive.topSpeedKmh)
+            Text(drive.topSpeedFormatted(useMetric: unitsPreference == "km"))
                 .font(.system(size: 22, weight: .bold))
                 .foregroundColor(Color.speedColor(for: drive.topSpeed))
         }.padding(.vertical, 4)
@@ -63,10 +65,15 @@ struct DriveRowView: View {
 class DrivesViewModel: ObservableObject {
     @Published var drives: [Drive] = []
     @Published var isTracking = false
+    @Published var errorMessage: String?
 
     func load() async {
         guard let uid = AuthService.shared.currentUser?.uid else { return }
-        drives = (try? await FirebaseService.shared.getDrives(uid: uid)) ?? []
+        do {
+            drives = try await FirebaseService.shared.getDrives(uid: uid)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
         isTracking = DriveDetectionService.shared.isDriving
     }
 }
