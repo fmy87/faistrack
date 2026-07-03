@@ -9,7 +9,11 @@ struct MainTabView: View {
                 }
             TracksView()
                 .tabItem {
-                    Label(NSLocalizedString("tab.tracks", comment: ""), systemImage: "flag.checkered")
+                    Label(NSLocalizedString("tab.tracks", comment: ""), systemImage: "map.fill")
+                }
+            GarageView()
+                .tabItem {
+                    Label(NSLocalizedString("tab.garage", comment: ""), systemImage: "wrench.and.screwdriver.fill")
                 }
             FriendsView()
                 .tabItem {
@@ -22,6 +26,10 @@ struct MainTabView: View {
             LeaderboardView()
                 .tabItem {
                     Label(NSLocalizedString("tab.leaderboard", comment: ""), systemImage: "trophy.fill")
+                }
+            ProfileView()
+                .tabItem {
+                    Label(NSLocalizedString("tab.profile", comment: ""), systemImage: "person.crop.circle.fill")
                 }
         }
         .accentColor(.ftAccent)
