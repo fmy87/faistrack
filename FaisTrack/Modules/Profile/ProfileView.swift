@@ -4,6 +4,9 @@ struct ProfileView: View {
     @EnvironmentObject var appState: AppState
     @StateObject private var viewModel = ProfileViewModel()
     @State private var showSignOutConfirm = false
+    @State private var showDeleteConfirm = false
+    @State private var isDeletingAccount = false
+    @State private var deleteError: String?
 
     var body: some View {
         NavigationView {
@@ -103,6 +106,25 @@ struct ProfileView: View {
                                 .background(Color.ftCard)
                                 .cornerRadius(16)
                         }
+
+                        Button(role: .destructive) {
+                            showDeleteConfirm = true
+                        } label: {
+                            HStack {
+                                if isDeletingAccount { ProgressView().tint(.speedRed) }
+                                Text(NSLocalizedString("profile.deleteAccount", comment: ""))
+                                    .font(.system(size: 14, weight: .semibold))
+                            }
+                            .foregroundColor(.speedRed.opacity(0.8))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 10)
+                        }
+                        .disabled(isDeletingAccount)
+
+                        if let deleteError {
+                            Text(deleteError).font(.system(size: 12)).foregroundColor(.speedRed)
+                                .multilineTextAlignment(.center)
+                        }
                     }.padding(20)
                 }
             }
@@ -118,12 +140,38 @@ struct ProfileView: View {
                 }
                 Button(NSLocalizedString("general.cancel", comment: ""), role: .cancel) {}
             }
+            .confirmationDialog(
+                NSLocalizedString("profile.deleteAccountConfirm", comment: ""),
+                isPresented: $showDeleteConfirm,
+                titleVisibility: .visible
+            ) {
+                Button(NSLocalizedString("profile.deleteAccount", comment: ""), role: .destructive) {
+                    Task { await deleteAccount() }
+                }
+                Button(NSLocalizedString("general.cancel", comment: ""), role: .cancel) {}
+            }
         }
     }
 
     private func signOut() {
         try? AuthService.shared.signOut()
         appState.currentScreen = .auth
+    }
+
+    private func deleteAccount() async {
+        isDeletingAccount = true
+        deleteError = nil
+        do {
+            try await AuthService.shared.deleteAccount()
+            appState.currentScreen = .auth
+        } catch {
+            // Firebase requires a recent sign-in to delete the Auth account.
+            // Note the data is already gone at this point (deleteAllUserData
+            // runs first) even if this step fails — surfacing that clearly
+            // rather than implying nothing happened.
+            deleteError = error.localizedDescription
+        }
+        isDeletingAccount = false
     }
 }
 
@@ -217,4 +265,5 @@ class ProfileViewModel: ObservableObject {
         }
     }
 }
+
 
