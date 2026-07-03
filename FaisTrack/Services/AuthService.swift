@@ -92,9 +92,9 @@ enum AuthError: Error, LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .invalidCredential: return "Invalid credential."
-        case .userNotFound: return "User not found."
-        case .missingClientID: return "Google CLIENT_ID missing from GoogleService-Info.plist."
+        case .invalidCredential: return NSLocalizedString("auth.error.invalidCredential", comment: "")
+        case .userNotFound: return NSLocalizedString("auth.error.userNotFound", comment: "")
+        case .missingClientID: return NSLocalizedString("auth.error.missingClientID", comment: "")
         }
     }
 }
