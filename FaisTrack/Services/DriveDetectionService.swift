@@ -59,6 +59,7 @@ class DriveDetectionService: ObservableObject {
         let distance = calculateDistance()
         let hour = Calendar.current.component(.hour, from: startTime)
         let isNight = hour < 6 || hour > 20
+        let routePolyline = encodedRoutePolyline()
         var drive = Drive(
             ownerUID: uid,
             carId: getActiveCarId(),
@@ -71,7 +72,8 @@ class DriveDetectionService: ObservableObject {
             idleTime: idleSeconds,
             isNight: isNight,
             hardBrakingCount: hardBrakingCount,
-            fastAccelCount: fastAccelCount
+            fastAccelCount: fastAccelCount,
+            polylineEncoded: routePolyline
         )
         drive.behaviorScore = calculateBehaviorScore(drive: drive)
         Task {
@@ -87,6 +89,31 @@ class DriveDetectionService: ObservableObject {
             total += locationBuffer[i].distance(from: locationBuffer[i-1])
         }
         return total / 1000 // km
+    }
+
+    /// Builds a compact encoded polyline from the recorded route, downsampled
+    /// so very long drives don't produce an oversized Firestore field.
+    private func encodedRoutePolyline(maxPoints: Int = 500) -> String? {
+        guard locationBuffer.count > 1 else { return nil }
+        let points = downsampled(locationBuffer, maxPoints: maxPoints)
+        let coordinates = points.map { $0.coordinate }
+        guard coordinates.count > 1 else { return nil }
+        return PolylineCodec.encode(coordinates)
+    }
+
+    private func downsampled(_ points: [CLLocation], maxPoints: Int) -> [CLLocation] {
+        guard points.count > maxPoints else { return points }
+        let stride = Double(points.count) / Double(maxPoints)
+        var result: [CLLocation] = []
+        var index = 0.0
+        while Int(index) < points.count {
+            result.append(points[Int(index)])
+            index += stride
+        }
+        if let last = points.last, result.last !== last {
+            result.append(last)
+        }
+        return result
     }
 
     private func calculateBehaviorScore(drive: Drive) -> Int {
