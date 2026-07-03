@@ -74,6 +74,7 @@
 "garage.step.specs" = "Engine Specs";
 "garage.step.mods" = "Modifications";
 "garage.step.photo" = "Add a Photo";
+"tab.garage" = "Garage";
 
 /* Drives */
 "drives.empty.title" = "No Drives Yet";
@@ -157,3 +158,12 @@
 "compete.newRecord" = "New track record!";
 "compete.comparedToBest" = "Track record: %.1fs";
 "general.done" = "Done";
+
+// Profile
+"tab.profile" = "Profile";
+"profile.instagram" = "Instagram";
+"profile.saved" = "Saved";
+"profile.manageDrives" = "Manage Drives";
+"profile.manageTracks" = "Manage My Tracks";
+"profile.signOut" = "Sign Out";
+"profile.signOutConfirm" = "Are you sure you want to sign out?";
