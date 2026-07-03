@@ -4,6 +4,7 @@ import Combine
 enum AppScreen {
     case onboarding
     case auth
+    case permissions
     case main
 }
 
