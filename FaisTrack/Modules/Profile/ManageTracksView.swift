@@ -4,6 +4,7 @@ import SwiftUI
 struct ManageTracksView: View {
     @State private var tracks: [Track] = []
     @State private var isLoading = true
+    @State private var deleteError: String?
 
     var body: some View {
         ZStack {
@@ -31,6 +32,13 @@ struct ManageTracksView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { EditButton() }
         .task { await load() }
+        .alert(NSLocalizedString("general.error", comment: ""), isPresented: Binding(
+            get: { deleteError != nil }, set: { if !$0 { deleteError = nil } }
+        )) {
+            Button(NSLocalizedString("general.ok", comment: ""), role: .cancel) {}
+        } message: {
+            Text(deleteError ?? "")
+        }
     }
 
     private func load() async {
@@ -46,8 +54,16 @@ struct ManageTracksView: View {
         Task {
             for track in toDelete {
                 guard let id = track.id else { continue }
-                try? await FirebaseService.shared.deleteTrack(trackId: id)
+                do {
+                    try await FirebaseService.shared.deleteTrack(trackId: id)
+                } catch {
+                    // Put it back rather than leaving it silently vanished
+                    // from the list while it still exists on the server.
+                    tracks.append(track)
+                    deleteError = error.localizedDescription
+                }
             }
         }
     }
 }
+
