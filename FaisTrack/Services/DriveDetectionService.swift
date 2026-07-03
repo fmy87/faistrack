@@ -15,13 +15,42 @@ class DriveDetectionService: ObservableObject {
     @Published private(set) var liveDistanceKm: Double = 0
     @Published private(set) var liveRouteCoordinates: [CLLocationCoordinate2D] = []
     @Published private(set) var currentSpeedKmh: Double = 0
+    @Published private(set) var liveAverageSpeedKmh: Double = 0
+    @Published private(set) var liveTopSpeedKmh: Double = 0
+    @Published private(set) var liveAltitudeMeters: Double = 0
+    @Published private(set) var movingSeconds: Int = 0
+    @Published private(set) var stoppedSeconds: Int = 0
     private(set) var driveStartTime: Date?
+
+    /// Hides this user's live driving status from friends. Persisted so it
+    /// carries over between drives without needing to re-toggle every time.
+    /// Note: this only controls whether a *future* "friends can see you're
+    /// driving" feature would broadcast anything — no such broadcast exists
+    /// yet, so today this toggle doesn't have anything to actually hide
+    /// from; it's wired up ready for when that feature exists.
+    @Published var isGhostMode: Bool {
+        didSet { UserDefaults.standard.set(isGhostMode, forKey: "isGhostMode") }
+    }
+
+    /// Lets the person mark themselves as a passenger *during* the drive
+    /// (via LiveDriveView) instead of only being able to correct it after
+    /// the fact in DriveDetailView. Resets to false at the start of every
+    /// new drive — it doesn't carry over between drives the way Ghost Mode
+    /// does, since who's driving can change trip to trip.
+    @Published var isPassengerMode: Bool = false
 
     private var locationBuffer: [CLLocation] = []
     private var hardBrakingCount = 0
     private var fastAccelCount = 0
     private var idleSeconds = 0
     private var lastSpeed: Double = 0
+    private var speedSampleCount = 0
+    private var speedSampleSum: Double = 0
+    private var movingStoppedTimer: Timer?
+
+    init() {
+        isGhostMode = UserDefaults.standard.bool(forKey: "isGhostMode")
+    }
 
     func startMonitoring() {
         guard CMMotionActivityManager.isActivityAvailable() else { return }
@@ -35,6 +64,15 @@ class DriveDetectionService: ObservableObject {
         }
     }
 
+    /// Lets the person end the drive immediately from the LiveDriveView HUD,
+    /// instead of only ever being able to stop via CoreMotion detecting
+    /// they're no longer moving automotively (which can lag behind reality,
+    /// e.g. sitting at a long red light, or CoreMotion misclassifying).
+    func endDriveManually() {
+        guard isDriving else { return }
+        driveDidEnd()
+    }
+
     func processLocation(_ location: CLLocation?) {
         guard let location = location, isDriving else { return }
         if let last = locationBuffer.last {
@@ -42,8 +80,15 @@ class DriveDetectionService: ObservableObject {
         }
         locationBuffer.append(location)
         liveRouteCoordinates.append(location.coordinate)
+        liveAltitudeMeters = location.altitude
         let speedKmh = max(0, location.speed * 3.6)
         currentSpeedKmh = speedKmh
+        liveTopSpeedKmh = max(liveTopSpeedKmh, speedKmh)
+        if speedKmh > 0 {
+            speedSampleSum += speedKmh
+            speedSampleCount += 1
+            liveAverageSpeedKmh = speedSampleSum / Double(speedSampleCount)
+        }
         if speedKmh < 5 { idleSeconds += 1 }
         if lastSpeed - speedKmh > 25 { hardBrakingCount += 1 }
         if speedKmh - lastSpeed > 20 { fastAccelCount += 1 }
@@ -57,15 +102,34 @@ class DriveDetectionService: ObservableObject {
         liveRouteCoordinates = []
         liveDistanceKm = 0
         currentSpeedKmh = 0
+        liveAverageSpeedKmh = 0
+        liveTopSpeedKmh = 0
+        liveAltitudeMeters = 0
+        movingSeconds = 0
+        stoppedSeconds = 0
+        speedSampleSum = 0
+        speedSampleCount = 0
+        isPassengerMode = false
         hardBrakingCount = 0
         fastAccelCount = 0
         idleSeconds = 0
         NotificationService.shared.sendDriveStartNotification()
+
+        movingStoppedTimer?.invalidate()
+        movingStoppedTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self else { return }
+            if self.currentSpeedKmh >= 5 {
+                self.movingSeconds += 1
+            } else {
+                self.stoppedSeconds += 1
+            }
+        }
     }
 
     private func driveDidEnd() {
         isDriving = false
         currentSpeedKmh = 0
+        movingStoppedTimer?.invalidate()
         guard let startTime = driveStartTime,
               let uid = AuthService.shared.currentUser?.uid else { return }
         let endTime = Date()
@@ -93,11 +157,18 @@ class DriveDetectionService: ObservableObject {
             fastAccelCount: fastAccelCount,
             polylineEncoded: routePolyline
         )
+        drive.isPassenger = isPassengerMode
         drive.behaviorScore = calculateBehaviorScore(drive: drive)
         Task {
             await saveDriveWithRetryQueue(drive, uid: uid)
             await NotificationService.shared.sendDriveEndNotification(drive: drive)
-            await LeaderboardService.shared.updateLeaderboard(drive: drive, uid: uid)
+            // If the person marked themselves as a passenger live (via
+            // LiveDriveView) rather than after the fact, there's no need to
+            // ever add this to the leaderboard just to immediately reverse
+            // it — skip it outright.
+            if !drive.isPassenger {
+                await LeaderboardService.shared.updateLeaderboard(drive: drive, uid: uid)
+            }
         }
     }
 
@@ -203,5 +274,6 @@ private struct PendingDrive: Codable {
     let uid: String
     let drive: Drive
 }
+
 
 
