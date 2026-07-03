@@ -56,6 +56,9 @@
 "garage.setActive" = "تعيين كنشطة";
 "garage.delete" = "حذف السيارة";
 "garage.saveCar" = "حفظ السيارة";
+"garage.editCar" = "تعديل السيارة";
+"garage.edit" = "تعديل";
+"garage.saveChanges" = "حفظ التغييرات";
 "garage.shareCard" = "مشاركة بطاقة السيارة";
 "garage.addPhoto" = "إضافة صورة";
 "garage.empty.title" = "جراجك فارغ";
@@ -157,6 +160,8 @@
 "compete.distanceAway" = "%d م متبقية";
 "compete.arrived" = "لقد وصلت إلى خط البداية!";
 "compete.start" = "ابدأ";
+"compete.startManually" = "ابدأ الآن (تخطي GPS)";
+"compete.endRace" = "إنهاء السباق";
 "compete.distanceToFinish" = "%d م حتى النهاية";
 "compete.finished" = "انتهى!";
 "compete.newRecord" = "رقم قياسي جديد للمسار!";
@@ -212,3 +217,4 @@
 "settings.units" = "وحدات القياس";
 "settings.units.km" = "كيلومتر";
 "settings.units.mi" = "ميل";
+
