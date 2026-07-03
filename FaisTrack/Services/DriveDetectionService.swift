@@ -7,8 +7,17 @@ class DriveDetectionService: ObservableObject {
     private let motionManager = CMMotionActivityManager()
     @Published var isDriving: Bool = false
     @Published var currentDrive: Drive?
+
+    // Live-tracking state consumed by LiveDriveView while a drive is in
+    // progress. Updated incrementally in processLocation() rather than
+    // recomputed from the full buffer each time, so this stays cheap even
+    // on a long drive.
+    @Published private(set) var liveDistanceKm: Double = 0
+    @Published private(set) var liveRouteCoordinates: [CLLocationCoordinate2D] = []
+    @Published private(set) var currentSpeedKmh: Double = 0
+    private(set) var driveStartTime: Date?
+
     private var locationBuffer: [CLLocation] = []
-    private var driveStartTime: Date?
     private var hardBrakingCount = 0
     private var fastAccelCount = 0
     private var idleSeconds = 0
@@ -28,8 +37,13 @@ class DriveDetectionService: ObservableObject {
 
     func processLocation(_ location: CLLocation?) {
         guard let location = location, isDriving else { return }
+        if let last = locationBuffer.last {
+            liveDistanceKm += location.distance(from: last) / 1000
+        }
         locationBuffer.append(location)
-        let speedKmh = location.speed * 3.6
+        liveRouteCoordinates.append(location.coordinate)
+        let speedKmh = max(0, location.speed * 3.6)
+        currentSpeedKmh = speedKmh
         if speedKmh < 5 { idleSeconds += 1 }
         if lastSpeed - speedKmh > 25 { hardBrakingCount += 1 }
         if speedKmh - lastSpeed > 20 { fastAccelCount += 1 }
@@ -40,6 +54,9 @@ class DriveDetectionService: ObservableObject {
         isDriving = true
         driveStartTime = Date()
         locationBuffer = []
+        liveRouteCoordinates = []
+        liveDistanceKm = 0
+        currentSpeedKmh = 0
         hardBrakingCount = 0
         fastAccelCount = 0
         idleSeconds = 0
@@ -48,6 +65,7 @@ class DriveDetectionService: ObservableObject {
 
     private func driveDidEnd() {
         isDriving = false
+        currentSpeedKmh = 0
         guard let startTime = driveStartTime,
               let uid = AuthService.shared.currentUser?.uid else { return }
         let endTime = Date()
@@ -129,3 +147,4 @@ class DriveDetectionService: ObservableObject {
         return UserDefaults.standard.string(forKey: "activeCarId") ?? ""
     }
 }
+
