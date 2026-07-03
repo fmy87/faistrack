@@ -49,6 +49,17 @@ workflows:
         script: |
           echo $GOOGLE_SERVICE_INFO_PLIST | base64 --decode > $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist
 
+          # --- Safe diagnostics (no secret material printed) ---
+          echo "GoogleService-Info.plist byte count: $(wc -c < $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist)"
+          echo "plutil validity check:"
+          plutil -lint $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist
+          echo "BUNDLE_ID in plist:"
+          plutil -extract BUNDLE_ID raw $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist 2>&1
+          echo "Expected BUNDLE_ID: $BUNDLE_ID"
+          echo "GOOGLE_APP_ID in plist:"
+          plutil -extract GOOGLE_APP_ID raw $CM_BUILD_DIR/FaisTrack/Supporting/GoogleService-Info.plist 2>&1
+          # --- end diagnostics ---
+
       - name: Set up keychain
         script: |
           keychain initialize
