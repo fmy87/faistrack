@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TracksView: View {
     @StateObject private var viewModel = TracksViewModel()
+    @State private var showCreateTrack = false
 
     var body: some View {
         NavigationView {
@@ -34,6 +35,16 @@ struct TracksView: View {
                 }
             }
             .navigationTitle(NSLocalizedString("tab.tracks", comment: ""))
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { showCreateTrack = true } label: {
+                        Image(systemName: "plus").foregroundColor(.ftAccent)
+                    }
+                }
+            }
+            .sheet(isPresented: $showCreateTrack) {
+                CreateTrackView(onCreated: { Task { await viewModel.load() } })
+            }
             .task {
                 LocationService.shared.startUpdating()
                 await viewModel.load()
@@ -73,3 +84,4 @@ class TracksViewModel: ObservableObject {
         tracks = (try? await FirebaseService.shared.getTracks()) ?? []
     }
 }
+
