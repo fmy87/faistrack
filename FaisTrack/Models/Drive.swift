@@ -24,6 +24,11 @@ struct Drive: Identifiable, Codable {
     var distanceMi: String { String(format: "%.1f mi", distance * 0.621371) }
     var topSpeedKmh: String { String(format: "%.0f km/h", topSpeed) }
     var topSpeedMph: String { String(format: "%.0f mph", topSpeed * 0.621371) }
+
+    /// useMetric: true for km, false for miles — matches the "unitsPreference"
+    /// value ("km"/"mi") set from Settings.
+    func distanceFormatted(useMetric: Bool) -> String { useMetric ? distanceKm : distanceMi }
+    func topSpeedFormatted(useMetric: Bool) -> String { useMetric ? topSpeedKmh : topSpeedMph }
     var durationFormatted: String {
         let minutes = duration / 60
         if minutes < 60 {
