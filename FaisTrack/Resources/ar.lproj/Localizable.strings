@@ -160,7 +160,7 @@
 "compete.distanceAway" = "%d م متبقية";
 "compete.arrived" = "لقد وصلت إلى خط البداية!";
 "compete.start" = "ابدأ";
-"compete.startManually" = "ابدأ الآن (تخطي GPS)";
+"compete.startManually" = "ابدأ يدويًا";
 "compete.endRace" = "إنهاء السباق";
 "compete.distanceToFinish" = "%d م حتى النهاية";
 "compete.finished" = "انتهى!";
