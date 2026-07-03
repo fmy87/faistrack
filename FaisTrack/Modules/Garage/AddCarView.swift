@@ -5,10 +5,24 @@ struct AddCarView: View {
     @ObservedObject var viewModel: GarageViewModel
     @Environment(\.dismiss) var dismiss
     @State private var step = 0
-    @State private var car = Car(ownerUID: "", nickname: "", make: "", model: "", year: Calendar.current.component(.year, from: Date()))
+    @State private var car: Car
     @State private var photoData: Data?
     @State private var isSaving = false
     @State private var saveErrorMessage: String?
+    private let isEditing: Bool
+
+    /// Pass `editingCar` to reuse this flow for editing an existing car —
+    /// it pre-fills every step with the car's current values and saves back
+    /// to the same document instead of creating a new one (GarageViewModel.saveCar
+    /// already updates in place when the car has an id).
+    init(viewModel: GarageViewModel, editingCar: Car? = nil) {
+        self.viewModel = viewModel
+        self.isEditing = editingCar != nil
+        _car = State(initialValue: editingCar ?? Car(
+            ownerUID: "", nickname: "", make: "", model: "",
+            year: Calendar.current.component(.year, from: Date())
+        ))
+    }
 
     var body: some View {
         NavigationView {
@@ -42,7 +56,7 @@ struct AddCarView: View {
                             }
                         }
                         FTPrimaryButton(
-                            title: step < 3 ? NSLocalizedString("general.next", comment: "") : NSLocalizedString("garage.saveCar", comment: ""),
+                            title: step < 3 ? NSLocalizedString("general.next", comment: "") : (isEditing ? NSLocalizedString("garage.saveChanges", comment: "") : NSLocalizedString("garage.saveCar", comment: "")),
                             isLoading: isSaving
                         ) {
                             if step < 3 { withAnimation { step += 1 } }
@@ -52,7 +66,7 @@ struct AddCarView: View {
                     .padding(.horizontal, 24).padding(.bottom, 32)
                 }
             }
-            .navigationTitle(NSLocalizedString("garage.addCar", comment: ""))
+            .navigationTitle(isEditing ? NSLocalizedString("garage.editCar", comment: "") : NSLocalizedString("garage.addCar", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -231,3 +245,4 @@ struct FTInputField: View {
         }
     }
 }
+
