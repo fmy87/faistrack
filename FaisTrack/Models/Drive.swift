@@ -26,8 +26,10 @@ struct Drive: Identifiable, Codable {
     var topSpeedMph: String { String(format: "%.0f mph", topSpeed * 0.621371) }
     var durationFormatted: String {
         let minutes = duration / 60
-        if minutes < 60 { return "\(minutes) min" }
-        return "\(minutes / 60)h \(minutes % 60)m"
+        if minutes < 60 {
+            return String(format: NSLocalizedString("drive.duration.minutes", comment: ""), minutes)
+        }
+        return String(format: NSLocalizedString("drive.duration.hoursMinutes", comment: ""), minutes / 60, minutes % 60)
     }
     var speedColor: SpeedColor {
         if topSpeed < 60 { return .green }
