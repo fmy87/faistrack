@@ -69,6 +69,25 @@ class TrackRaceService: NSObject, ObservableObject {
         }
     }
 
+    /// Lets the user skip GPS-based arrival detection and jump straight to
+    /// the countdown. GPS proximity to the start line can be unreliable
+    /// (weak signal near tunnels/garages, imprecise start coordinates
+    /// recorded from the original drive, etc.), so this gives a manual
+    /// fallback instead of leaving the user stuck on "head to the start line."
+    func skipToReadyToStart() {
+        guard case .navigatingToStart = state else { return }
+        state = .readyToStart
+    }
+
+    /// Lets the user manually end the race instead of relying on GPS
+    /// crossing the finish-line radius, which can be missed entirely at
+    /// driving speed if location updates land on either side of the
+    /// proximity threshold, or if the recorded finish point is imprecise.
+    func endRaceManually() {
+        guard case .racing = state else { return }
+        finishRace()
+    }
+
     /// Called when the user taps "Start" after arriving at the start line.
     func userTappedStart() {
         guard case .readyToStart = state else { return }
@@ -123,3 +142,4 @@ class TrackRaceService: NSObject, ObservableObject {
         distanceToStart = 0
     }
 }
+
