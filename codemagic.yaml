@@ -117,9 +117,15 @@ workflows:
           # CERTIFICATE_PRIVATE_KEY for --certificate-key, so unset it here too.
           unset CERTIFICATE_PRIVATE_KEY
 
+          # fetch-signing-files --create also needs a certificate private key
+          # locally to package the signing certificate, even if a valid cert
+          # already exists on Apple's side (created in the previous step).
+          # /tmp/cert_key.pem is the fresh key generated in "Prepare signing
+          # keys" and persists across steps on this build machine.
           app-store-connect fetch-signing-files \
             "$BUNDLE_ID" \
             --type IOS_APP_STORE \
+            --certificate-key @file:/tmp/cert_key.pem \
             --private-key @file:/tmp/asc_key.p8 \
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
             --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
