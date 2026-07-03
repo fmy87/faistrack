@@ -10,6 +10,7 @@ struct AuthView: View {
     var body: some View {
         ZStack {
             Color.ftBackground.ignoresSafeArea()
+            SpeedLinesBackground()
             VStack(spacing: 20) {
                 Spacer()
                 Text("FaisTrack").font(.system(size: 42, weight: .black))
