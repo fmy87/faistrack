@@ -18,8 +18,10 @@
 		26AB79374F0144D884F5BEAC /* DriveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18CCDB9EE8A43D58B325344 /* DriveDetailView.swift */; };
 		2942245D9C894AA887DB445C /* Car.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BD9D0E781E49EEBB4D8E77 /* Car.swift */; };
 		2A9C12210C194E3A8161B6A7 /* UserSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962C04FF8E5D4263B8252ABA /* UserSearchView.swift */; };
+		2BD649AF917D9956478F2835 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB408BA9F25A61225D8955 /* SettingsView.swift */; };
 		31DF0CF53A504CB0B7094EC8 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52888D24069445E6A16750A5 /* RootView.swift */; };
 		346059DD29E6447686DDE7C9 /* None in Resources */ = {isa = PBXBuildFile; fileRef = 1260ED1DF6E848A797444369; };
+		36C24728A3709ACDEE565ABD /* SpeedLinesBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D41A499B592656D29632C /* SpeedLinesBackground.swift */; };
 		3C5375B644F84030A48AA605 /* GarageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE0E2847F7444B1A098C551 /* GarageView.swift */; };
 		3DD73D13553241F699B34013 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A178CC86E20D41F88A28F19F /* OnboardingView.swift */; };
 		43B34C49FBA540278D019D0D /* CarCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A869DF880134EA6972B3B5E /* CarCardView.swift */; };
@@ -60,6 +62,7 @@
 		DC004B8896319E7E1AFC372F /* TracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9994164A22A2BBB9852771E /* TracksView.swift */; };
 		DF8849778F7039C35F93B59A /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05496C97F077B4C7CDD701 /* ProfileView.swift */; };
 		E2424F4D7DA04C25AEADD0F2 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BF4A5613304A679C499225 /* FirebaseService.swift */; };
+		E28B428ABDFA1CC66D724304 /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C4FC8952001473810C9D7 /* LocalizationManager.swift */; };
 		E9F3E58453404FACA8D15E7A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87F416F0F2046A88D8E2C58 /* User.swift */; };
 		F3634CBC888AB258996184F3 /* ManageDrivesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D43A5900955C6EC194D09 /* ManageDrivesView.swift */; };
 		F78151E13CB94A40BAF628C7 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84F9BC4EF28468C80AD35BB /* NotificationService.swift */; };
@@ -99,6 +102,7 @@
 		A178CC86E20D41F88A28F19F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OnboardingView.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		A185405498BBC8FE281BF201 /* ManageTracksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ManageTracksView.swift; path = FaisTrack/Modules/Profile/ManageTracksView.swift; sourceTree = SOURCE_ROOT; };
 		AD764AB886DC1805AD206266 /* TrackResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TrackResult.swift; path = FaisTrack/Models/TrackResult.swift; sourceTree = SOURCE_ROOT; };
+		B04C4FC8952001473810C9D7 /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocalizationManager.swift; path = FaisTrack/Services/LocalizationManager.swift; sourceTree = SOURCE_ROOT; };
 		B87F416F0F2046A88D8E2C58 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = User.swift; sourceTree = "<group>"; };
 		BCCCC5CB092D4EE3B84BC93B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C091A9B7C6214939AE4B3F51 /* Drive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Drive.swift; path = Drive.swift; sourceTree = "<group>"; };
@@ -108,6 +112,7 @@
 		C6BF4A5613304A679C499225 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FirebaseService.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		C7E28CF592D248B189E6CAEC /* FTCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FTCard.swift; path = Components/FTCard.swift; sourceTree = "<group>"; };
 		CC41065721DB4C75872B45D9 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StatsView.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		CECB408BA9F25A61225D8955 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = FaisTrack/Modules/Settings/SettingsView.swift; sourceTree = SOURCE_ROOT; };
 		CF705C9F040B459F894A64E8 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LeaderboardView.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		D18CCDB9EE8A43D58B325344 /* DriveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DriveDetailView.swift; path = DriveDetailView.swift; sourceTree = "<group>"; };
 		D2580F4C44C1475B938C8311 /* FaisTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaisTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +126,7 @@
 		E82E1472DA9B48B89905579F /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabView.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		E84F9BC4EF28468C80AD35BB /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationService.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E8F1286197734A37A2FD2FE4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E98D41A499B592656D29632C /* SpeedLinesBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SpeedLinesBackground.swift; path = FaisTrack/DesignSystem/Components/SpeedLinesBackground.swift; sourceTree = SOURCE_ROOT; };
 		EA0BE6CDB875486D8BC71F4D /* GarageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GarageViewModel.swift; path = GarageViewModel.swift; sourceTree = "<group>"; };
 		F23F3C66B46D45C89DB80A52 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = AppState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -148,6 +154,7 @@
 				60693DE6183C4EAD9353A5AC /* Statistics */,
 				453F4B028E5E20EA6C12666F /* Tracks */,
 				3F3C4DCC9B133E183A31A726 /* Profile */,
+				A8574B57B316EBEF699D7153 /* Settings */,
 			);
 			name = Modules;
 			path = Modules;
@@ -292,9 +299,19 @@
 				76C781CC8A1E416FB07FA782 /* StoreKitService.swift */,
 				537648BB94ADB4C179ECC0EA /* PolylineCodec.swift */,
 				044C4E91AE08D001F38BB7CE /* TrackRaceService.swift */,
+				B04C4FC8952001473810C9D7 /* LocalizationManager.swift */,
 			);
 			name = Services;
 			path = Services;
+			sourceTree = "<group>";
+		};
+		A8574B57B316EBEF699D7153 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				CECB408BA9F25A61225D8955 /* SettingsView.swift */,
+			);
+			name = Settings;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		B50C6AD05E4D4D7EB98F1AF2 /* App */ = {
@@ -344,6 +361,7 @@
 				5D934D6E0CFA4EA3926012FE /* FTButton.swift */,
 				C7E28CF592D248B189E6CAEC /* FTCard.swift */,
 				C63A504669E64DA1B79C4C8D /* FTStatBadge.swift */,
+				E98D41A499B592656D29632C /* SpeedLinesBackground.swift */,
 			);
 			name = DesignSystem;
 			path = DesignSystem;
@@ -486,6 +504,9 @@
 				DF8849778F7039C35F93B59A /* ProfileView.swift in Sources */,
 				F3634CBC888AB258996184F3 /* ManageDrivesView.swift in Sources */,
 				A0E24671B7E014E670C2D795 /* ManageTracksView.swift in Sources */,
+				E28B428ABDFA1CC66D724304 /* LocalizationManager.swift in Sources */,
+				2BD649AF917D9956478F2835 /* SettingsView.swift in Sources */,
+				36C24728A3709ACDEE565ABD /* SpeedLinesBackground.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
