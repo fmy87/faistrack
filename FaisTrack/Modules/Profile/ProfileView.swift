@@ -29,7 +29,7 @@ struct ProfileView: View {
                                     .font(.system(size: 14, weight: .medium)).foregroundColor(.ftTextSecondary)
                                 HStack {
                                     Text("@").foregroundColor(.ftTextSecondary)
-                                    TextField("username", text: $viewModel.instagramHandle)
+                                    TextField(NSLocalizedString("profile.instagramPlaceholder", comment: ""), text: $viewModel.instagramHandle)
                                         .autocapitalization(.none)
                                         .disableAutocorrection(true)
                                         .foregroundColor(.ftTextPrimary)
