@@ -202,3 +202,4 @@
 "profile.privateProfile" = "ملف شخصي خاص";
 "profile.privateProfile.desc" = "يمكن للأصدقاء المعتمدين فقط رؤية رحلاتك وإحصائياتك.";
 "profile.publicProfile.desc" = "يمكن لأي شخص العثور على ملفك الشخصي ورؤية نشاطك العام.";
+"profile.noProfile" = "لم يتم تحميل ملفك الشخصي بعد. يرجى المحاولة مرة أخرى بعد لحظات.";
