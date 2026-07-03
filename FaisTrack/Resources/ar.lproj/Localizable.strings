@@ -134,3 +134,26 @@
 "general.cancel" = "إلغاء";
 "general.share" = "مشاركة";
 "general.save" = "حفظ";
+
+// Tracks / Compete feature
+"tab.tracks" = "المسارات";
+"tracks.empty" = "لا توجد مسارات بعد. انشر إحدى رحلاتك كمسار للبدء!";
+"tracks.noAttempts" = "لا توجد محاولات بعد";
+"tracks.distance" = "المسافة";
+"tracks.bestTime" = "أفضل وقت";
+"tracks.attempts" = "المحاولات";
+"tracks.compete" = "التنافس";
+"tracks.leaderboard" = "لوحة المتصدرين";
+"tracks.defaultName" = "مسار بدون اسم";
+"drive.publishTrack" = "نشر كمسار";
+"drive.trackPublished" = "تم النشر كمسار";
+"compete.locating" = "جارٍ تحديد موقعك…";
+"compete.headToStart" = "توجه إلى خط البداية";
+"compete.distanceAway" = "%d م متبقية";
+"compete.arrived" = "لقد وصلت إلى خط البداية!";
+"compete.start" = "ابدأ";
+"compete.distanceToFinish" = "%d م حتى النهاية";
+"compete.finished" = "انتهى!";
+"compete.newRecord" = "رقم قياسي جديد للمسار!";
+"compete.comparedToBest" = "الرقم القياسي للمسار: %.1fث";
+"general.done" = "تم";
