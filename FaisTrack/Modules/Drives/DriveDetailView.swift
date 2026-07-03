@@ -97,6 +97,15 @@ struct DriveDetailView: View {
         updated.isPassenger.toggle()
         do {
             try await FirebaseService.shared.saveDrive(updated, uid: uid)
+            // Keep the leaderboard consistent with the reclassification —
+            // otherwise a drive counted while marked "driving" would keep
+            // inflating the user's leaderboard numbers even after being
+            // corrected to "passenger", or vice versa.
+            if updated.isPassenger {
+                await LeaderboardService.shared.reverseContribution(drive: updated, uid: uid)
+            } else {
+                await LeaderboardService.shared.updateLeaderboard(drive: updated, uid: uid)
+            }
             drive = updated
         } catch {
             // Leave the drive's role unchanged in the UI if the save failed,
@@ -122,4 +131,5 @@ struct DriveDetailView: View {
         isPublishing = false
     }
 }
+
 
