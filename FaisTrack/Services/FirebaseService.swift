@@ -65,6 +65,11 @@ class FirebaseService {
         return snapshot.documents.compactMap { try? $0.data(as: Drive.self) }
     }
 
+    func deleteDrive(driveId: String, uid: String) async throws {
+        try await db.collection("users").document(uid)
+            .collection("drives").document(driveId).delete()
+    }
+
     // MARK: - Tracks
     /// Publishes a drive's recorded route as a competable Track. The start
     /// and end points come from the decoded polyline (the drive model only
@@ -131,6 +136,14 @@ class FirebaseService {
             .limit(to: limit)
             .getDocuments()
         return snapshot.documents.compactMap { try? $0.data(as: TrackResult.self) }
+    }
+
+    /// Deletes a track. Note: this does not cascade-delete the track's
+    /// "results" subcollection (Firestore doesn't do this automatically for
+    /// client SDKs) — those documents become orphaned but harmless. A Cloud
+    /// Function could clean these up later if it becomes worth the cost.
+    func deleteTrack(trackId: String) async throws {
+        try await db.collection("tracks").document(trackId).delete()
     }
 
     // MARK: - Photo Upload (disabled until Firebase Storage is enabled on Blaze plan)
