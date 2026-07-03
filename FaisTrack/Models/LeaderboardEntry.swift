@@ -18,6 +18,7 @@ enum LeaderboardMetric: String, CaseIterable, Codable {
     case avgSpeed = "avgSpeed"
     case hours = "hours"
     case drives = "drives"
+    case longest = "longest"
 
     var displayName: String {
         switch self {
@@ -26,6 +27,7 @@ enum LeaderboardMetric: String, CaseIterable, Codable {
         case .avgSpeed: return NSLocalizedString("leaderboard.avgSpeed", comment: "")
         case .hours: return NSLocalizedString("leaderboard.hours", comment: "")
         case .drives: return NSLocalizedString("leaderboard.drives", comment: "")
+        case .longest: return NSLocalizedString("leaderboard.longest", comment: "")
         }
     }
 }
