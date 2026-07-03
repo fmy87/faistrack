@@ -1,6 +1,12 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @ObservedObject private var driveDetection = DriveDetectionService.shared
+    // Lets a minimize tap hide the live HUD without touching the actual
+    // isDriving state that drives real tracking — the HUD reappears
+    // automatically the next time a drive starts.
+    @State private var showLiveDriveOverride = true
+
     var body: some View {
         TabView {
             DrivesView()
@@ -42,5 +48,15 @@ struct MainTabView: View {
             LocationService.shared.startUpdating()
             DriveDetectionService.shared.startMonitoring()
         }
+        .fullScreenCover(isPresented: Binding(
+            get: { driveDetection.isDriving && showLiveDriveOverride },
+            set: { newValue in if !newValue { showLiveDriveOverride = false } }
+        )) {
+            LiveDriveView(onMinimize: { showLiveDriveOverride = false })
+        }
+        .onChange(of: driveDetection.isDriving) { isDriving in
+            if isDriving { showLiveDriveOverride = true }
+        }
     }
 }
+
