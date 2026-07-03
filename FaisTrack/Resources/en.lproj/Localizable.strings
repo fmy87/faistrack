@@ -311,3 +311,18 @@
 "store.proSyncError" = "Your purchase was successful, but we couldn't sync your Pro status yet. It'll sync automatically next time you're online.";
 "stats.safetyScore" = "Safety Score";
 "stats.safetyScore.trend" = "Recent drives";
+
+
+// MARK: - Live Drive HUD redesign (speedometer gauge)
+"liveDrive.speedTab" = "Speed";
+"liveDrive.mapTab" = "Map";
+"liveDrive.endDrive" = "End Drive";
+"liveDrive.avg" = "Avg";
+"liveDrive.top" = "Top";
+"liveDrive.distanceShort" = "Distance";
+"liveDrive.altitude" = "Altitude";
+"liveDrive.moving" = "Moving";
+"liveDrive.stopped" = "Stopped";
+"liveDrive.ghost" = "Ghost";
+"liveDrive.driver" = "Driver";
+"liveDrive.passenger" = "Passenger";
