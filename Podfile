@@ -12,7 +12,6 @@ target 'FaisTrack' do
   # Google Sign In
   pod 'GoogleSignIn'
 
-  # Google Maps
-  pod 'GoogleMaps'
-  pod 'GooglePlaces'
+  # Maps: using Apple's native MapKit instead of Google Maps SDK,
+  # so no Maps-related pods or API keys are required.
 end
