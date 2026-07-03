@@ -33,6 +33,13 @@ class AuthService: NSObject, ObservableObject {
             fullName: credential.fullName
         )
         try await Auth.auth().signIn(with: firebaseCredential)
+
+        // Apple only provides fullName on the very first sign-in ever, which
+        // is exactly when we need it to create the profile document.
+        let name = [credential.fullName?.givenName, credential.fullName?.familyName]
+            .compactMap { $0 }
+            .joined(separator: " ")
+        await createProfileIfNeeded(fallbackName: name)
     }
 
     func prepareAppleSignIn() -> String {
@@ -59,6 +66,21 @@ class AuthService: NSObject, ObservableObject {
             accessToken: result.user.accessToken.tokenString
         )
         try await Auth.auth().signIn(with: credential)
+        await createProfileIfNeeded(fallbackName: result.user.profile?.name ?? "")
+    }
+
+    /// Creates the Firestore user profile document on first sign-in.
+    /// This used to never happen at all — see FirebaseService.ensureUserProfile.
+    /// Failure here doesn't block sign-in (the user is still authenticated);
+    /// ProfileView also self-heals this on next load as a safety net.
+    private func createProfileIfNeeded(fallbackName: String) async {
+        guard let firebaseUser = Auth.auth().currentUser else { return }
+        let name = firebaseUser.displayName?.isEmpty == false ? firebaseUser.displayName! : fallbackName
+        _ = try? await FirebaseService.shared.ensureUserProfile(
+            uid: firebaseUser.uid,
+            name: name,
+            email: firebaseUser.email
+        )
     }
 
     // MARK: - Handle Google Sign-In URL redirect
