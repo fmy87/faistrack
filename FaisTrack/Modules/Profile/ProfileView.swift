@@ -173,10 +173,24 @@ class ProfileViewModel: ObservableObject {
     }
 
     func saveInstagram() async {
-        guard var user = user else { errorMessage = NSLocalizedString("profile.noProfile", comment: ""); return }
         isSaving = true
         saveConfirmed = false
         errorMessage = nil
+
+        // The profile is loaded asynchronously via .task { load() } when this
+        // view appears. If the user types and taps Save before that request
+        // finishes, `user` is still nil here — previously this failed
+        // permanently with "profile not loaded" even though the profile does
+        // exist (or is about to). Try loading it once now instead of giving up.
+        if user == nil {
+            await load()
+        }
+
+        guard var user = user else {
+            errorMessage = NSLocalizedString("profile.noProfile", comment: "")
+            isSaving = false
+            return
+        }
         user.instagramHandle = instagramHandle
         do {
             try await FirebaseService.shared.saveUser(user)
@@ -203,3 +217,4 @@ class ProfileViewModel: ObservableObject {
         }
     }
 }
+
