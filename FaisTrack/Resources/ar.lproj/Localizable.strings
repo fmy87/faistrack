@@ -277,3 +277,13 @@
 "stats.shareText" = "لقد قدت %@ حتى الآن على فايس تراك! 🏁";
 "leaderboard.longest" = "الأطول";
 "leaderboard.yourRank" = "أنت";
+
+
+// MARK: - Recap, vehicle breakdown, passenger mode
+"stats.recapBanner.title" = "ملخص %@ الخاص بك جاهز";
+"stats.recapBanner.subtitle" = "اضغط للعرض";
+"stats.distanceByVehicle" = "المسافة حسب المركبة";
+"stats.pb.passengerPrincess" = "أميرة المقعد الأمامي";
+"stats.pb.passengerPrincess.sub" = "الأميال المسجّلة كراكب";
+"drive.markAsPassenger" = "كنت راكبًا وليس السائق";
+"drive.wasPassengerConfirmed" = "تم التحديد كراكب";
