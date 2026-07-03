@@ -171,3 +171,30 @@
 "profile.manageTracks" = "إدارة مساراتي";
 "profile.signOut" = "تسجيل الخروج";
 "profile.signOutConfirm" = "هل أنت متأكد أنك تريد تسجيل الخروج؟";
+
+// Error messages
+"auth.error.invalidCredential" = "بيانات اعتماد غير صالحة. يرجى محاولة تسجيل الدخول مرة أخرى.";
+"auth.error.userNotFound" = "المستخدم غير موجود.";
+"auth.error.missingClientID" = "تسجيل الدخول عبر Google غير مُعدّ بشكل صحيح. يرجى المحاولة لاحقاً.";
+"firebase.error.storageNotEnabled" = "سيتوفر رفع الصور في تحديث قادم.";
+"firebase.error.invalidTrack" = "هذه الرحلة لا تحتوي على مسار صالح لنشره كمسار تنافسي.";
+"general.defaultUsername" = "سائق";
+
+// Garage placeholders and units
+"garage.nicknamePlaceholder" = "مثال: الوحش";
+"garage.makePlaceholder" = "مثال: نيسان";
+"garage.modelPlaceholder" = "مثال: 350Z";
+"garage.engineSizePlaceholder" = "مثال: 3.5L";
+"garage.hpPlaceholder" = "مثال: 300";
+"garage.torquePlaceholder" = "مثال: 400 نيوتن متر";
+"garage.suspensionPlaceholder" = "مثال: مساعدات KW";
+"garage.wheelsPlaceholder" = "مثال: جنطات 19 بوصة";
+"garage.hpUnit" = "حصان";
+"garage.torqueUnit" = "نيوتن.م";
+
+// Profile
+"profile.instagramPlaceholder" = "اسم المستخدم";
+
+// Duration formatting
+"drive.duration.minutes" = "%d دقيقة";
+"drive.duration.hoursMinutes" = "%dس %dد";
