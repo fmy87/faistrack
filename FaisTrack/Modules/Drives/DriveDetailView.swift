@@ -72,7 +72,8 @@ struct DriveDetailView: View {
         isPublishing = true
         publishError = nil
         do {
-            let username = (try? await FirebaseService.shared.getUser(uid: uid))?.username ?? "Driver"
+            let username = (try? await FirebaseService.shared.getUser(uid: uid))?.username
+                ?? NSLocalizedString("general.defaultUsername", comment: "")
             let id = try await FirebaseService.shared.publishTrack(
                 from: drive, coordinates: routeCoordinates, ownerUID: uid, ownerUsername: username
             )
