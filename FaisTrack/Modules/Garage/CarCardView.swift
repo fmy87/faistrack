@@ -36,7 +36,7 @@ struct CarCardView: View {
                     if let hp = car.horsepower {
                         HStack(spacing: 4) {
                             Image(systemName: "bolt.fill").font(.caption).foregroundColor(.ftAccentOrange)
-                            Text("\(hp) hp").font(.system(size: 13)).foregroundColor(.ftTextSecondary)
+                            Text("\(hp) \(NSLocalizedString("garage.hpUnit", comment: ""))").font(.system(size: 13)).foregroundColor(.ftTextSecondary)
                         }
                     }
                 }
