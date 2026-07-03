@@ -336,6 +336,36 @@ class FirebaseService {
         try await userRef.delete()
     }
 
+    // MARK: - Live driving status
+    /// Deliberately a separate top-level collection rather than fields on
+    /// `users/{uid}` — that document's security rule only lets the owner
+    /// read/write it at all, and loosening that just for these two fields
+    /// would mean touching a rule that everything else depends on. A
+    /// dedicated collection keeps the "friends can read this, only I can
+    /// write it" rule scoped to exactly the data it's meant for.
+    func updateLiveStatus(uid: String, isDriving: Bool) async {
+        try? await db.collection("liveStatus").document(uid).setData([
+            "uid": uid,
+            "isDriving": isDriving,
+            "updatedAt": Timestamp()
+        ], merge: true)
+    }
+
+    /// Firestore's `in` operator caps at 30 values and throws on an empty
+    /// array — both handled here so callers can just pass a friends list
+    /// straight through regardless of size.
+    func getFriendsLiveStatus(friendUIDs: [String]) async throws -> [String: Bool] {
+        guard !friendUIDs.isEmpty else { return [:] }
+        let snapshot = try await db.collection("liveStatus")
+            .whereField(FieldPath.documentID(), in: Array(friendUIDs.prefix(30)))
+            .getDocuments()
+        var result: [String: Bool] = [:]
+        for doc in snapshot.documents {
+            result[doc.documentID] = doc.data()["isDriving"] as? Bool ?? false
+        }
+        return result
+    }
+
     // MARK: - Photo Upload (disabled until Firebase Storage is enabled on Blaze plan)
     func uploadCarPhoto(uid: String, carId: String, imageData: Data) async throws -> String {
         // Storage requires Blaze plan — store photo locally for now
@@ -356,5 +386,6 @@ enum FirebaseServiceError: LocalizedError {
         }
     }
 }
+
 
 
