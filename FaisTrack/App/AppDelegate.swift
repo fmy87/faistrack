@@ -9,7 +9,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
-        GMSServices.provideAPIKey("REPLACE_WITH_GOOGLE_MAPS_API_KEY")
+
+        if let mapsAPIKey = Bundle.main.object(forInfoDictionaryKey: "GMSApiKey") as? String,
+           !mapsAPIKey.isEmpty {
+            GMSServices.provideAPIKey(mapsAPIKey)
+        } else {
+            print("Warning: Google Maps API key not configured (GMSApiKey missing from Info.plist). Map features will not work.")
+        }
+
         UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
         application.registerForRemoteNotifications()
