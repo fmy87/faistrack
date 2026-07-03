@@ -111,6 +111,12 @@ workflows:
 
       - name: Fetch or create provisioning profile
         script: |
+          # Same auto-detection issue as the cert step: each Codemagic script
+          # step runs in its own fresh shell, so unset from a previous step
+          # doesn't carry over. fetch-signing-files also auto-detects
+          # CERTIFICATE_PRIVATE_KEY for --certificate-key, so unset it here too.
+          unset CERTIFICATE_PRIVATE_KEY
+
           app-store-connect fetch-signing-files \
             "$BUNDLE_ID" \
             --type IOS_APP_STORE \
