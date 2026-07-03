@@ -16,6 +16,42 @@ class FirebaseService {
         return try doc.data(as: FTUser.self)
     }
 
+    /// Creates a Firestore profile document for this uid if one doesn't
+    /// already exist. Previously nothing in the app ever called this —
+    /// after signing in with Apple/Google, no `users/{uid}` document was
+    /// ever created, so every profile read returned nil forever (breaking
+    /// Instagram saving, leaderboard entries, and anywhere a username was
+    /// looked up).
+    func ensureUserProfile(uid: String, name: String, email: String?) async throws -> FTUser {
+        if let existing = try await getUser(uid: uid) {
+            return existing
+        }
+        let seed = name.isEmpty ? (email ?? "driver") : name
+        let newUser = FTUser(
+            uid: uid,
+            name: name.isEmpty ? "Driver" : name,
+            username: Self.generateUsername(from: seed),
+            email: email,
+            referralCode: Self.generateReferralCode()
+        )
+        try await saveUser(newUser)
+        return newUser
+    }
+
+    private static func generateUsername(from seed: String) -> String {
+        let base = seed.lowercased()
+            .components(separatedBy: CharacterSet.alphanumerics.inverted)
+            .joined()
+        let trimmedBase = String(base.prefix(12))
+        let suffix = String(Int.random(in: 1000...9999))
+        return trimmedBase.isEmpty ? "driver\(suffix)" : "\(trimmedBase)\(suffix)"
+    }
+
+    private static func generateReferralCode() -> String {
+        let letters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789" // no ambiguous chars (0/O, 1/I)
+        return String((0..<6).map { _ in letters.randomElement()! })
+    }
+
     // MARK: - Cars
     func saveCar(_ car: Car, uid: String) async throws {
         let ref = car.id == nil
