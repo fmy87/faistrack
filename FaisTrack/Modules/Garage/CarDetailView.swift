@@ -4,58 +4,67 @@ struct CarDetailView: View {
     let car: Car
     @ObservedObject var viewModel: GarageViewModel
     @State private var showShare = false
+    @State private var showEdit = false
+
+    /// Looks up the latest version of this car from the view model so that
+    /// edits made via the Edit sheet (which calls GarageViewModel.saveCar,
+    /// then reloads viewModel.cars) are reflected immediately here, instead
+    /// of this screen staying stuck on the stale snapshot it was pushed with.
+    private var currentCar: Car {
+        viewModel.cars.first(where: { $0.id != nil && $0.id == car.id }) ?? car
+    }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                if let url = car.photoURL, let imageURL = URL(string: url) {
+                if let url = currentCar.photoURL, let imageURL = URL(string: url) {
                     AsyncImage(url: imageURL) { img in img.resizable().scaledToFill() }
                     placeholder: { Color.ftCard }
                     .frame(maxWidth: .infinity).frame(height: 220).cornerRadius(16)
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(car.displayName).font(.system(size: 28, weight: .black))
-                    Text("\(car.year) \(car.make) \(car.model)")
+                    Text(currentCar.displayName).font(.system(size: 28, weight: .black))
+                    Text("\(currentCar.year) \(currentCar.make) \(currentCar.model)")
                         .foregroundColor(.ftTextSecondary)
                 }
 
-                if let hp = car.horsepower {
+                if let hp = currentCar.horsepower {
                     FTCard {
                         HStack {
                             FTStatBadge(value: "\(hp)", label: NSLocalizedString("garage.hpUnit", comment: ""), color: .ftAccent)
                             Divider()
-                            if let torque = car.torque {
+                            if let torque = currentCar.torque {
                                 FTStatBadge(value: "\(torque)", label: NSLocalizedString("garage.torqueUnit", comment: ""), color: .ftAccentOrange)
                                 Divider()
                             }
-                            if let engine = car.engineSize {
+                            if let engine = currentCar.engineSize {
                                 FTStatBadge(value: engine, label: NSLocalizedString("garage.engine", comment: ""))
                             }
                         }
                     }
                 }
 
-                if car.isTurbo || car.isSupercharged || car.suspensionNotes != nil || car.wheels != nil {
+                if currentCar.isTurbo || currentCar.isSupercharged || currentCar.suspensionNotes != nil || currentCar.wheels != nil {
                     FTCard {
                         VStack(alignment: .leading, spacing: 12) {
                             Text(NSLocalizedString("garage.mods", comment: ""))
                                 .font(.system(size: 16, weight: .bold))
-                            if car.isTurbo { ModTag(label: NSLocalizedString("garage.turbo", comment: "")) }
-                            if car.isSupercharged { ModTag(label: NSLocalizedString("garage.supercharged", comment: "")) }
-                            if let susp = car.suspensionNotes { ModTag(label: susp) }
-                            if let wheels = car.wheels { ModTag(label: wheels) }
+                            if currentCar.isTurbo { ModTag(label: NSLocalizedString("garage.turbo", comment: "")) }
+                            if currentCar.isSupercharged { ModTag(label: NSLocalizedString("garage.supercharged", comment: "")) }
+                            if let susp = currentCar.suspensionNotes { ModTag(label: susp) }
+                            if let wheels = currentCar.wheels { ModTag(label: wheels) }
                         }
                     }
                 }
 
-                FTPrimaryButton(title: car.isActive ?
+                FTPrimaryButton(title: currentCar.isActive ?
                     NSLocalizedString("garage.active", comment: "") :
                     NSLocalizedString("garage.setActive", comment: "")) {
-                    viewModel.setActive(car)
+                    viewModel.setActive(currentCar)
                 }
-                .disabled(car.isActive)
-                .opacity(car.isActive ? 0.5 : 1)
+                .disabled(currentCar.isActive)
+                .opacity(currentCar.isActive ? 0.5 : 1)
 
                 FTSecondaryButton(title: NSLocalizedString("garage.shareCard", comment: "")) {
                     showShare = true
@@ -64,9 +73,15 @@ struct CarDetailView: View {
             .padding(20)
         }
         .background(Color.ftBackground.ignoresSafeArea())
-        .navigationTitle(car.displayName)
+        .navigationTitle(currentCar.displayName)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showShare) { ShareCarCardView(car: car) }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(NSLocalizedString("garage.edit", comment: "")) { showEdit = true }
+            }
+        }
+        .sheet(isPresented: $showShare) { ShareCarCardView(car: currentCar) }
+        .sheet(isPresented: $showEdit) { AddCarView(viewModel: viewModel, editingCar: currentCar) }
     }
 }
 
