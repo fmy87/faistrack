@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		08D16BAE46B544F697FCECB1 /* ProPaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953C603DF4FC422991B10BAA /* ProPaywallView.swift */; };
 		09124B2C88DC9FB4BB031D5C /* TrackRaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044C4E91AE08D001F38BB7CE /* TrackRaceService.swift */; };
+		830BE33AA5A8476FBCF87706 /* TrackCreationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113F071A06F49838B6E1216 /* TrackCreationService.swift */; };
+		99E0444C943645579E595227 /* CreateTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE07B8E52734A1EAD31F8B4 /* CreateTrackView.swift */; };
 		0A19A978F1FB4C869335FCB6 /* ShareCarCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7CF4BEB818490998830CD0 /* ShareCarCardView.swift */; };
 		10D4D19C641F4AA9A1465663 /* PermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3F63FFCD9D487990F74088 /* PermissionsView.swift */; };
 		134BB3B04098438BB86CC736 /* CarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B50A4546A634809AA6AD452 /* CarDetailView.swift */; };
@@ -70,6 +72,8 @@
 
 /* Begin PBXFileReference section */
 		044C4E91AE08D001F38BB7CE /* TrackRaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TrackRaceService.swift; path = FaisTrack/Services/TrackRaceService.swift; sourceTree = SOURCE_ROOT; };
+		1113F071A06F49838B6E1216 /* TrackCreationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TrackCreationService.swift; path = FaisTrack/Services/TrackCreationService.swift; sourceTree = SOURCE_ROOT; };
+		4CE07B8E52734A1EAD31F8B4 /* CreateTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreateTrackView.swift; path = FaisTrack/Modules/Tracks/CreateTrackView.swift; sourceTree = SOURCE_ROOT; };
 		0B50A4546A634809AA6AD452 /* CarDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CarDetailView.swift; path = CarDetailView.swift; sourceTree = "<group>"; };
 		0D664A03A5ABDB32B1DB0616 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Track.swift; path = FaisTrack/Models/Track.swift; sourceTree = SOURCE_ROOT; };
 		114EF0F2E200440F8D8A3D79 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthView.swift; path = AuthView.swift; sourceTree = "<group>"; };
@@ -200,6 +204,7 @@
 				D9994164A22A2BBB9852771E /* TracksView.swift */,
 				6C294CE588E615E815964EF5 /* TrackDetailView.swift */,
 				51EC40558ECB28745AFDA98F /* CompeteView.swift */,
+				4CE07B8E52734A1EAD31F8B4 /* CreateTrackView.swift */,
 			);
 			name = Tracks;
 			path = Tracks;
@@ -299,6 +304,7 @@
 				76C781CC8A1E416FB07FA782 /* StoreKitService.swift */,
 				537648BB94ADB4C179ECC0EA /* PolylineCodec.swift */,
 				044C4E91AE08D001F38BB7CE /* TrackRaceService.swift */,
+				1113F071A06F49838B6E1216 /* TrackCreationService.swift */,
 				B04C4FC8952001473810C9D7 /* LocalizationManager.swift */,
 			);
 			name = Services;
@@ -497,6 +503,8 @@
 				56AB434389C2AC8B85815555 /* Track.swift in Sources */,
 				B9E141268CB86CE45047A700 /* TrackResult.swift in Sources */,
 				09124B2C88DC9FB4BB031D5C /* TrackRaceService.swift in Sources */,
+				830BE33AA5A8476FBCF87706 /* TrackCreationService.swift in Sources */,
+				99E0444C943645579E595227 /* CreateTrackView.swift in Sources */,
 				A6B04BCEA198DE903E2CBB72 /* TracksOverviewMapView.swift in Sources */,
 				DC004B8896319E7E1AFC372F /* TracksView.swift in Sources */,
 				92764D9182A65359A47D21D8 /* TrackDetailView.swift in Sources */,
@@ -629,3 +637,4 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
