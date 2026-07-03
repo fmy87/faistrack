@@ -5,6 +5,11 @@ class StoreKitService: ObservableObject {
     static let shared = StoreKitService()
     @Published var products: [Product] = []
     @Published var isPro: Bool = false
+    /// Set when the purchase succeeded with Apple but the Firestore write
+    /// recording it failed even after a retry — surfaced so the paywall UI
+    /// can tell the person their purchase went through and will sync
+    /// shortly, rather than them wondering if they were charged for nothing.
+    @Published var proSyncError: String?
 
     let productIDs = [
         "com.faistrack.app.pro.weekly",
@@ -40,11 +45,30 @@ class StoreKitService: ObservableObject {
         }
     }
 
+    /// The App Store transaction is always the real source of truth for
+    /// entitlement (StoreKit re-verifies it locally every launch), so
+    /// `isPro` is set immediately regardless of Firestore. But other parts
+    /// of the app (leaderboards, another device, a future web dashboard)
+    /// only know about Pro status via the Firestore field — previously a
+    /// failed write here was swallowed with `try?`, so someone could pay,
+    /// see Pro features unlock, and still show as non-Pro everywhere else
+    /// that reads from Firestore. This retries once and surfaces the error
+    /// if it still fails, instead of pretending it succeeded.
     @MainActor
     private func updateProStatus(expiry: Date?) async {
         isPro = true
+        proSyncError = nil
         guard let uid = AuthService.shared.currentUser?.uid, let expiry = expiry else { return }
-        try? await FirebaseService.shared.db.collection("users").document(uid)
-            .updateData(["isPro": true, "proExpiry": Timestamp(date: expiry)])
+        let data: [String: Any] = ["isPro": true, "proExpiry": Timestamp(date: expiry)]
+        do {
+            try await FirebaseService.shared.db.collection("users").document(uid).updateData(data)
+        } catch {
+            do {
+                try await FirebaseService.shared.db.collection("users").document(uid).updateData(data)
+            } catch {
+                proSyncError = NSLocalizedString("store.proSyncError", comment: "")
+            }
+        }
     }
 }
+
