@@ -30,7 +30,11 @@
 "safety.rule2" = "Use a proper phone mount if you need to view the app.";
 "safety.rule3" = "Never hold or interact with your phone while driving.";
 "safety.rule4" = "FaisTrack does not condone racing or illegal road behavior.";
-"safety.agree" = "I acknowledge the safety guidelines and agree to the Terms of Service and Privacy Policy.";
+"safety.rule5" = "You use FaisTrack, including any racing or timed track features, entirely at your own risk.";
+"safety.rule6" = "FaisTrack and its developer are not liable for any accidents, injuries, damages, or losses arising from use of the app.";
+"safety.rule7" = "You are solely responsible for complying with all traffic laws and regulations; FaisTrack is not liable for any violations, fines, or citations.";
+"safety.rule8" = "By using this app, you release FaisTrack and its developer from all liability related to your driving and any incidents that occur.";
+"safety.agree" = "I have read and agree to these safety rules. I understand that I use FaisTrack entirely at my own risk, and that FaisTrack and its developer bear no responsibility or liability for any accident, incident, injury, damage, or violation of law that may occur while using this app.";
 "safety.continue" = "I Agree & Continue";
 
 /* Permissions */
