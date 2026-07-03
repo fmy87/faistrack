@@ -37,7 +37,7 @@ struct FriendsView: View {
                         if !viewModel.friends.isEmpty {
                             Section(NSLocalizedString("friends.myFriends", comment: "")) {
                                 ForEach(viewModel.friends) { friend in
-                                    FriendRow(friend: friend)
+                                    FriendRow(friend: friend, isDriving: viewModel.liveStatuses[friend.uid] == true)
                                         .listRowBackground(Color.ftCard)
                                 }
                                 .onDelete { offsets in
@@ -57,7 +57,11 @@ struct FriendsView: View {
                     }
                 }
             }
-            .task { await viewModel.load() }
+            .task {
+                await viewModel.load()
+                await viewModel.startLivePolling()
+            }
+            .onDisappear { viewModel.stopLivePolling() }
         }
         .sheet(isPresented: $showSearch, onDismiss: { Task { await viewModel.load() } }) {
             UserSearchView()
@@ -67,11 +71,26 @@ struct FriendsView: View {
 
 private struct FriendRow: View {
     let friend: Friend
+    let isDriving: Bool
     var body: some View {
         HStack {
-            Circle().fill(Color.ftAccent.opacity(0.25)).frame(width: 36, height: 36)
-                .overlay(Text(String(friend.username.prefix(1)).uppercased()).font(.system(size: 14, weight: .bold)))
-            Text(friend.username).font(.system(size: 15, weight: .semibold))
+            ZStack(alignment: .bottomTrailing) {
+                Circle().fill(Color.ftAccent.opacity(0.25)).frame(width: 36, height: 36)
+                    .overlay(Text(String(friend.username.prefix(1)).uppercased()).font(.system(size: 14, weight: .bold)))
+                if isDriving {
+                    Circle().fill(Color.speedGreen)
+                        .frame(width: 12, height: 12)
+                        .overlay(Circle().stroke(Color.ftCard, lineWidth: 2))
+                }
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                Text(friend.username).font(.system(size: 15, weight: .semibold))
+                if isDriving {
+                    Label(NSLocalizedString("friends.drivingNow", comment: ""), systemImage: "car.fill")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundColor(.speedGreen)
+                }
+            }
             Spacer()
         }.padding(.vertical, 4)
     }
@@ -101,7 +120,10 @@ private struct FriendRequestRow: View {
 class FriendsViewModel: ObservableObject {
     @Published var friends: [Friend] = []
     @Published var requests: [FriendRequest] = []
+    @Published var liveStatuses: [String: Bool] = [:]
     @Published var isLoading = true
+
+    private var pollTask: Task<Void, Never>?
 
     func load() async {
         guard let uid = AuthService.shared.currentUser?.uid else { isLoading = false; return }
@@ -110,6 +132,31 @@ class FriendsViewModel: ObservableObject {
         friends = (try? await f) ?? []
         requests = (try? await r) ?? []
         isLoading = false
+    }
+
+    /// There's no persistent Firestore listener infrastructure elsewhere in
+    /// this app (everything else is one-shot fetch), so this keeps that
+    /// same pattern rather than introducing a new architecture just for
+    /// this feature — polls every 20s while the Friends tab is visible,
+    /// stops the moment it isn't (see FriendsView.onDisappear).
+    func startLivePolling() async {
+        pollTask?.cancel()
+        pollTask = Task {
+            while !Task.isCancelled {
+                await refreshLiveStatuses()
+                try? await Task.sleep(nanoseconds: 20_000_000_000)
+            }
+        }
+    }
+
+    func stopLivePolling() {
+        pollTask?.cancel()
+    }
+
+    func refreshLiveStatuses() async {
+        let uids = friends.map(\.uid)
+        guard !uids.isEmpty else { return }
+        liveStatuses = (try? await FirebaseService.shared.getFriendsLiveStatus(friendUIDs: uids)) ?? [:]
     }
 
     func accept(_ request: FriendRequest) async {
@@ -141,3 +188,4 @@ class FriendsViewModel: ObservableObject {
         }
     }
 }
+
