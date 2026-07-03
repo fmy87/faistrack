@@ -294,3 +294,20 @@
 "liveDrive.recording" = "جارٍ تسجيل الرحلة";
 "liveDrive.elapsed" = "الوقت المنقضي";
 "liveDrive.distance" = "المسافة";
+
+
+// MARK: - Delete account, friends system, safety score, store sync (enhancement pass)
+"profile.deleteAccount" = "حذف الحساب";
+"profile.deleteAccountConfirm" = "سيؤدي هذا إلى حذف حسابك وجميع بياناتك نهائيًا — الرحلات والسيارات والمضامير والأصدقاء. لا يمكن التراجع عن هذا.";
+"auth.error.requiresRecentLogin" = "لأسباب أمنية، الرجاء تسجيل الخروج ثم تسجيل الدخول مجددًا، ثم إعادة محاولة حذف حسابك.";
+"general.error" = "خطأ";
+"general.ok" = "حسنًا";
+"friends.requests" = "طلبات الصداقة";
+"friends.myFriends" = "أصدقائي";
+"friends.requestSent" = "تم الإرسال";
+"friends.requestReceived" = "الرد في الأصدقاء";
+"friends.alreadyFriends" = "أصدقاء";
+"friends.search.noResults" = "لم يتم العثور على مستخدمين";
+"store.proSyncError" = "تمت عملية الشراء بنجاح، لكن لم نتمكن من مزامنة حالة اشتراكك بعد. ستتم المزامنة تلقائيًا عند الاتصال بالإنترنت.";
+"stats.safetyScore" = "درجة الأمان";
+"stats.safetyScore.trend" = "الرحلات الأخيرة";
