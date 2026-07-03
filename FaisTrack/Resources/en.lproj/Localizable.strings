@@ -160,7 +160,7 @@
 "compete.distanceAway" = "%d m away";
 "compete.arrived" = "You've arrived at the start line!";
 "compete.start" = "Start";
-"compete.startManually" = "Start Now (Skip GPS)";
+"compete.startManually" = "Start Manually";
 "compete.endRace" = "End Race";
 "compete.distanceToFinish" = "%d m to finish";
 "compete.finished" = "Finished!";
