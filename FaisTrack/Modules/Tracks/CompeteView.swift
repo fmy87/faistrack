@@ -65,6 +65,15 @@ struct CompeteView: View {
                 .font(.system(size: 20, weight: .bold)).multilineTextAlignment(.center)
             Text(String(format: NSLocalizedString("compete.distanceAway", comment: ""), Int(race.distanceToStart)))
                 .font(.system(size: 32, weight: .black)).foregroundColor(.ftAccent)
+
+            // Manual fallback in case GPS proximity to the start line is
+            // slow or unreliable to trigger.
+            Button(action: { race.skipToReadyToStart() }) {
+                Text(NSLocalizedString("compete.startManually", comment: ""))
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(.ftAccent)
+            }
+
             Button(NSLocalizedString("general.cancel", comment: "")) {
                 race.reset()
                 presentationMode.wrappedValue.dismiss()
@@ -130,6 +139,18 @@ struct CompeteView: View {
                 .foregroundColor(.ftAccent)
             Text(String(format: NSLocalizedString("compete.distanceToFinish", comment: ""), Int(distanceToFinish)))
                 .font(.system(size: 16)).foregroundColor(.ftTextSecondary)
+
+            // Manual fallback in case GPS crosses the finish radius between
+            // location updates and never registers automatically.
+            Button(action: { race.endRaceManually() }) {
+                Text(NSLocalizedString("compete.endRace", comment: ""))
+                    .font(.system(size: 17, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(Color.speedRed)
+                    .cornerRadius(16)
+            }
         }
     }
 
@@ -162,3 +183,4 @@ struct CompeteView: View {
         }
     }
 }
+
