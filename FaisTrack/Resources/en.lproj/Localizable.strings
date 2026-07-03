@@ -277,3 +277,13 @@
 "stats.shareText" = "I've driven %@ so far on FaisTrack! 🏁";
 "leaderboard.longest" = "Longest";
 "leaderboard.yourRank" = "YOU";
+
+
+// MARK: - Recap, vehicle breakdown, passenger mode
+"stats.recapBanner.title" = "Your %@ Recap is Here";
+"stats.recapBanner.subtitle" = "Tap to view";
+"stats.distanceByVehicle" = "Distance by Vehicle";
+"stats.pb.passengerPrincess" = "Passenger Princess";
+"stats.pb.passengerPrincess.sub" = "Shotgun miles logged";
+"drive.markAsPassenger" = "I was a passenger, not driving";
+"drive.wasPassengerConfirmed" = "Marked as passenger";
