@@ -54,6 +54,29 @@ struct ProfileView: View {
                                     Text(NSLocalizedString("profile.saved", comment: ""))
                                         .font(.system(size: 12)).foregroundColor(.speedGreen)
                                 }
+                                if let error = viewModel.errorMessage {
+                                    Text(error).font(.system(size: 12)).foregroundColor(.speedRed)
+                                }
+                            }
+                        }
+
+                        FTCard {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Toggle(isOn: Binding(
+                                    get: { viewModel.isPrivateProfile },
+                                    set: { newValue in Task { await viewModel.setPrivateProfile(newValue) } }
+                                )) {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(NSLocalizedString("profile.privateProfile", comment: ""))
+                                            .font(.system(size: 15, weight: .semibold))
+                                        Text(viewModel.isPrivateProfile
+                                             ? NSLocalizedString("profile.privateProfile.desc", comment: "")
+                                             : NSLocalizedString("profile.publicProfile.desc", comment: ""))
+                                            .font(.system(size: 12))
+                                            .foregroundColor(.ftTextSecondary)
+                                    }
+                                }
+                                .tint(.ftAccent)
                             }
                         }
 
@@ -121,23 +144,50 @@ struct ProfileRow: View {
 class ProfileViewModel: ObservableObject {
     @Published var user: FTUser?
     @Published var instagramHandle: String = ""
+    @Published var isPrivateProfile: Bool = false
     @Published var isSaving = false
     @Published var saveConfirmed = false
+    @Published var errorMessage: String?
 
     func load() async {
         guard let uid = AuthService.shared.currentUser?.uid else { return }
-        user = try? await FirebaseService.shared.getUser(uid: uid)
-        instagramHandle = user?.instagramHandle ?? ""
+        do {
+            user = try await FirebaseService.shared.getUser(uid: uid)
+            instagramHandle = user?.instagramHandle ?? ""
+            isPrivateProfile = user?.isPrivateProfile ?? false
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
 
     func saveInstagram() async {
         guard var user = user else { return }
         isSaving = true
         saveConfirmed = false
+        errorMessage = nil
         user.instagramHandle = instagramHandle
-        try? await FirebaseService.shared.saveUser(user)
-        self.user = user
+        do {
+            try await FirebaseService.shared.saveUser(user)
+            self.user = user
+            saveConfirmed = true
+        } catch {
+            errorMessage = error.localizedDescription
+        }
         isSaving = false
-        saveConfirmed = true
+    }
+
+    func setPrivateProfile(_ value: Bool) async {
+        guard var user = user else { return }
+        let previous = isPrivateProfile
+        isPrivateProfile = value // optimistic update for a responsive toggle
+        errorMessage = nil
+        user.isPrivateProfile = value
+        do {
+            try await FirebaseService.shared.saveUser(user)
+            self.user = user
+        } catch {
+            isPrivateProfile = previous // revert on failure
+            errorMessage = error.localizedDescription
+        }
     }
 }
