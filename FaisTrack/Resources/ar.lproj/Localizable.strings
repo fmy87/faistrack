@@ -74,6 +74,7 @@
 "garage.step.specs" = "مواصفات المحرك";
 "garage.step.mods" = "التعديلات";
 "garage.step.photo" = "إضافة صورة";
+"tab.garage" = "المرآب";
 
 /* Drives */
 "drives.empty.title" = "لا توجد رحلات بعد";
@@ -157,3 +158,12 @@
 "compete.newRecord" = "رقم قياسي جديد للمسار!";
 "compete.comparedToBest" = "الرقم القياسي للمسار: %.1fث";
 "general.done" = "تم";
+
+// Profile
+"tab.profile" = "الملف الشخصي";
+"profile.instagram" = "إنستغرام";
+"profile.saved" = "تم الحفظ";
+"profile.manageDrives" = "إدارة الرحلات";
+"profile.manageTracks" = "إدارة مساراتي";
+"profile.signOut" = "تسجيل الخروج";
+"profile.signOutConfirm" = "هل أنت متأكد أنك تريد تسجيل الخروج؟";
