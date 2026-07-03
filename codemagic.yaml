@@ -77,6 +77,12 @@ workflows:
 
           # /tmp/cert_key.pem is no longer used — see "Prepare signing keys" note above.
 
+          # codemagic-cli-tools auto-detects CERTIFICATE_PRIVATE_KEY as a default
+          # value for --certificate-key even when the flag isn't passed explicitly.
+          # The stored value is corrupted (fails openssl's RSA validity check), so
+          # we must unset it here or it gets silently injected anyway.
+          unset CERTIFICATE_PRIVATE_KEY
+
           # Delete any existing IOS_DISTRIBUTION certs (ignore errors if none exist)
           app-store-connect certificates list \
             --type IOS_DISTRIBUTION \
