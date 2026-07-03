@@ -33,5 +33,14 @@ struct MainTabView: View {
                 }
         }
         .accentColor(.ftAccent)
+        .onAppear {
+            // Returning users who are already logged in skip straight to
+            // .main (see AppState.checkAuthState), bypassing PermissionsView
+            // entirely. If location/motion permission was already granted in
+            // a previous session, resume monitoring here; if not, these are
+            // safe no-ops until the user grants it via Settings.
+            LocationService.shared.startUpdating()
+            DriveDetectionService.shared.startMonitoring()
+        }
     }
 }
