@@ -153,6 +153,12 @@
 "tracks.compete" = "التنافس";
 "tracks.leaderboard" = "لوحة المتصدرين";
 "tracks.defaultName" = "مسار بدون اسم";
+"createTrack.title" = "إنشاء مضمار";
+"createTrack.explainer" = "سجّل مضمارًا جديدًا بقيادة الطريق بنفسك. اضغط ابدأ، استعد أثناء العد التنازلي، ثم انطلق — واضغط إنهاء السباق عند الوصول إلى نقطة النهاية.";
+"createTrack.startCountdown" = "ابدأ";
+"createTrack.namePlaceholder" = "اسم المضمار";
+"createTrack.save" = "حفظ المضمار";
+"createTrack.tooShort" = "هذا المضمار قصير جدًا أو لم يُسجَّل بشكل صحيح. حاول مرة أخرى بمسار أطول.";
 "drive.publishTrack" = "نشر كمسار";
 "drive.trackPublished" = "تم النشر كمسار";
 "compete.locating" = "جارٍ تحديد موقعك…";
@@ -160,7 +166,6 @@
 "compete.distanceAway" = "%d م متبقية";
 "compete.arrived" = "لقد وصلت إلى خط البداية!";
 "compete.start" = "ابدأ";
-"compete.startManually" = "ابدأ يدويًا";
 "compete.endRace" = "إنهاء السباق";
 "compete.distanceToFinish" = "%d م حتى النهاية";
 "compete.finished" = "انتهى!";
