@@ -57,24 +57,17 @@ workflows:
         script: |
           # Decode ASC API key
           echo "$APP_STORE_CONNECT_PRIVATE_KEY" | base64 --decode > /tmp/asc_key.p8
-          # Decode the persistent cert private key to a PEM file (used by later steps).
-          # Intentionally NOT re-exported back into $CERTIFICATE_PRIVATE_KEY via CM_ENV —
-          # doing so previously overwrote the base64 value with raw PEM and broke any
-          # later step that tried to base64-decode it again.
-          echo "$CERTIFICATE_PRIVATE_KEY" | base64 --decode > /tmp/cert_key.pem
 
-          # --- Safe diagnostics (no secret material printed) ---
-          echo "cert_key.pem byte count: $(wc -c < /tmp/cert_key.pem)"
-          echo "cert_key.pem line count: $(wc -l < /tmp/cert_key.pem)"
-          echo "First line: $(sed -n '1p' /tmp/cert_key.pem | cut -c1-40)"
-          echo "Last line:  $(tail -n1 /tmp/cert_key.pem | cut -c1-40)"
-          echo "openssl rsa check:"
-          openssl rsa -in /tmp/cert_key.pem -check -noout 2>&1 || true
-          echo "openssl pkey check:"
-          openssl pkey -in /tmp/cert_key.pem -noout 2>&1 || true
-          echo "openssl ec check:"
-          openssl ec -in /tmp/cert_key.pem -check -noout 2>&1 || true
-          # --- end diagnostics ---
+          # NOTE: We intentionally do NOT use $CERTIFICATE_PRIVATE_KEY anymore.
+          # Diagnostics showed the stored value decodes to a well-formed PEM
+          # (correct BEGIN/END markers, plausible byte length) but fails
+          # `openssl rsa -check` with a p*q != n error — the key bytes
+          # themselves are corrupted, not just mis-encoded. Since this
+          # workflow already deletes and recreates the distribution
+          # certificate on every build (see next step), there's no need for
+          # a persisted private key at all: we let `certificates create`
+          # generate a fresh key pair itself each run.
+
 
       - name: Setup iOS Distribution certificate
         script: |
@@ -82,9 +75,7 @@ workflows:
           KEY_ID="$APP_STORE_CONNECT_KEY_IDENTIFIER"
           ISS_ID="$APP_STORE_CONNECT_ISSUER_ID"
 
-          # /tmp/cert_key.pem was already created in the "Prepare signing keys" step.
-          # Do NOT re-decode $CERTIFICATE_PRIVATE_KEY here — that step re-exported it
-          # to CM_ENV as raw PEM content (not base64), so decoding it again fails.
+          # /tmp/cert_key.pem is no longer used — see "Prepare signing keys" note above.
 
           # Delete any existing IOS_DISTRIBUTION certs (ignore errors if none exist)
           app-store-connect certificates list \
@@ -96,10 +87,10 @@ workflows:
               --private-key $ASC_KEY --key-id "$KEY_ID" --issuer-id "$ISS_ID" \
               --ignore-not-found 2>/dev/null || true
 
-          # Create new cert — pass cert key as file reference (not inline)
+          # Create new cert — let the CLI generate a fresh private key itself
+          # (no --certificate-key), since we recreate this cert every build anyway.
           app-store-connect certificates create \
             --type IOS_DISTRIBUTION \
-            --certificate-key @file:/tmp/cert_key.pem \
             --p12-password codemagic \
             --p12-path /tmp/dist_cert.p12 \
             --private-key $ASC_KEY --key-id "$KEY_ID" --issuer-id "$ISS_ID" \
