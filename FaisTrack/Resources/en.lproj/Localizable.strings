@@ -326,3 +326,7 @@
 "liveDrive.ghost" = "Ghost";
 "liveDrive.driver" = "Driver";
 "liveDrive.passenger" = "Passenger";
+
+
+// MARK: - Live friend driving status
+"friends.drivingNow" = "Driving now";
