@@ -287,3 +287,10 @@
 "stats.pb.passengerPrincess.sub" = "Shotgun miles logged";
 "drive.markAsPassenger" = "I was a passenger, not driving";
 "drive.wasPassengerConfirmed" = "Marked as passenger";
+
+
+// MARK: - Live Drive HUD
+"liveDrive.locating" = "Locating...";
+"liveDrive.recording" = "Recording Drive";
+"liveDrive.elapsed" = "ELAPSED";
+"liveDrive.distance" = "DISTANCE";
