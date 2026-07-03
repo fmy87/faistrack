@@ -14,6 +14,7 @@ class LocationService: NSObject, ObservableObject {
         manager.distanceFilter = 10
         manager.allowsBackgroundLocationUpdates = true
         manager.pausesLocationUpdatesAutomatically = false
+        authorizationStatus = manager.authorizationStatus
     }
 
     func requestPermission() {
@@ -37,8 +38,15 @@ extension LocationService: CLLocationManagerDelegate {
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         authorizationStatus = manager.authorizationStatus
-        if manager.authorizationStatus == .authorizedAlways {
+        // Start updating for either authorization level — iOS often grants
+        // "When In Use" first even when Always was requested, only upgrading
+        // to Always later. Waiting for .authorizedAlways alone meant location
+        // detection silently never started for users on that common path.
+        switch manager.authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
             startUpdating()
+        default:
+            break
         }
     }
 }
