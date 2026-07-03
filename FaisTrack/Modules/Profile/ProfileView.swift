@@ -81,6 +81,9 @@ struct ProfileView: View {
                         }
 
                         VStack(spacing: 12) {
+                            NavigationLink(destination: SettingsView()) {
+                                ProfileRow(icon: "gearshape.fill", title: NSLocalizedString("settings.title", comment: ""))
+                            }
                             NavigationLink(destination: ManageDrivesView()) {
                                 ProfileRow(icon: "car.fill", title: NSLocalizedString("profile.manageDrives", comment: ""))
                             }
