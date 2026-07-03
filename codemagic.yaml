@@ -63,6 +63,19 @@ workflows:
           # later step that tried to base64-decode it again.
           echo "$CERTIFICATE_PRIVATE_KEY" | base64 --decode > /tmp/cert_key.pem
 
+          # --- Safe diagnostics (no secret material printed) ---
+          echo "cert_key.pem byte count: $(wc -c < /tmp/cert_key.pem)"
+          echo "cert_key.pem line count: $(wc -l < /tmp/cert_key.pem)"
+          echo "First line: $(sed -n '1p' /tmp/cert_key.pem | cut -c1-40)"
+          echo "Last line:  $(tail -n1 /tmp/cert_key.pem | cut -c1-40)"
+          echo "openssl rsa check:"
+          openssl rsa -in /tmp/cert_key.pem -check -noout 2>&1 || true
+          echo "openssl pkey check:"
+          openssl pkey -in /tmp/cert_key.pem -noout 2>&1 || true
+          echo "openssl ec check:"
+          openssl ec -in /tmp/cert_key.pem -check -noout 2>&1 || true
+          # --- end diagnostics ---
+
       - name: Setup iOS Distribution certificate
         script: |
           ASC_KEY="@file:/tmp/asc_key.p8"
