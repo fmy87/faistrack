@@ -3,6 +3,7 @@ import SwiftUI
 /// Lets the user review and delete their own recorded drives.
 struct ManageDrivesView: View {
     @StateObject private var viewModel = DrivesViewModel()
+    @State private var deleteError: String?
 
     var body: some View {
         ZStack {
@@ -28,6 +29,13 @@ struct ManageDrivesView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { EditButton() }
         .task { await viewModel.load() }
+        .alert(NSLocalizedString("general.error", comment: ""), isPresented: Binding(
+            get: { deleteError != nil }, set: { if !$0 { deleteError = nil } }
+        )) {
+            Button(NSLocalizedString("general.ok", comment: ""), role: .cancel) {}
+        } message: {
+            Text(deleteError ?? "")
+        }
     }
 
     private func delete(at offsets: IndexSet) {
@@ -37,8 +45,18 @@ struct ManageDrivesView: View {
         Task {
             for drive in toDelete {
                 guard let id = drive.id else { continue }
-                try? await FirebaseService.shared.deleteDrive(driveId: id, uid: uid)
+                do {
+                    try await FirebaseService.shared.deleteDrive(driveId: id, uid: uid)
+                } catch {
+                    // Put it back — previously a failed delete silently
+                    // vanished from the list while still existing on the
+                    // server, which could resurface later or double-count
+                    // in stats with no indication anything went wrong.
+                    viewModel.drives.append(drive)
+                    deleteError = error.localizedDescription
+                }
             }
         }
     }
 }
+
