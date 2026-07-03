@@ -5,7 +5,10 @@ struct SafetyView: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.dismiss) var dismiss
 
-    let rules = ["safety.rule1", "safety.rule2", "safety.rule3", "safety.rule4"]
+    let rules = [
+        "safety.rule1", "safety.rule2", "safety.rule3", "safety.rule4",
+        "safety.rule5", "safety.rule6", "safety.rule7", "safety.rule8"
+    ]
 
     var body: some View {
         ZStack {
@@ -15,20 +18,23 @@ struct SafetyView: View {
                     .font(.system(size: 32, weight: .bold))
                 Text(NSLocalizedString("safety.subtitle", comment: ""))
                     .foregroundColor(.ftTextSecondary)
-                FTCard {
-                    VStack(alignment: .leading, spacing: 12) {
-                        ForEach(rules, id: \.self) { rule in
-                            HStack {
-                                Image(systemName: "checkmark.circle.fill").foregroundColor(.ftAccent)
-                                Text(NSLocalizedString(rule, comment: ""))
+
+                ScrollView {
+                    FTCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            ForEach(rules, id: \.self) { rule in
+                                HStack(alignment: .top) {
+                                    Image(systemName: "checkmark.circle.fill").foregroundColor(.ftAccent)
+                                    Text(NSLocalizedString(rule, comment: ""))
+                                }
                             }
                         }
                     }
                 }
+
                 Toggle(isOn: $agreed) {
-                    Text(NSLocalizedString("safety.agree", comment: "")).font(.system(size: 14))
+                    Text(NSLocalizedString("safety.agree", comment: "")).font(.system(size: 13))
                 }
-                Spacer()
                 FTPrimaryButton(title: NSLocalizedString("safety.continue", comment: "")) {
                     dismiss()
                     // Location/notification permission prompts happen on the
