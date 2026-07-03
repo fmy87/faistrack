@@ -171,3 +171,30 @@
 "profile.manageTracks" = "Manage My Tracks";
 "profile.signOut" = "Sign Out";
 "profile.signOutConfirm" = "Are you sure you want to sign out?";
+
+// Error messages
+"auth.error.invalidCredential" = "Invalid credential. Please try signing in again.";
+"auth.error.userNotFound" = "User not found.";
+"auth.error.missingClientID" = "Google Sign-In isn't configured correctly. Please try again later.";
+"firebase.error.storageNotEnabled" = "Photo upload will be available in a future update.";
+"firebase.error.invalidTrack" = "This drive doesn't have a valid route to publish as a track.";
+"general.defaultUsername" = "Driver";
+
+// Garage placeholders and units
+"garage.nicknamePlaceholder" = "e.g. The Beast";
+"garage.makePlaceholder" = "e.g. Nissan";
+"garage.modelPlaceholder" = "e.g. 350Z";
+"garage.engineSizePlaceholder" = "e.g. 3.5L";
+"garage.hpPlaceholder" = "e.g. 300";
+"garage.torquePlaceholder" = "e.g. 400 Nm";
+"garage.suspensionPlaceholder" = "e.g. KW Coilovers";
+"garage.wheelsPlaceholder" = "e.g. 19\" Rays";
+"garage.hpUnit" = "HP";
+"garage.torqueUnit" = "Nm";
+
+// Profile
+"profile.instagramPlaceholder" = "username";
+
+// Duration formatting
+"drive.duration.minutes" = "%d min";
+"drive.duration.hoursMinutes" = "%dh %dm";
