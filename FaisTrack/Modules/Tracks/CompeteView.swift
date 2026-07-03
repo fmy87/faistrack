@@ -1,9 +1,11 @@
 import SwiftUI
+import UIKit
 
 struct CompeteView: View {
     let track: Track
     @ObservedObject private var race = TrackRaceService.shared
     @Environment(\.presentationMode) var presentationMode
+    @State private var pulseCountdown = false
 
     var body: some View {
         ZStack {
@@ -90,9 +92,35 @@ struct CompeteView: View {
     }
 
     private func countdownView(_ n: Int) -> some View {
-        Text("\(n)")
-            .font(.system(size: 96, weight: .black))
-            .foregroundColor(.ftAccent)
+        ZStack {
+            Circle()
+                .fill(countdownColor(n).opacity(0.18))
+                .frame(width: 220, height: 220)
+                .scaleEffect(pulseCountdown ? 1.12 : 0.92)
+                .animation(.easeInOut(duration: 0.45).repeatForever(autoreverses: true), value: pulseCountdown)
+            Text("\(n)")
+                .font(.system(size: 96, weight: .black))
+                .foregroundColor(countdownColor(n))
+                .id(n)
+                .transition(.scale.combined(with: .opacity))
+        }
+        .onAppear {
+            pulseCountdown = true
+            fireHaptic()
+        }
+        .onChange(of: n) { _ in
+            fireHaptic()
+        }
+    }
+
+    /// Mimics drag-racing "starting lights": red while counting down,
+    /// flashing green in the final couple of seconds before launch.
+    private func countdownColor(_ n: Int) -> Color {
+        n <= 2 ? .speedGreen : .ftAccent
+    }
+
+    private func fireHaptic() {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
 
     private func racingView(elapsed: TimeInterval, distanceToFinish: Double) -> some View {
