@@ -134,3 +134,26 @@
 "general.cancel" = "Cancel";
 "general.share" = "Share";
 "general.save" = "Save";
+
+// Tracks / Compete feature
+"tab.tracks" = "Tracks";
+"tracks.empty" = "No tracks yet. Publish a drive as a track to get started!";
+"tracks.noAttempts" = "No attempts yet";
+"tracks.distance" = "Distance";
+"tracks.bestTime" = "Best Time";
+"tracks.attempts" = "Attempts";
+"tracks.compete" = "Compete";
+"tracks.leaderboard" = "Leaderboard";
+"tracks.defaultName" = "Untitled Track";
+"drive.publishTrack" = "Publish as Track";
+"drive.trackPublished" = "Published as a track";
+"compete.locating" = "Getting your location…";
+"compete.headToStart" = "Head to the start line";
+"compete.distanceAway" = "%d m away";
+"compete.arrived" = "You've arrived at the start line!";
+"compete.start" = "Start";
+"compete.distanceToFinish" = "%d m to finish";
+"compete.finished" = "Finished!";
+"compete.newRecord" = "New track record!";
+"compete.comparedToBest" = "Track record: %.1fs";
+"general.done" = "Done";
