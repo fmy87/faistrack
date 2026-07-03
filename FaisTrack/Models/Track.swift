@@ -18,6 +18,10 @@ struct Track: Identifiable, Codable {
     var polylineEncoded: String
     var bestTime: Double?         // seconds
     var bestTimeUsername: String?
+    /// Needed (not just the username) so a Cloud Function can look up the
+    /// previous record holder's fcmToken and notify them when their record
+    /// is broken — see functions/index.js.
+    var bestTimeUid: String?
     var attemptCount: Int = 0
     var createdAt: Timestamp = Timestamp()
 
@@ -34,3 +38,4 @@ struct Track: Identifiable, Codable {
     /// Tracks must be at least this long to be published.
     static let minimumDistanceMeters: Double = 200
 }
+
