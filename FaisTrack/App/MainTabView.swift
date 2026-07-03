@@ -47,6 +47,7 @@ struct MainTabView: View {
             // safe no-ops until the user grants it via Settings.
             LocationService.shared.startUpdating()
             DriveDetectionService.shared.startMonitoring()
+            Task { await DriveDetectionService.shared.retryPendingDrives() }
         }
         .fullScreenCover(isPresented: Binding(
             get: { driveDetection.isDriving && showLiveDriveOverride },
@@ -59,4 +60,5 @@ struct MainTabView: View {
         }
     }
 }
+
 
