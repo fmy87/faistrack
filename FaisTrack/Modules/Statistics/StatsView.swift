@@ -33,6 +33,7 @@ struct StatsView: View {
                             topSpeedCard
                             fastestDriveCard
                             totalTimeCard
+                            safetyScoreCard
                             vehicleBreakdownSection
                             mostDrivenVehicleCard
                             personalBestsSection
@@ -78,6 +79,43 @@ struct StatsView: View {
             .background(LinearGradient(colors: [.blue, .ftAccent], startPoint: .leading, endPoint: .trailing))
             .cornerRadius(18)
         }
+    }
+
+    // MARK: - Safety Score
+
+    private var safetyScoreCard: some View {
+        Group {
+            if let avg = viewModel.averageSafetyScore {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(NSLocalizedString("stats.safetyScore", comment: ""))
+                        .font(.system(size: 17, weight: .semibold))
+                    HStack(alignment: .lastTextBaseline, spacing: 8) {
+                        Text("\(avg)")
+                            .font(.system(size: 40, weight: .black))
+                            .foregroundColor(safetyColor(avg))
+                        Text("/ 100").font(.system(size: 16)).foregroundColor(.ftTextSecondary)
+                    }
+                    if viewModel.safetyScoreTrend.count > 1 {
+                        HStack(alignment: .bottom, spacing: 4) {
+                            ForEach(Array(viewModel.safetyScoreTrend.enumerated()), id: \.offset) { _, score in
+                                RoundedRectangle(cornerRadius: 3)
+                                    .fill(safetyColor(score))
+                                    .frame(width: 14, height: max(6, CGFloat(score) / 100 * 44))
+                            }
+                        }
+                        .frame(height: 44, alignment: .bottom)
+                        Text(NSLocalizedString("stats.safetyScore.trend", comment: ""))
+                            .font(.system(size: 11)).foregroundColor(.ftTextSecondary)
+                    }
+                }
+            }
+        }
+    }
+
+    private func safetyColor(_ score: Int) -> Color {
+        if score >= 80 { return .speedGreen }
+        if score >= 50 { return .speedOrange }
+        return .speedRed
     }
 
     // MARK: - Distance by Vehicle
@@ -454,4 +492,5 @@ private extension Drive {
         useMetric ? String(format: "%.0f km/h", value) : String(format: "%.0f mph", value * 0.621371)
     }
 }
+
 
