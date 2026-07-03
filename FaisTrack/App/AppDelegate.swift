@@ -1,7 +1,6 @@
 import UIKit
 import Firebase
 import FirebaseMessaging
-import GoogleMaps
 import GoogleSignIn
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -9,13 +8,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
-
-        if let mapsAPIKey = Bundle.main.object(forInfoDictionaryKey: "GMSApiKey") as? String,
-           !mapsAPIKey.isEmpty {
-            GMSServices.provideAPIKey(mapsAPIKey)
-        } else {
-            print("Warning: Google Maps API key not configured (GMSApiKey missing from Info.plist). Map features will not work.")
-        }
 
         UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
