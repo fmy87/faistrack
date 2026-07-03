@@ -153,6 +153,12 @@
 "tracks.compete" = "Compete";
 "tracks.leaderboard" = "Leaderboard";
 "tracks.defaultName" = "Untitled Track";
+"createTrack.title" = "Create Track";
+"createTrack.explainer" = "Record a new track by driving the route yourself. Tap Start, get ready during the countdown, then drive — tap End Race when you reach your finish point.";
+"createTrack.startCountdown" = "Start";
+"createTrack.namePlaceholder" = "Name this track";
+"createTrack.save" = "Save Track";
+"createTrack.tooShort" = "This track is too short or wasn't recorded properly. Try again with a longer route.";
 "drive.publishTrack" = "Publish as Track";
 "drive.trackPublished" = "Published as a track";
 "compete.locating" = "Getting your location…";
@@ -160,7 +166,6 @@
 "compete.distanceAway" = "%d m away";
 "compete.arrived" = "You've arrived at the start line!";
 "compete.start" = "Start";
-"compete.startManually" = "Start Manually";
 "compete.endRace" = "End Race";
 "compete.distanceToFinish" = "%d m to finish";
 "compete.finished" = "Finished!";
