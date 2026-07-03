@@ -20,6 +20,8 @@
 "auth.tagline" = "سجّل كل رحلة، تلقائياً";
 "auth.appleSignIn" = "تسجيل الدخول بـ Apple";
 "auth.googleSignIn" = "تسجيل الدخول بـ Google";
+"auth.error.appleCredential" = "استجابة غير متوقعة من تسجيل الدخول بـ Apple. يرجى المحاولة مرة أخرى.";
+"auth.error.noWindow" = "تعذر بدء تسجيل الدخول بـ Google. يرجى المحاولة مرة أخرى.";
 
 /* Safety */
 "safety.title" = "السلامة أولاً";
