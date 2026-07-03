@@ -202,3 +202,4 @@
 "profile.privateProfile" = "Private Profile";
 "profile.privateProfile.desc" = "Only approved friends can see your drives and stats.";
 "profile.publicProfile.desc" = "Anyone can find your profile and see your public activity.";
+"profile.noProfile" = "Your profile isn't loaded yet. Please try again in a moment.";
