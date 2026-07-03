@@ -20,6 +20,8 @@
 "auth.tagline" = "Track every drive, automatically";
 "auth.appleSignIn" = "Sign in with Apple";
 "auth.googleSignIn" = "Sign in with Google";
+"auth.error.appleCredential" = "Unexpected Apple sign-in response. Please try again.";
+"auth.error.noWindow" = "Could not start Google sign-in. Please try again.";
 
 /* Safety */
 "safety.title" = "Safety First";
