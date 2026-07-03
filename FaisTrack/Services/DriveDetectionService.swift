@@ -95,9 +95,58 @@ class DriveDetectionService: ObservableObject {
         )
         drive.behaviorScore = calculateBehaviorScore(drive: drive)
         Task {
-            try? await FirebaseService.shared.saveDrive(drive, uid: uid)
+            await saveDriveWithRetryQueue(drive, uid: uid)
             await NotificationService.shared.sendDriveEndNotification(drive: drive)
             await LeaderboardService.shared.updateLeaderboard(drive: drive, uid: uid)
+        }
+    }
+
+    /// A completed drive is real, one-time data — losing it to a transient
+    /// network failure (previously a silent `try?`) means it's gone forever
+    /// with zero indication anything went wrong. If the save fails, this
+    /// queues the drive to disk and retries on the next app launch/foreground
+    /// via retryPendingDrives(), instead of just dropping it.
+    private func saveDriveWithRetryQueue(_ drive: Drive, uid: String) async {
+        do {
+            try await FirebaseService.shared.saveDrive(drive, uid: uid)
+        } catch {
+            queuePendingDrive(drive, uid: uid)
+        }
+    }
+
+    private static let pendingDrivesKey = "pendingUnsavedDrives"
+
+    private func queuePendingDrive(_ drive: Drive, uid: String) {
+        var pending = loadPendingDrives()
+        pending.append(PendingDrive(uid: uid, drive: drive))
+        if let encoded = try? JSONEncoder().encode(pending) {
+            UserDefaults.standard.set(encoded, forKey: Self.pendingDrivesKey)
+        }
+    }
+
+    private func loadPendingDrives() -> [PendingDrive] {
+        guard let data = UserDefaults.standard.data(forKey: Self.pendingDrivesKey),
+              let decoded = try? JSONDecoder().decode([PendingDrive].self, from: data) else { return [] }
+        return decoded
+    }
+
+    /// Call on app launch/foreground to flush any drives that failed to
+    /// save earlier. Each success is removed from the queue individually so
+    /// a partial-failure batch doesn't lose progress already made.
+    func retryPendingDrives() async {
+        let pending = loadPendingDrives()
+        guard !pending.isEmpty else { return }
+        var stillPending: [PendingDrive] = []
+        for item in pending {
+            do {
+                try await FirebaseService.shared.saveDrive(item.drive, uid: item.uid)
+                await LeaderboardService.shared.updateLeaderboard(drive: item.drive, uid: item.uid)
+            } catch {
+                stillPending.append(item)
+            }
+        }
+        if let encoded = try? JSONEncoder().encode(stillPending) {
+            UserDefaults.standard.set(encoded, forKey: Self.pendingDrivesKey)
         }
     }
 
@@ -147,4 +196,12 @@ class DriveDetectionService: ObservableObject {
         return UserDefaults.standard.string(forKey: "activeCarId") ?? ""
     }
 }
+
+/// A drive that finished but failed to save to Firestore, queued to disk
+/// so it survives an app relaunch and gets retried later.
+private struct PendingDrive: Codable {
+    let uid: String
+    let drive: Drive
+}
+
 
