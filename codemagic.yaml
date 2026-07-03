@@ -58,16 +58,21 @@ workflows:
           # Decode ASC API key
           echo "$APP_STORE_CONNECT_PRIVATE_KEY" | base64 --decode > /tmp/asc_key.p8
 
-          # NOTE: We intentionally do NOT use $CERTIFICATE_PRIVATE_KEY anymore.
-          # Diagnostics showed the stored value decodes to a well-formed PEM
-          # (correct BEGIN/END markers, plausible byte length) but fails
+          # NOTE: We no longer use the stored $CERTIFICATE_PRIVATE_KEY secret.
+          # Diagnostics showed it decodes to a well-formed PEM (correct
+          # BEGIN/END markers, plausible byte length) but fails
           # `openssl rsa -check` with a p*q != n error — the key bytes
-          # themselves are corrupted, not just mis-encoded. Since this
-          # workflow already deletes and recreates the distribution
-          # certificate on every build (see next step), there's no need for
-          # a persisted private key at all: we let `certificates create`
-          # generate a fresh key pair itself each run.
-
+          # themselves are corrupted, not just mis-encoded.
+          #
+          # `app-store-connect certificates create` does NOT auto-generate a
+          # key on its own — it requires --certificate-key to be given
+          # explicitly (confirmed: omitting it errors "Cannot create resource
+          # without certificate private key"). Since this workflow deletes
+          # and recreates the distribution certificate on every build anyway,
+          # we just generate a fresh, valid RSA 2048 key ourselves each run.
+          openssl genrsa -out /tmp/cert_key.pem 2048
+          echo "Generated fresh cert key. openssl rsa check:"
+          openssl rsa -in /tmp/cert_key.pem -check -noout
 
       - name: Setup iOS Distribution certificate
         script: |
@@ -75,12 +80,10 @@ workflows:
           KEY_ID="$APP_STORE_CONNECT_KEY_IDENTIFIER"
           ISS_ID="$APP_STORE_CONNECT_ISSUER_ID"
 
-          # /tmp/cert_key.pem is no longer used — see "Prepare signing keys" note above.
-
           # codemagic-cli-tools auto-detects CERTIFICATE_PRIVATE_KEY as a default
           # value for --certificate-key even when the flag isn't passed explicitly.
-          # The stored value is corrupted (fails openssl's RSA validity check), so
-          # we must unset it here or it gets silently injected anyway.
+          # The stored value is corrupted, so unset it to make sure it can't be
+          # picked up in place of the freshly generated /tmp/cert_key.pem below.
           unset CERTIFICATE_PRIVATE_KEY
 
           # Delete any existing IOS_DISTRIBUTION certs (ignore errors if none exist)
@@ -93,10 +96,10 @@ workflows:
               --private-key $ASC_KEY --key-id "$KEY_ID" --issuer-id "$ISS_ID" \
               --ignore-not-found 2>/dev/null || true
 
-          # Create new cert — let the CLI generate a fresh private key itself
-          # (no --certificate-key), since we recreate this cert every build anyway.
+          # Create new cert using the freshly generated key from the previous step
           app-store-connect certificates create \
             --type IOS_DISTRIBUTION \
+            --certificate-key @file:/tmp/cert_key.pem \
             --p12-password codemagic \
             --p12-path /tmp/dist_cert.p12 \
             --private-key $ASC_KEY --key-id "$KEY_ID" --issuer-id "$ISS_ID" \
