@@ -152,7 +152,16 @@ class ProfileViewModel: ObservableObject {
     func load() async {
         guard let uid = AuthService.shared.currentUser?.uid else { return }
         do {
-            user = try await FirebaseService.shared.getUser(uid: uid)
+            if let existing = try await FirebaseService.shared.getUser(uid: uid) {
+                user = existing
+            } else {
+                // Safety net for accounts that signed in before profile
+                // creation existed at all (or if it failed at sign-in time).
+                let fallbackName = AuthService.shared.currentUser?.displayName ?? ""
+                user = try await FirebaseService.shared.ensureUserProfile(
+                    uid: uid, name: fallbackName, email: AuthService.shared.currentUser?.email
+                )
+            }
             instagramHandle = user?.instagramHandle ?? ""
             isPrivateProfile = user?.isPrivateProfile ?? false
         } catch {
@@ -161,7 +170,7 @@ class ProfileViewModel: ObservableObject {
     }
 
     func saveInstagram() async {
-        guard var user = user else { return }
+        guard var user = user else { errorMessage = NSLocalizedString("profile.noProfile", comment: ""); return }
         isSaving = true
         saveConfirmed = false
         errorMessage = nil
@@ -177,7 +186,7 @@ class ProfileViewModel: ObservableObject {
     }
 
     func setPrivateProfile(_ value: Bool) async {
-        guard var user = user else { return }
+        guard var user = user else { errorMessage = NSLocalizedString("profile.noProfile", comment: ""); return }
         let previous = isPrivateProfile
         isPrivateProfile = value // optimistic update for a responsive toggle
         errorMessage = nil
