@@ -24,6 +24,7 @@ struct PermissionsView: View {
                 Spacer()
                 FTPrimaryButton(title: NSLocalizedString("permissions.enable", comment: "")) {
                     LocationService.shared.requestPermission()
+                    DriveDetectionService.shared.startMonitoring()
                     Task { await NotificationService.shared.requestPermission() }
                     appState.currentScreen = .main
                 }
