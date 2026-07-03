@@ -7,6 +7,10 @@ struct MainTabView: View {
                 .tabItem {
                     Label(NSLocalizedString("tab.drives", comment: ""), systemImage: "car.fill")
                 }
+            TracksView()
+                .tabItem {
+                    Label(NSLocalizedString("tab.tracks", comment: ""), systemImage: "flag.checkered")
+                }
             FriendsView()
                 .tabItem {
                     Label(NSLocalizedString("tab.friends", comment: ""), systemImage: "person.2.fill")
