@@ -26,6 +26,47 @@ struct ProfileView: View {
                     }
 
                     FTCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text(NSLocalizedString("profile.username", comment: ""))
+                                .font(.system(size: 14, weight: .medium)).foregroundColor(.ftTextSecondary)
+                            HStack {
+                                Text("@").foregroundColor(.ftTextSecondary)
+                                TextField(NSLocalizedString("profile.username.placeholder", comment: ""), text: $viewModel.usernameInput)
+                                    .autocapitalization(.none)
+                                    .disableAutocorrection(true)
+                                    .foregroundColor(.ftTextPrimary)
+                                    .onChange(of: viewModel.usernameInput) { _ in
+                                        viewModel.checkUsernameAvailability()
+                                    }
+                                if viewModel.isCheckingUsername {
+                                    ProgressView()
+                                }
+                            }
+                            .padding(12).background(Color.ftBackground).cornerRadius(10)
+
+                            if let statusText = viewModel.usernameStatusText {
+                                Text(statusText)
+                                    .font(.system(size: 12))
+                                    .foregroundColor(viewModel.usernameAvailable == true ? .speedGreen : .speedRed)
+                            }
+
+                            Button(action: { Task { await viewModel.saveUsername() } }) {
+                                HStack {
+                                    if viewModel.isSavingUsername { ProgressView().tint(.white) }
+                                    Text(NSLocalizedString("general.save", comment: ""))
+                                        .font(.system(size: 15, weight: .bold))
+                                }
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(viewModel.canSaveUsername ? Color.ftGradient : Color.ftTextSecondary.opacity(0.3))
+                                .cornerRadius(12)
+                            }
+                            .disabled(!viewModel.canSaveUsername)
+                        }
+                    }
+
+                    FTCard {
                         VStack(alignment: .leading, spacing: 12) {
                             Toggle(isOn: Binding(
                                 get: { viewModel.isPrivateProfile },
@@ -146,6 +187,28 @@ class ProfileViewModel: ObservableObject {
     @Published var isPrivateProfile: Bool = false
     @Published var errorMessage: String?
 
+    @Published var usernameInput: String = ""
+    @Published var usernameAvailable: Bool?
+    @Published var isCheckingUsername = false
+    @Published var isSavingUsername = false
+    private var usernameCheckTask: Task<Void, Never>?
+
+    /// nil means "no status to show yet" (unchanged from current, empty, or
+    /// invalid format before any check runs) — the view only shows a status
+    /// line once there's something meaningful to say.
+    var usernameStatusText: String? {
+        if isCheckingUsername { return nil }
+        guard let usernameAvailable else { return nil }
+        return usernameAvailable
+            ? NSLocalizedString("profile.username.available", comment: "")
+            : NSLocalizedString("profile.username.taken", comment: "")
+    }
+
+    var canSaveUsername: Bool {
+        !isSavingUsername && usernameAvailable == true &&
+        usernameInput.lowercased() != (user?.username.lowercased() ?? "")
+    }
+
     func load() async {
         guard let uid = AuthService.shared.currentUser?.uid else { return }
         do {
@@ -160,12 +223,70 @@ class ProfileViewModel: ObservableObject {
                 )
             }
             isPrivateProfile = user?.isPrivateProfile ?? false
+            usernameInput = user?.username ?? ""
         } catch {
             errorMessage = error.localizedDescription
         }
     }
 
+    /// Debounced, same pattern as friend search — waits for typing to
+    /// pause before hitting Firestore, and a fresh keystroke cancels any
+    /// still-in-flight previous check.
+    func checkUsernameAvailability() {
+        usernameCheckTask?.cancel()
+        let candidate = usernameInput.lowercased().trimmingCharacters(in: .whitespaces)
+        let currentUsername = user?.username.lowercased() ?? ""
+
+        guard candidate != currentUsername, isValidUsernameFormat(candidate) else {
+            usernameAvailable = candidate.isEmpty || candidate == currentUsername ? nil : false
+            return
+        }
+
+        usernameCheckTask = Task {
+            try? await Task.sleep(nanoseconds: 400_000_000)
+            guard !Task.isCancelled, candidate == self.usernameInput.lowercased() else { return }
+            isCheckingUsername = true
+            let uid = AuthService.shared.currentUser?.uid
+            let available = (try? await FirebaseService.shared.isUsernameAvailable(candidate, excludingUid: uid)) ?? false
+            guard !Task.isCancelled else { return }
+            usernameAvailable = available
+            isCheckingUsername = false
+        }
+    }
+
+    /// Lowercase letters, numbers, and underscores only, 3-20 characters —
+    /// matches how generateUsername already sanitizes auto-created ones, so
+    /// a manually chosen username can't end up in some format the rest of
+    /// the app (search, leaderboard display) doesn't expect.
+    private func isValidUsernameFormat(_ candidate: String) -> Bool {
+        candidate.range(of: "^[a-z0-9_]{3,20}$", options: .regularExpression) != nil
+    }
+
+    func saveUsername() async {
+        guard let uid = AuthService.shared.currentUser?.uid, canSaveUsername else { return }
+        let candidate = usernameInput.lowercased().trimmingCharacters(in: .whitespaces)
+        isSavingUsername = true
+        errorMessage = nil
+        do {
+            try await FirebaseService.shared.updateUsername(uid: uid, newUsername: candidate)
+            user?.username = candidate
+            usernameInput = candidate
+            usernameAvailable = nil
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isSavingUsername = false
+    }
+
     func setPrivateProfile(_ value: Bool) async {
+        // Same race condition previously fixed for Instagram saving: this
+        // view's .task { load() } runs asynchronously, so if the person
+        // taps the toggle before that finishes, `user` is still nil here —
+        // the toggle would silently fail to move at all rather than just
+        // being slow. Try loading once before giving up.
+        if user == nil {
+            await load()
+        }
         guard var user = user else { errorMessage = NSLocalizedString("profile.noProfile", comment: ""); return }
         let previous = isPrivateProfile
         isPrivateProfile = value // optimistic update for a responsive toggle
@@ -180,4 +301,5 @@ class ProfileViewModel: ObservableObject {
         }
     }
 }
+
 
