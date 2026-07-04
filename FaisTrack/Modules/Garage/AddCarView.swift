@@ -107,11 +107,27 @@ struct BasicInfoStep: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(NSLocalizedString("garage.year", comment: ""))
                         .font(.system(size: 14, weight: .medium)).foregroundColor(.ftTextSecondary)
-                    Stepper("\(car.year)", value: $car.year, in: 1950...2026)
-                        .padding().background(Color.ftCard).cornerRadius(12)
+                    Picker("", selection: $car.year) {
+                        ForEach(yearOptions, id: \.self) { y in
+                            Text("\(y)").tag(y)
+                        }
+                    }
+                    .pickerStyle(.wheel)
+                    .frame(height: 120)
+                    .background(Color.ftCard)
+                    .cornerRadius(12)
                 }
             }.padding(24)
         }
+    }
+
+    /// Newest first, since most people are adding a recent car — descending
+    /// order means less scrolling for the common case. Includes next year
+    /// too, since dealerships sell "model year" cars ahead of the calendar
+    /// year (e.g. a 2027 model on sale in late 2026).
+    private var yearOptions: [Int] {
+        let currentYear = Calendar.current.component(.year, from: Date())
+        return Array((1950...(currentYear + 1)).reversed())
     }
 }
 
@@ -245,4 +261,5 @@ struct FTInputField: View {
         }
     }
 }
+
 
