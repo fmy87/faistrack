@@ -69,7 +69,18 @@ class SettingsViewModel: ObservableObject {
     func load() async {
         guard let uid = AuthService.shared.currentUser?.uid else { return }
         do {
-            user = try await FirebaseService.shared.getUser(uid: uid)
+            if let existing = try await FirebaseService.shared.getUser(uid: uid) {
+                user = existing
+            } else {
+                // Same fallback as ProfileViewModel — a profile that
+                // somehow never got created (or was deleted) shouldn't
+                // leave Settings permanently broken with no way to set
+                // units at all.
+                let fallbackName = AuthService.shared.currentUser?.displayName ?? ""
+                user = try await FirebaseService.shared.ensureUserProfile(
+                    uid: uid, name: fallbackName, email: AuthService.shared.currentUser?.email
+                )
+            }
             units = user?.units ?? "km"
         } catch {
             errorMessage = error.localizedDescription
@@ -91,3 +102,4 @@ class SettingsViewModel: ObservableObject {
         }
     }
 }
+
