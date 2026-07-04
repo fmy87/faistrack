@@ -2,15 +2,31 @@ import SwiftUI
 
 struct CreateTrackView: View {
     @ObservedObject private var service = TrackCreationService.shared
+    @AppStorage("unitsPreference") private var unitsPreference: String = "km"
     @Environment(\.dismiss) var dismiss
     @State private var trackName: String = ""
     @State private var isSaving = false
     var onCreated: (() -> Void)?
 
+    private var useMetric: Bool { unitsPreference == "km" }
+    private func speedValue(_ kmh: Double) -> Double { useMetric ? kmh : kmh * 0.621371 }
+    private var speedUnit: String { useMetric ? "KM/H" : "MPH" }
+    private func distanceText(_ meters: Double) -> String {
+        let km = meters / 1000
+        if useMetric {
+            return meters >= 1000 ? String(format: "%.2f km", km) : String(format: "%.0f m", meters)
+        } else {
+            let miles = meters * 0.000621371
+            return String(format: "%.2f mi", miles)
+        }
+    }
+
+    private var gaugeColor: Color { SpeedGaugeView.colorForSpeed(service.currentSpeedKmh) }
+
     var body: some View {
         NavigationView {
             ZStack {
-                Color.ftBackground.ignoresSafeArea()
+                backgroundLayer
                 VStack(spacing: 24) {
                     switch service.state {
                     case .idle:
@@ -58,6 +74,23 @@ struct CreateTrackView: View {
         }
     }
 
+    /// Same glowing radial background used on LiveDriveView's speed screen
+    /// while recording, so the two live-tracking screens feel like one
+    /// consistent design language rather than a plain flat one here.
+    private var backgroundLayer: some View {
+        Group {
+            if case .recording = service.state {
+                RadialGradient(
+                    colors: [gaugeColor.opacity(0.35), Color.black],
+                    center: .center, startRadius: 20, endRadius: 500
+                )
+                .ignoresSafeArea()
+            } else {
+                Color.ftBackground.ignoresSafeArea()
+            }
+        }
+    }
+
     private var idleView: some View {
         VStack(spacing: 20) {
             Image(systemName: "flag.checkered.circle.fill")
@@ -80,21 +113,32 @@ struct CreateTrackView: View {
     }
 
     private func recordingView(elapsed: TimeInterval, distance: Double) -> some View {
-        VStack(spacing: 24) {
-            Text(String(format: "%.1f", elapsed))
-                .font(.system(size: 64, weight: .black, design: .monospaced))
-                .foregroundColor(.ftAccent)
-            Text(distance >= 1000 ? String(format: "%.2f km", distance / 1000) : String(format: "%.0f m", distance))
-                .font(.system(size: 16)).foregroundColor(.ftTextSecondary)
+        VStack(spacing: 28) {
+            SpeedGaugeView(
+                value: speedValue(service.currentSpeedKmh),
+                unit: speedUnit,
+                color: gaugeColor
+            )
+
+            VStack(spacing: 4) {
+                Text(String(format: "%.1f", elapsed))
+                    .font(.system(size: 40, weight: .heavy, design: .monospaced))
+                    .foregroundColor(.white)
+                Text(distanceText(distance))
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(.white.opacity(0.7))
+            }
+
             Button(action: { service.endRecording() }) {
-                Text(NSLocalizedString("compete.endRace", comment: ""))
+                Label(NSLocalizedString("compete.endRace", comment: ""), systemImage: "square.fill")
                     .font(.system(size: 17, weight: .bold))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
+                    .padding(.vertical, 16)
                     .background(Color.speedRed)
-                    .cornerRadius(16)
+                    .cornerRadius(28)
             }
+            .padding(.horizontal, 8)
         }
     }
 
@@ -104,7 +148,7 @@ struct CreateTrackView: View {
                 .font(.system(size: 56)).foregroundColor(.ftAccent)
             Text(String(format: "%.2fs", duration))
                 .font(.system(size: 48, weight: .black)).foregroundColor(.ftAccent)
-            Text(distance >= 1000 ? String(format: "%.2f km", distance / 1000) : String(format: "%.0f m", distance))
+            Text(distanceText(distance))
                 .font(.system(size: 14)).foregroundColor(.ftTextSecondary)
             TextField(NSLocalizedString("createTrack.namePlaceholder", comment: ""), text: $trackName)
                 .padding(14).background(Color.ftCard).cornerRadius(12)
