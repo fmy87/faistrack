@@ -15,17 +15,19 @@ struct GarageView: View {
                 } else {
                     ScrollView {
                         VStack(spacing: 16) {
-                            ForEach(viewModel.cars) { car in
-                                NavigationLink(destination: CarDetailView(car: car, viewModel: viewModel)) {
-                                    CarCardView(car: car, isActive: car.isActive)
-                                        .contextMenu {
-                                            Button { viewModel.setActive(car) } label: {
-                                                Label(NSLocalizedString("garage.setActive", comment: ""), systemImage: "checkmark.circle")
+                            ForEach(Array(viewModel.cars.enumerated()), id: \.1.id) { index, car in
+                                StaggeredAppear(index: index) {
+                                    NavigationLink(destination: CarDetailView(car: car, viewModel: viewModel)) {
+                                        CarCardView(car: car, isActive: car.isActive)
+                                            .contextMenu {
+                                                Button { viewModel.setActive(car) } label: {
+                                                    Label(NSLocalizedString("garage.setActive", comment: ""), systemImage: "checkmark.circle")
+                                                }
+                                                Button(role: .destructive) { viewModel.delete(car) } label: {
+                                                    Label(NSLocalizedString("garage.delete", comment: ""), systemImage: "trash")
+                                                }
                                             }
-                                            Button(role: .destructive) { viewModel.delete(car) } label: {
-                                                Label(NSLocalizedString("garage.delete", comment: ""), systemImage: "trash")
-                                            }
-                                        }
+                                    }
                                 }
                             }
                         }.padding(16)
@@ -69,3 +71,4 @@ struct GarageEmptyState: View {
         }.padding(32)
     }
 }
+
