@@ -46,6 +46,7 @@
 		84F99B46066F4E17BB23CAE3 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114EF0F2E200440F8D8A3D79 /* AuthView.swift */; };
 		8AD94ACB99131DF46A78A926 /* PolylineCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537648BB94ADB4C179ECC0EA /* PolylineCodec.swift */; };
 		92764D9182A65359A47D21D8 /* TrackDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C294CE588E615E815964EF5 /* TrackDetailView.swift */; };
+		A1CCE70606074AD8BE3FC738 /* TrackShareCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56BF1D7208A4128B335D332 /* TrackShareCardView.swift */; };
 		958B4F73B01421F147B9A69A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77294006A9F95692DBAECD08 /* GoogleService-Info.plist */; };
 		9859C4FE0C17401CBF4BF296 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC41065721DB4C75872B45D9 /* StatsView.swift */; };
 		08A1298908CF4296940C7A87 /* MonthlyRecapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4989DD8942D4F0692A782A3 /* MonthlyRecapView.swift */; };
@@ -99,6 +100,7 @@
 		678C2E972160475DA7598576 /* LeaderboardEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LeaderboardEntry.swift; path = LeaderboardEntry.swift; sourceTree = "<group>"; };
 		160D9EE901324E59A8C89DF0 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Friend.swift; path = Friend.swift; sourceTree = "<group>"; };
 		6C294CE588E615E815964EF5 /* TrackDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TrackDetailView.swift; path = FaisTrack/Modules/Tracks/TrackDetailView.swift; sourceTree = SOURCE_ROOT; };
+		C56BF1D7208A4128B335D332 /* TrackShareCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TrackShareCardView.swift; path = FaisTrack/Modules/Tracks/TrackShareCardView.swift; sourceTree = SOURCE_ROOT; };
 		6D030EF4CFCA4AD29B09579E /* BehaviorScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BehaviorScoreView.swift; path = BehaviorScoreView.swift; sourceTree = "<group>"; };
 		713D631FA1984231AD9E8012 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		745B92B0060E48168B2F237F /* DrivesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DrivesView.swift; path = DrivesView.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				E11D4C36B493CB7EB8C915F8 /* TracksOverviewMapView.swift */,
 				D9994164A22A2BBB9852771E /* TracksView.swift */,
 				6C294CE588E615E815964EF5 /* TrackDetailView.swift */,
+				C56BF1D7208A4128B335D332 /* TrackShareCardView.swift */,
 				51EC40558ECB28745AFDA98F /* CompeteView.swift */,
 				4CE07B8E52734A1EAD31F8B4 /* CreateTrackView.swift */,
 			);
@@ -531,6 +534,7 @@
 				A6B04BCEA198DE903E2CBB72 /* TracksOverviewMapView.swift in Sources */,
 				DC004B8896319E7E1AFC372F /* TracksView.swift in Sources */,
 				92764D9182A65359A47D21D8 /* TrackDetailView.swift in Sources */,
+				A1CCE70606074AD8BE3FC738 /* TrackShareCardView.swift in Sources */,
 				DA9A45248AA90F3AD72CEA06 /* CompeteView.swift in Sources */,
 				DF8849778F7039C35F93B59A /* ProfileView.swift in Sources */,
 				1EA87B11F5A1492DA61F25C5 /* MoreView.swift in Sources */,
@@ -661,6 +665,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
