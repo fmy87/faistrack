@@ -24,6 +24,11 @@ class TrackCreationService: NSObject, ObservableObject {
 
     @Published var state: TrackCreationState = .idle
     @Published var errorMessage: String?
+    /// Live instantaneous speed, feeding the same SpeedGaugeView used on
+    /// LiveDriveView so this screen shares that visual language instead of
+    /// being a bare text readout.
+    @Published private(set) var currentSpeedKmh: Double = 0
+    @Published private(set) var routeCoordinates: [CLLocationCoordinate2D] = []
 
     private var coordinates: [CLLocationCoordinate2D] = []
     private var recordingStartDate: Date?
@@ -34,6 +39,8 @@ class TrackCreationService: NSObject, ObservableObject {
 
     func beginCountdown() {
         coordinates = []
+        routeCoordinates = []
+        currentSpeedKmh = 0
         errorMessage = nil
         var remaining = countdownSeconds
         state = .countingDown(remaining)
@@ -73,6 +80,8 @@ class TrackCreationService: NSObject, ObservableObject {
             distance += location.distance(from: lastLocation)
         }
         coordinates.append(location.coordinate)
+        routeCoordinates = coordinates
+        currentSpeedKmh = max(0, location.speed * 3.6)
         state = .recording(elapsed: elapsed, distance: distance)
     }
 
@@ -87,6 +96,7 @@ class TrackCreationService: NSObject, ObservableObject {
         }
         recordingTimer?.invalidate()
         locationCancellable?.cancel()
+        currentSpeedKmh = 0
         state = .finished(distance: distance, duration: elapsed)
     }
 
@@ -138,3 +148,4 @@ class TrackCreationService: NSObject, ObservableObject {
         state = .idle
     }
 }
+
