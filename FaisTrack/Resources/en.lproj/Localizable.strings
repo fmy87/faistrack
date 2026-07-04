@@ -60,6 +60,8 @@
 "garage.edit" = "Edit";
 "garage.saveChanges" = "Save Changes";
 "garage.shareCard" = "Share Car Card";
+"tracks.shareCard" = "Share Track Card";
+"tracks.createdBy" = "Created by @%@";
 "garage.addPhoto" = "Add Photo";
 "garage.empty.title" = "Your Garage is Empty";
 "garage.empty.subtitle" = "Add your first car to start tracking drives.";
@@ -341,4 +343,5 @@
 "profile.username.available" = "Username available";
 "profile.username.taken" = "That username is taken or invalid (3-20 letters, numbers, underscores)";
 "firebase.error.usernameTaken" = "That username was just taken. Please try another.";
+
 
