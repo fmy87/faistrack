@@ -3,6 +3,7 @@ import SwiftUI
 struct TracksView: View {
     @StateObject private var viewModel = TracksViewModel()
     @State private var showCreateTrack = false
+    @State private var selectedTrackFromMap: Track?
 
     var body: some View {
         NavigationView {
@@ -12,8 +13,24 @@ struct TracksView: View {
                     // The map always renders — previously it was only shown
                     // when tracks existed, so a user with zero published
                     // tracks would never see any map at all on this tab.
-                    TracksOverviewMapView(tracks: viewModel.tracks)
-                        .frame(height: 200)
+                    // Tapping a track's marker on the map selects it
+                    // directly, without needing to find it in the list below.
+                    TracksOverviewMapView(tracks: viewModel.tracks, onSelectTrack: { track in
+                        selectedTrackFromMap = track
+                    })
+                    .frame(height: 200)
+
+                    // Hidden NavigationLink driven by map taps — iOS 15
+                    // doesn't have navigationDestination(item:), so this is
+                    // the standard programmatic-push pattern for that target.
+                    NavigationLink(
+                        destination: selectedTrackFromMap.map { TrackDetailView(track: $0) },
+                        isActive: Binding(
+                            get: { selectedTrackFromMap != nil },
+                            set: { isActive in if !isActive { selectedTrackFromMap = nil } }
+                        )
+                    ) { EmptyView() }
+                    .hidden()
 
                     if viewModel.tracks.isEmpty {
                         Spacer()
@@ -93,5 +110,6 @@ class TracksViewModel: ObservableObject {
         tracks = (try? await FirebaseService.shared.getTracks()) ?? []
     }
 }
+
 
 
