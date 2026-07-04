@@ -114,6 +114,18 @@ struct CreateTrackView: View {
 
     private func recordingView(elapsed: TimeInterval, distance: Double) -> some View {
         VStack(spacing: 28) {
+            // Small pill mirroring LiveDriveView's top "End Drive" pill —
+            // this was missing before, which is why the two screens still
+            // looked subtly different even after sharing the same gauge.
+            Button(action: { service.endRecording() }) {
+                Label(NSLocalizedString("compete.endRace", comment: ""), systemImage: "square.fill")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.white.opacity(0.8))
+                    .padding(.horizontal, 14).padding(.vertical, 6)
+                    .background(Color.white.opacity(0.1))
+                    .cornerRadius(14)
+            }
+
             SpeedGaugeView(
                 value: speedValue(service.currentSpeedKmh),
                 unit: speedUnit,
@@ -166,3 +178,4 @@ struct CreateTrackView: View {
         }
     }
 }
+
