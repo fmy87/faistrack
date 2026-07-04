@@ -158,7 +158,8 @@
 "createTrack.startCountdown" = "Start";
 "createTrack.namePlaceholder" = "Name this track";
 "createTrack.save" = "Save Track";
-"createTrack.tooShort" = "This track is too short or wasn't recorded properly. Try again with a longer route.";
+"createTrack.tooShort" = "This track needs to be at least %@ — you recorded %@. Drive a bit further before ending the recording.";
+"createTrack.tooFewPoints" = "Not enough GPS points were recorded to save this track. Make sure Location access is set to \"Always\" and try again with a longer recording.";
 "drive.publishTrack" = "Publish as Track";
 "drive.trackPublished" = "Published as a track";
 "compete.locating" = "Getting your location…";
@@ -340,3 +341,4 @@
 "profile.username.available" = "Username available";
 "profile.username.taken" = "That username is taken or invalid (3-20 letters, numbers, underscores)";
 "firebase.error.usernameTaken" = "That username was just taken. Please try another.";
+
