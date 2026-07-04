@@ -55,6 +55,22 @@ class DriveDetectionService: ObservableObject {
     private var movingStoppedTimer: Timer?
     private var lastLocationBroadcast: Date?
 
+    // MARK: - Automotive-vs-walking confirmation
+    // CoreMotion's "automotive" classification can misfire on brisk
+    // walking, jogging, being a passenger on a bus/train, etc. Rather than
+    // starting a drive off a single ambiguous signal, a candidate signal is
+    // held as "pending" and only confirmed once actual GPS speed crosses a
+    // threshold no walker/jogger/cyclist realistically sustains.
+    private var pendingAutomotiveConfirmation = false
+    private var pendingConfirmationTimer: Timer?
+    /// Faster than any realistic walking, jogging, or casual cycling speed
+    /// — a brisk walk tops out around 7 km/h, running around 15-18 km/h for
+    /// all but elite sprinters. 25 km/h sustained is a strong real-car signal.
+    private let drivingSpeedThresholdKmh: Double = 25
+    /// How long to wait for GPS to confirm real driving speed before giving
+    /// up on a candidate automotive signal and treating it as a false alarm.
+    private let confirmationWindowSeconds: TimeInterval = 25
+
     /// How often to re-broadcast location while driving. Every single GPS
     /// update would be excessive Firestore writes for marginal benefit on a
     /// map pin that's only glanced at occasionally — this keeps friends'
@@ -68,13 +84,45 @@ class DriveDetectionService: ObservableObject {
     func startMonitoring() {
         guard CMMotionActivityManager.isActivityAvailable() else { return }
         motionManager.startActivityUpdates(to: .main) { [weak self] activity in
-            guard let activity = activity else { return }
-            if activity.automotive && !self!.isDriving {
-                self?.driveDidStart()
-            } else if !activity.automotive && !activity.unknown && self!.isDriving {
-                self?.driveDidEnd()
+            guard let self, let activity = activity else { return }
+
+            // Low-confidence classifications are exactly the ones most
+            // likely to misfire — CoreMotion itself is telling us it isn't
+            // sure, so treat those as noise rather than acting on them.
+            guard activity.confidence != .low else { return }
+
+            if activity.automotive && !activity.walking && !self.isDriving && !self.pendingAutomotiveConfirmation {
+                // Don't start the drive yet — CoreMotion alone isn't
+                // trusted here. Wait for GPS to actually confirm driving
+                // speed (see processLocation) before committing.
+                self.beginPendingAutomotiveConfirmation()
+            } else if (!activity.automotive || activity.walking) && self.pendingAutomotiveConfirmation {
+                // The signal reversed (or turned out to be walking after
+                // all) before GPS ever confirmed real driving speed —
+                // cancel rather than starting a drive off a blip.
+                self.cancelPendingAutomotiveConfirmation()
+            } else if !activity.automotive && !activity.unknown && self.isDriving {
+                self.driveDidEnd()
             }
         }
+    }
+
+    private func beginPendingAutomotiveConfirmation() {
+        pendingAutomotiveConfirmation = true
+        LocationService.shared.startUpdating()
+        pendingConfirmationTimer?.invalidate()
+        pendingConfirmationTimer = Timer.scheduledTimer(withTimeInterval: confirmationWindowSeconds, repeats: false) { [weak self] _ in
+            // GPS never confirmed real driving speed within the window —
+            // treat this as a false alarm (e.g. a brisk walk or a bus
+            // stopped in traffic) rather than starting a drive anyway.
+            self?.cancelPendingAutomotiveConfirmation()
+        }
+    }
+
+    private func cancelPendingAutomotiveConfirmation() {
+        pendingAutomotiveConfirmation = false
+        pendingConfirmationTimer?.invalidate()
+        pendingConfirmationTimer = nil
     }
 
     /// Lets the person end the drive immediately from the LiveDriveView HUD,
@@ -87,7 +135,21 @@ class DriveDetectionService: ObservableObject {
     }
 
     func processLocation(_ location: CLLocation?) {
-        guard let location = location, isDriving else { return }
+        guard let location = location else { return }
+
+        // Waiting for GPS to confirm a candidate "automotive" signal from
+        // CoreMotion is actually real driving speed, not a misclassified
+        // walk/jog/cycle — see beginPendingAutomotiveConfirmation().
+        if pendingAutomotiveConfirmation {
+            let speedKmh = max(0, location.speed * 3.6)
+            if speedKmh >= drivingSpeedThresholdKmh {
+                cancelPendingAutomotiveConfirmation()
+                driveDidStart()
+            }
+            return
+        }
+
+        guard isDriving else { return }
         if let last = locationBuffer.last {
             liveDistanceKm += location.distance(from: last) / 1000
         }
@@ -180,7 +242,18 @@ class DriveDetectionService: ObservableObject {
         )
         drive.isPassenger = isPassengerMode
         drive.behaviorScore = calculateBehaviorScore(drive: drive)
+        let startLocation = locationBuffer.first
+        let endLocation = locationBuffer.last
         Task {
+            // Previously nothing ever set these, so every drive showed
+            // "Unknown Location" permanently regardless of where it
+            // actually happened. Reverse geocoding is best-effort — if it
+            // fails (no network, rate limited), the place name stays nil
+            // and the UI still falls back to "Unknown Location" rather
+            // than crashing or blocking the save.
+            drive.startPlaceName = await Self.reverseGeocode(startLocation)
+            drive.endPlaceName = await Self.reverseGeocode(endLocation)
+
             await saveDriveWithRetryQueue(drive, uid: uid)
             await NotificationService.shared.sendDriveEndNotification(drive: drive)
             // If the person marked themselves as a passenger live (via
@@ -190,6 +263,21 @@ class DriveDetectionService: ObservableObject {
             if !drive.isPassenger {
                 await LeaderboardService.shared.updateLeaderboard(drive: drive, uid: uid)
             }
+        }
+    }
+
+    /// Converts a coordinate into a short human-readable place name (e.g. a
+    /// neighborhood or locality) for display instead of raw lat/lng or a
+    /// permanent "Unknown Location" placeholder.
+    private static func reverseGeocode(_ location: CLLocation?) async -> String? {
+        guard let location else { return nil }
+        let geocoder = CLGeocoder()
+        do {
+            let placemarks = try await geocoder.reverseGeocodeLocation(location)
+            guard let placemark = placemarks.first else { return nil }
+            return placemark.locality ?? placemark.subLocality ?? placemark.name
+        } catch {
+            return nil
         }
     }
 
@@ -312,6 +400,7 @@ private struct PendingDrive: Codable {
     let uid: String
     let drive: Drive
 }
+
 
 
 
