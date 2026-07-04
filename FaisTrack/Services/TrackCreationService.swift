@@ -36,11 +36,16 @@ class TrackCreationService: NSObject, ObservableObject {
     private var recordingTimer: Timer?
     private var locationCancellable: AnyCancellable?
     private let countdownSeconds = 3
+    /// Max of currentSpeedKmh over the whole recording — currentSpeedKmh
+    /// itself is instantaneous and gets reset when recording ends, so this
+    /// is the only place the actual top speed for the run is captured.
+    private var topSpeedKmh: Double = 0
 
     func beginCountdown() {
         coordinates = []
         routeCoordinates = []
         currentSpeedKmh = 0
+        topSpeedKmh = 0
         errorMessage = nil
         var remaining = countdownSeconds
         state = .countingDown(remaining)
@@ -82,6 +87,7 @@ class TrackCreationService: NSObject, ObservableObject {
         coordinates.append(location.coordinate)
         routeCoordinates = coordinates
         currentSpeedKmh = max(0, location.speed * 3.6)
+        topSpeedKmh = max(topSpeedKmh, currentSpeedKmh)
         state = .recording(elapsed: elapsed, distance: distance)
     }
 
@@ -137,7 +143,9 @@ class TrackCreationService: NSObject, ObservableObject {
                 polylineEncoded: PolylineCodec.encode(coordinates)
             )
             let trackId = try await FirebaseService.shared.createTrack(track)
-            let result = TrackResult(trackId: trackId, uid: uid, username: username, duration: duration)
+            let carName = await TrackRaceService.resolveActiveCarName(uid: uid)
+            let result = TrackResult(trackId: trackId, uid: uid, username: username, duration: duration,
+                                      topSpeed: topSpeedKmh, carName: carName)
             try await FirebaseService.shared.saveTrackResult(result)
             reset()
             return true
@@ -156,5 +164,6 @@ class TrackCreationService: NSObject, ObservableObject {
         state = .idle
     }
 }
+
 
 
