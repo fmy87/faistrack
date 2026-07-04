@@ -22,6 +22,13 @@ struct Track: Identifiable, Codable {
     /// previous record holder's fcmToken and notify them when their record
     /// is broken — see functions/index.js.
     var bestTimeUid: String?
+    /// Both Optional, added after the model already had real documents in
+    /// production — same reasoning as referralCode on FTUser: a plain
+    /// default value doesn't help a synthesized Decodable when the key is
+    /// missing entirely, only Optional does. Populated alongside bestTime
+    /// in FirebaseService.saveTrackResult() whenever a new record is set.
+    var bestTimeTopSpeed: Double?  // km/h
+    var bestTimeCarName: String?
     var attemptCount: Int = 0
     var createdAt: Timestamp = Timestamp()
 
@@ -38,4 +45,5 @@ struct Track: Identifiable, Codable {
     /// Tracks must be at least this long to be published.
     static let minimumDistanceMeters: Double = 200
 }
+
 
