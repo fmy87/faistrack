@@ -53,6 +53,13 @@ class DriveDetectionService: ObservableObject {
     private var speedSampleCount = 0
     private var speedSampleSum: Double = 0
     private var movingStoppedTimer: Timer?
+    private var lastLocationBroadcast: Date?
+
+    /// How often to re-broadcast location while driving. Every single GPS
+    /// update would be excessive Firestore writes for marginal benefit on a
+    /// map pin that's only glanced at occasionally — this keeps friends'
+    /// view reasonably fresh without hammering the free-tier write quota.
+    private let locationBroadcastInterval: TimeInterval = 15
 
     init() {
         isGhostMode = UserDefaults.standard.bool(forKey: "isGhostMode")
@@ -99,6 +106,11 @@ class DriveDetectionService: ObservableObject {
         if lastSpeed - speedKmh > 25 { hardBrakingCount += 1 }
         if speedKmh - lastSpeed > 20 { fastAccelCount += 1 }
         lastSpeed = speedKmh
+
+        if lastLocationBroadcast == nil || Date().timeIntervalSince(lastLocationBroadcast!) >= locationBroadcastInterval {
+            lastLocationBroadcast = Date()
+            broadcastLiveStatus(isDriving: true, coordinate: location.coordinate)
+        }
     }
 
     private func driveDidStart() {
@@ -119,6 +131,7 @@ class DriveDetectionService: ObservableObject {
         hardBrakingCount = 0
         fastAccelCount = 0
         idleSeconds = 0
+        lastLocationBroadcast = nil
         NotificationService.shared.sendDriveStartNotification()
         broadcastLiveStatus(isDriving: true)
 
@@ -275,17 +288,20 @@ class DriveDetectionService: ObservableObject {
         return UserDefaults.standard.string(forKey: "activeCarId") ?? ""
     }
 
-    /// Reports driving status to Firestore's `liveStatus/{uid}` doc for
-    /// friends to read (see FirebaseService.updateLiveStatus /
-    /// getFriendsLiveStatus). Ghost Mode overrides the reported value to
-    /// `false` regardless of what's actually happening, rather than simply
-    /// skipping the write — this ensures a stale "still driving" status
-    /// from before Ghost Mode was turned on gets actively cleared.
-    private func broadcastLiveStatus(isDriving: Bool) {
+    /// Reports driving status (and optionally location) to Firestore's
+    /// `liveStatus/{uid}` doc for friends to read (see
+    /// FirebaseService.updateLiveStatus / getFriendsLiveLocations). Ghost
+    /// Mode overrides the reported `isDriving` to `false` regardless of
+    /// what's actually happening, and drops the coordinate entirely rather
+    /// than sending it anyway — this ensures both a stale "still driving"
+    /// status *and* a stale/real location from before Ghost Mode was turned
+    /// on get actively cleared instead of lingering.
+    private func broadcastLiveStatus(isDriving: Bool, coordinate: CLLocationCoordinate2D? = nil) {
         guard let uid = AuthService.shared.currentUser?.uid else { return }
         let reportedValue = isGhostMode ? false : isDriving
+        let reportedCoordinate = isGhostMode ? nil : coordinate
         Task {
-            await FirebaseService.shared.updateLiveStatus(uid: uid, isDriving: reportedValue)
+            await FirebaseService.shared.updateLiveStatus(uid: uid, isDriving: reportedValue, coordinate: reportedCoordinate)
         }
     }
 }
@@ -296,6 +312,7 @@ private struct PendingDrive: Codable {
     let uid: String
     let drive: Drive
 }
+
 
 
 
