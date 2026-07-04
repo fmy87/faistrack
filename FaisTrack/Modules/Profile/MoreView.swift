@@ -1,9 +1,10 @@
 import SwiftUI
 
-/// Houses app settings and data-management screens that don't belong on
-/// the Profile tab (which is now just identity/account: name, privacy,
-/// sign out, delete account). Split out so Profile doesn't turn into a
-/// junk drawer of unrelated settings as the app grows.
+/// Houses everything that isn't one of the four primary tabs (Drives,
+/// Tracks, Garage, Friends). Deliberately the only "extra" tab — adding a
+/// second one would push the tab bar past 5 items and trigger iOS's own
+/// automatic "More" collapse, burying this screen inside a system-generated
+/// one instead of showing it directly.
 struct MoreView: View {
     var body: some View {
         NavigationView {
@@ -11,6 +12,18 @@ struct MoreView: View {
                 Color.ftBackground.ignoresSafeArea()
                 ScrollView {
                     VStack(spacing: 12) {
+                        NavigationLink(destination: StatsView()) {
+                            ProfileRow(icon: "chart.bar.fill", title: NSLocalizedString("tab.stats", comment: ""))
+                        }
+                        NavigationLink(destination: LeaderboardView()) {
+                            ProfileRow(icon: "trophy.fill", title: NSLocalizedString("tab.leaderboard", comment: ""))
+                        }
+                        NavigationLink(destination: ProfileView()) {
+                            ProfileRow(icon: "person.crop.circle.fill", title: NSLocalizedString("tab.profile", comment: ""))
+                        }
+
+                        Divider().background(Color.ftTextSecondary.opacity(0.2)).padding(.vertical, 8)
+
                         NavigationLink(destination: SettingsView()) {
                             ProfileRow(icon: "gearshape.fill", title: NSLocalizedString("settings.title", comment: ""))
                         }
