@@ -45,6 +45,7 @@
 		752645AEAB2644A7174CD44F /* RouteMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BF476F82E6A487F79B8FEE /* RouteMapView.swift */; };
 		82A96434D12D4FD6A81DE482 /* FTCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E28CF592D248B189E6CAEC /* FTCard.swift */; };
 		84F99B46066F4E17BB23CAE3 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114EF0F2E200440F8D8A3D79 /* AuthView.swift */; };
+		98F546126BBA43D298391728 /* ChooseUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15600C92CCB54E9CBAAE4816 /* ChooseUsernameView.swift */; };
 		8AD94ACB99131DF46A78A926 /* PolylineCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537648BB94ADB4C179ECC0EA /* PolylineCodec.swift */; };
 		92764D9182A65359A47D21D8 /* TrackDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C294CE588E615E815964EF5 /* TrackDetailView.swift */; };
 		A1CCE70606074AD8BE3FC738 /* TrackShareCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56BF1D7208A4128B335D332 /* TrackShareCardView.swift */; };
@@ -85,6 +86,7 @@
 		0B50A4546A634809AA6AD452 /* CarDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CarDetailView.swift; path = CarDetailView.swift; sourceTree = "<group>"; };
 		0D664A03A5ABDB32B1DB0616 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Track.swift; path = FaisTrack/Models/Track.swift; sourceTree = SOURCE_ROOT; };
 		114EF0F2E200440F8D8A3D79 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthView.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		15600C92CCB54E9CBAAE4816 /* ChooseUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChooseUsernameView.swift; path = ChooseUsernameView.swift; sourceTree = "<group>"; };
 		12B195761EA54B8DBCDA474D /* AddCarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddCarView.swift; path = AddCarView.swift; sourceTree = "<group>"; };
 		1E3F63FFCD9D487990F74088 /* PermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PermissionsView.swift; path = PermissionsView.swift; sourceTree = "<group>"; };
 		20BD9D0E781E49EEBB4D8E77 /* Car.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Car.swift; path = Car.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				114EF0F2E200440F8D8A3D79 /* AuthView.swift */,
+				15600C92CCB54E9CBAAE4816 /* ChooseUsernameView.swift */,
 				A178CC86E20D41F88A28F19F /* OnboardingView.swift */,
 				1E3F63FFCD9D487990F74088 /* PermissionsView.swift */,
 				953C603DF4FC422991B10BAA /* ProPaywallView.swift */,
@@ -499,6 +502,7 @@
 				66D38D3553EE40BF9A1FEAE3 /* Friend.swift in Sources */,
 				E9F3E58453404FACA8D15E7A /* User.swift in Sources */,
 				84F99B46066F4E17BB23CAE3 /* AuthView.swift in Sources */,
+				98F546126BBA43D298391728 /* ChooseUsernameView.swift in Sources */,
 				3DD73D13553241F699B34013 /* OnboardingView.swift in Sources */,
 				10D4D19C641F4AA9A1465663 /* PermissionsView.swift in Sources */,
 				08D16BAE46B544F697FCECB1 /* ProPaywallView.swift in Sources */,
@@ -669,6 +673,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
