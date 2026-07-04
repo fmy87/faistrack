@@ -218,6 +218,14 @@ class FirebaseService {
             // functions/index.js) look up the *previous* holder's fcmToken
             // and notify them — this write alone doesn't send anything.
             updates["bestTimeUid"] = result.uid
+            // Carried onto the Track itself (rather than requiring a
+            // separate fetch of the winning TrackResult) so the share card
+            // can show the record holder's top speed and car with no extra
+            // round trip.
+            updates["bestTimeTopSpeed"] = result.topSpeed
+            if let carName = result.carName {
+                updates["bestTimeCarName"] = carName
+            }
         }
         try await trackRef.updateData(updates)
     }
@@ -466,6 +474,7 @@ enum FirebaseServiceError: LocalizedError {
         }
     }
 }
+
 
 
 
