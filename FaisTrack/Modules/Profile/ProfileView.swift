@@ -96,6 +96,18 @@ struct ProfileView: View {
                         }
                     }
 
+                    if let errorMessage = viewModel.errorMessage {
+                        // Previously this was set on failure but never
+                        // actually displayed anywhere — a failed toggle
+                        // save would silently revert with zero explanation,
+                        // which looks identical to "the toggle is just
+                        // broken" even when the real cause (e.g. a network
+                        // blip) is knowable.
+                        Text(errorMessage)
+                            .font(.system(size: 12)).foregroundColor(.speedRed)
+                            .multilineTextAlignment(.center)
+                    }
+
                     Button(role: .destructive) {
                         showSignOutConfirm = true
                     } label: {
@@ -311,6 +323,7 @@ class ProfileViewModel: ObservableObject {
         }
     }
 }
+
 
 
 
