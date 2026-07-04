@@ -59,7 +59,17 @@ struct ProfileView: View {
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
-                                .background(viewModel.canSaveUsername ? Color.ftGradient : Color.ftTextSecondary.opacity(0.3))
+                                .background {
+                                    // A ternary here fails to compile: Color.ftGradient
+                                    // is actually a LinearGradient, not a Color, so the
+                                    // two branches don't share a type. A ViewBuilder
+                                    // closure lets each branch resolve independently.
+                                    if viewModel.canSaveUsername {
+                                        Color.ftGradient
+                                    } else {
+                                        Color.ftTextSecondary.opacity(0.3)
+                                    }
+                                }
                                 .cornerRadius(12)
                             }
                             .disabled(!viewModel.canSaveUsername)
@@ -301,5 +311,6 @@ class ProfileViewModel: ObservableObject {
         }
     }
 }
+
 
 
