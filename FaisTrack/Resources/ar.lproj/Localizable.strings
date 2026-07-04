@@ -351,3 +351,7 @@
 "onboarding.chooseUsername.title" = "اختر اسم المستخدم الخاص بك";
 "onboarding.chooseUsername.subtitle" = "بهذا الاسم سيجدك أصدقاؤك ويرونك في فايس تراك. يمكنك تغييره لاحقًا من ملفك الشخصي.";
 "onboarding.chooseUsername.continue" = "متابعة";
+
+
+// MARK: - Drive card passenger badge
+"drive.passengerBadge" = "راكب";
