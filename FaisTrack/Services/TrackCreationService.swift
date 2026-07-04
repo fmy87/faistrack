@@ -35,7 +35,10 @@ class TrackCreationService: NSObject, ObservableObject {
     private var countdownTimer: Timer?
     private var recordingTimer: Timer?
     private var locationCancellable: AnyCancellable?
-    private let countdownSeconds = 3
+    /// Exposed so CreateTrackView's countdown UI can compute F1-style light
+    /// progression proportionally, without duplicating this number.
+    static let countdownDurationSeconds = 3
+    private let countdownSeconds = countdownDurationSeconds
     /// Max of currentSpeedKmh over the whole recording — currentSpeedKmh
     /// itself is instantaneous and gets reset when recording ends, so this
     /// is the only place the actual top speed for the run is captured.
@@ -164,6 +167,7 @@ class TrackCreationService: NSObject, ObservableObject {
         state = .idle
     }
 }
+
 
 
 
