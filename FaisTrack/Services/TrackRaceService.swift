@@ -33,6 +33,7 @@ class TrackRaceService: NSObject, ObservableObject {
     private var countdownTimer: Timer?
     private var raceTimer: Timer?
     private var locationCancellable: AnyCancellable?
+    private var topSpeedKmh: Double = 0
 
     /// How close (meters) the user must be to trigger arrival/finish detection.
     /// GPS accuracy in cities is typically 5-15m, so this gives reasonable
@@ -66,6 +67,7 @@ class TrackRaceService: NSObject, ObservableObject {
         case .racing(let elapsed, _):
             let finishLocation = CLLocation(latitude: track.endCoordinate.latitude, longitude: track.endCoordinate.longitude)
             let distanceToFinish = location.distance(from: finishLocation)
+            topSpeedKmh = max(topSpeedKmh, max(0, location.speed * 3.6))
             state = .racing(elapsed: elapsed, distanceToFinish: distanceToFinish)
             if distanceToFinish <= proximityRadiusMeters {
                 finishRace()
@@ -95,6 +97,7 @@ class TrackRaceService: NSObject, ObservableObject {
 
     private func startRace() {
         raceStartDate = Date()
+        topSpeedKmh = 0
         state = .racing(elapsed: 0, distanceToFinish: distanceToStart)
         raceTimer?.invalidate()
         raceTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
@@ -116,9 +119,22 @@ class TrackRaceService: NSObject, ObservableObject {
         Task {
             let username = (try? await FirebaseService.shared.getUser(uid: uid))?.username
                 ?? NSLocalizedString("general.defaultUsername", comment: "")
-            let result = TrackResult(trackId: track.id ?? "", uid: uid, username: username, duration: duration)
+            let carName = await Self.resolveActiveCarName(uid: uid)
+            let result = TrackResult(trackId: track.id ?? "", uid: uid, username: username, duration: duration,
+                                      topSpeed: topSpeedKmh, carName: carName)
             try? await FirebaseService.shared.saveTrackResult(result)
         }
+    }
+
+    /// Looks up the car currently marked active in the Garage so it can be
+    /// denormalized onto the TrackResult — this is what lets the track's
+    /// share card show "which car" without an extra async lookup at
+    /// display time. Returns nil if no car is set as active, which the
+    /// share card handles by simply omitting the car line.
+    static func resolveActiveCarName(uid: String) async -> String? {
+        guard let carId = UserDefaults.standard.string(forKey: "activeCarId"), !carId.isEmpty else { return nil }
+        let cars = (try? await FirebaseService.shared.getCars(uid: uid)) ?? []
+        return cars.first(where: { $0.id == carId })?.displayName
     }
 
     func reset() {
@@ -131,3 +147,4 @@ class TrackRaceService: NSObject, ObservableObject {
         distanceToStart = 0
     }
 }
+
