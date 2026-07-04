@@ -52,9 +52,17 @@ struct TrackShareCardView: View {
 /// distance, best time and its holder, and who published the track.
 struct TrackShareCard: View {
     let track: Track
+    @AppStorage("unitsPreference") private var unitsPreference: String = "km"
 
     private var routeCoordinates: [CLLocationCoordinate2D] {
         PolylineCodec.decode(track.polylineEncoded)
+    }
+
+    private var useMetric: Bool { unitsPreference == "km" }
+
+    private var topSpeedFormatted: String? {
+        guard let kmh = track.bestTimeTopSpeed, kmh > 0 else { return nil }
+        return useMetric ? String(format: "%.0f km/h", kmh) : String(format: "%.0f mph", kmh * 0.621371)
     }
 
     var body: some View {
@@ -95,6 +103,21 @@ struct TrackShareCard: View {
                             Text(track.bestTimeUsername.map { "@\($0)" } ?? NSLocalizedString("tracks.bestTime", comment: ""))
                                 .font(.system(size: 11)).foregroundColor(.gray)
                         }
+                    }
+                    if let topSpeedFormatted {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(topSpeedFormatted)
+                                .font(.system(size: 22, weight: .bold)).foregroundColor(.ftAccent)
+                            Text(NSLocalizedString("stats.topSpeed", comment: ""))
+                                .font(.system(size: 11)).foregroundColor(.gray)
+                        }
+                    }
+                }
+
+                if let carName = track.bestTimeCarName {
+                    HStack(spacing: 6) {
+                        Image(systemName: "car.fill").font(.system(size: 12)).foregroundColor(.ftAccentOrange)
+                        Text(carName).font(.system(size: 13, weight: .medium)).foregroundColor(.white.opacity(0.85))
                     }
                 }
 
@@ -146,3 +169,4 @@ private struct RouteTraceShape: Shape {
         return path
     }
 }
+
