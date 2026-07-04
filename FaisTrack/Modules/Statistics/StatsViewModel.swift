@@ -40,22 +40,6 @@ class StatsViewModel: ObservableObject {
     var averageDriveMinutes: Int { drivingDrives.isEmpty ? 0 : (totalDurationSeconds / drivingDrives.count) / 60 }
     var topSpeedKmh: Double { drivingDrives.map(\.topSpeed).max() ?? 0 }
 
-    // MARK: - Distance comparisons (distances in km)
-
-    /// Length of one lap of the Indianapolis Motor Speedway oval.
-    private let indy500LapKm: Double = 4.023
-    /// Approximate driving distance New York to Los Angeles.
-    private let coastToCoastKm: Double = 4500
-    /// Earth's circumference at the equator.
-    private let aroundEarthKm: Double = 40075
-    /// Average Earth-Moon distance.
-    private let toTheMoonKm: Double = 384400
-
-    var indy500Laps: Double { totalDistanceKm / indy500LapKm }
-    var coastToCoastRatio: Double { totalDistanceKm / coastToCoastKm }
-    var aroundEarthRatio: Double { totalDistanceKm / aroundEarthKm }
-    var toTheMoonRatio: Double { totalDistanceKm / toTheMoonKm }
-
     // MARK: - Notable single drives
 
     var longestDrive: Drive? { drivingDrives.max(by: { $0.distance < $1.distance }) }
@@ -241,4 +225,5 @@ class StatsViewModel: ObservableObject {
             .suffix(10)
     }
 }
+
 
