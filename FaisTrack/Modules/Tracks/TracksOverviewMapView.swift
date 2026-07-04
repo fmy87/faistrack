@@ -6,6 +6,10 @@ import MapKit
 /// have been published yet, so the map itself is never invisible.
 struct TracksOverviewMapView: UIViewRepresentable {
     let tracks: [Track]
+    /// Called when the user taps a track's marker directly on the map —
+    /// lets tracks be selected without needing to scroll to them in the
+    /// list below.
+    var onSelectTrack: ((Track) -> Void)? = nil
 
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
@@ -17,6 +21,7 @@ struct TracksOverviewMapView: UIViewRepresentable {
     }
 
     func updateUIView(_ mapView: MKMapView, context: Context) {
+        context.coordinator.onSelectTrack = onSelectTrack
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
 
@@ -27,6 +32,16 @@ struct TracksOverviewMapView: UIViewRepresentable {
             mapView.addOverlay(MKPolyline(coordinates: coordinates, count: coordinates.count))
             if let first = coordinates.first { allCoordinates.append(first) }
             if let last = coordinates.last { allCoordinates.append(last) }
+
+            // A marker at the route's midpoint gives a reliable, easy tap
+            // target — tapping directly on a thin polyline is unreliable
+            // with MapKit's default hit-testing, so this is what actually
+            // makes tracks selectable straight from the map.
+            let midpoint = coordinates[coordinates.count / 2]
+            let annotation = TrackAnnotation(track: track)
+            annotation.coordinate = midpoint
+            annotation.title = track.name
+            mapView.addAnnotation(annotation)
         }
 
         if !allCoordinates.isEmpty {
@@ -50,8 +65,17 @@ struct TracksOverviewMapView: UIViewRepresentable {
 
     func makeCoordinator() -> Coordinator { Coordinator() }
 
+    final class TrackAnnotation: MKPointAnnotation {
+        let track: Track
+        init(track: Track) {
+            self.track = track
+            super.init()
+        }
+    }
+
     final class Coordinator: NSObject, MKMapViewDelegate {
         var didSetInitialRegion = false
+        var onSelectTrack: ((Track) -> Void)?
 
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             guard let polyline = overlay as? MKPolyline else {
@@ -62,5 +86,24 @@ struct TracksOverviewMapView: UIViewRepresentable {
             renderer.lineWidth = 3
             return renderer
         }
+
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            guard annotation is TrackAnnotation else { return nil }
+            let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "track")
+            view.markerTintColor = UIColor(red: 1.0, green: 0.176, blue: 0.176, alpha: 1.0)
+            view.glyphImage = UIImage(systemName: "flag.checkered")
+            view.canShowCallout = true
+            return view
+        }
+
+        func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+            guard let annotation = view.annotation as? TrackAnnotation else { return }
+            onSelectTrack?(annotation.track)
+            // Deselect immediately so tapping the same marker again still
+            // fires didSelect rather than being a no-op the second time.
+            mapView.deselectAnnotation(annotation, animated: false)
+        }
     }
 }
+
+
