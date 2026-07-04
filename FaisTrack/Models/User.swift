@@ -17,7 +17,15 @@ struct FTUser: Identifiable, Codable {
     var isPrivateProfileRaw: Bool?
     var isPro: Bool = false
     var proExpiry: Timestamp?
-    var referralCode: String
+    // Optional, not a plain "= ..." default, for the same reason as
+    // isPrivateProfileRaw above: this field was added after some accounts
+    // (including at least one real test account) already existed in
+    // Firestore without it. A non-Optional String with no value present at
+    // all throws "the data couldn't be read because it is missing" on
+    // every single getUser() call for that account — breaking Settings,
+    // Profile, Stats, Friends, and anywhere else a profile is loaded, not
+    // just the referral feature itself.
+    var referralCode: String?
     var freeDaysEarned: Int = 0
     var language: String = "en"
     var units: String = "km"         // "km" or "mi"
@@ -31,3 +39,4 @@ struct FTUser: Identifiable, Codable {
         set { isPrivateProfileRaw = newValue }
     }
 }
+
