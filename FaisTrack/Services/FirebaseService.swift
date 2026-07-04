@@ -343,12 +343,23 @@ class FirebaseService {
     /// would mean touching a rule that everything else depends on. A
     /// dedicated collection keeps the "friends can read this, only I can
     /// write it" rule scoped to exactly the data it's meant for.
-    func updateLiveStatus(uid: String, isDriving: Bool) async {
-        try? await db.collection("liveStatus").document(uid).setData([
+    ///
+    /// `coordinate` is optional and omitted from the write entirely when
+    /// nil (e.g. drive just ended, or Ghost Mode is on) — using `merge` with
+    /// a coordinate present updates it, but not writing the fields at all
+    /// when there's nothing to share is preferable to writing stale (0,0)
+    /// values that could be mistaken for a real location.
+    func updateLiveStatus(uid: String, isDriving: Bool, coordinate: CLLocationCoordinate2D? = nil) async {
+        var data: [String: Any] = [
             "uid": uid,
             "isDriving": isDriving,
             "updatedAt": Timestamp()
-        ], merge: true)
+        ]
+        if let coordinate {
+            data["latitude"] = coordinate.latitude
+            data["longitude"] = coordinate.longitude
+        }
+        try? await db.collection("liveStatus").document(uid).setData(data, merge: true)
     }
 
     /// Firestore's `in` operator caps at 30 values and throws on an empty
@@ -364,6 +375,28 @@ class FirebaseService {
             result[doc.documentID] = doc.data()["isDriving"] as? Bool ?? false
         }
         return result
+    }
+
+    /// Richer version of getFriendsLiveStatus for map display — only
+    /// returns friends who are both currently driving AND have a location
+    /// present (Ghost Mode / a drive that just ended means no lat/lng gets
+    /// written at all, so those friends are naturally excluded here rather
+    /// than needing a separate check).
+    func getFriendsLiveLocations(friendUIDs: [String]) async throws -> [FriendMapPin] {
+        guard !friendUIDs.isEmpty else { return [] }
+        let snapshot = try await db.collection("liveStatus")
+            .whereField(FieldPath.documentID(), in: Array(friendUIDs.prefix(30)))
+            .getDocuments()
+        var pins: [FriendMapPin] = []
+        for doc in snapshot.documents {
+            let data = doc.data()
+            guard data["isDriving"] as? Bool == true,
+                  let lat = data["latitude"] as? Double,
+                  let lng = data["longitude"] as? Double else { continue }
+            let username = (try? await getUser(uid: doc.documentID))?.username ?? "?"
+            pins.append(FriendMapPin(id: doc.documentID, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng), username: username))
+        }
+        return pins
     }
 
     // MARK: - Photo Upload (disabled until Firebase Storage is enabled on Blaze plan)
@@ -386,6 +419,7 @@ enum FirebaseServiceError: LocalizedError {
         }
     }
 }
+
 
 
 
