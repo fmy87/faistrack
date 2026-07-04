@@ -8,6 +8,8 @@ struct LiveDriveView: View {
     @ObservedObject private var driveDetection = DriveDetectionService.shared
     @AppStorage("unitsPreference") private var unitsPreference: String = "km"
     @State private var displayMode: DisplayMode = .speed
+    @State private var friendPins: [FriendMapPin] = []
+    @State private var friendPollTask: Task<Void, Never>?
     var onMinimize: (() -> Void)?
 
     private enum DisplayMode { case speed, map }
@@ -172,8 +174,8 @@ struct LiveDriveView: View {
 
     private var mapView: some View {
         Group {
-            if driveDetection.liveRouteCoordinates.count > 1 {
-                RouteMapView(coordinates: driveDetection.liveRouteCoordinates)
+            if driveDetection.liveRouteCoordinates.count > 1 || !friendPins.isEmpty {
+                RouteMapView(coordinates: driveDetection.liveRouteCoordinates, friendPins: friendPins)
                     .frame(height: 420)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .padding(.horizontal, 16)
@@ -185,6 +187,28 @@ struct LiveDriveView: View {
                 }
             }
         }
+        .onAppear { startFriendPolling() }
+        .onDisappear { friendPollTask?.cancel() }
+    }
+
+    /// Polls friends' live locations while the map is on screen — matches
+    /// the same lightweight polling pattern used in FriendsViewModel rather
+    /// than introducing a persistent Firestore listener just for this one
+    /// view. 15s keeps pins reasonably fresh without excessive reads.
+    private func startFriendPolling() {
+        friendPollTask?.cancel()
+        friendPollTask = Task {
+            while !Task.isCancelled {
+                await refreshFriendPins()
+                try? await Task.sleep(nanoseconds: 15_000_000_000)
+            }
+        }
+    }
+
+    private func refreshFriendPins() async {
+        guard let uid = AuthService.shared.currentUser?.uid,
+              let friends = try? await FirebaseService.shared.getFriends(uid: uid) else { return }
+        friendPins = (try? await FirebaseService.shared.getFriendsLiveLocations(friendUIDs: friends.map(\.uid))) ?? []
     }
 
     // MARK: - Bottom controls
@@ -294,3 +318,4 @@ private struct SpeedGaugeView: View {
         .animation(.easeOut(duration: 0.3), value: value)
     }
 }
+
