@@ -27,15 +27,59 @@ class FirebaseService {
             return existing
         }
         let seed = name.isEmpty ? (email ?? "driver") : name
+        let username = try await generateUniqueUsername(from: seed)
         let newUser = FTUser(
             uid: uid,
             name: name.isEmpty ? "Driver" : name,
-            username: Self.generateUsername(from: seed),
+            username: username,
             email: email,
             referralCode: Self.generateReferralCode()
         )
         try await saveUser(newUser)
         return newUser
+    }
+
+    /// Checks whether a username is free to use. Usernames are stored
+    /// lowercased (see generateUsername/updateUsername), so comparisons are
+    /// case-insensitive — "Jake" and "jake" are treated as the same name,
+    /// which is what people expect from a username system.
+    func isUsernameAvailable(_ username: String, excludingUid: String? = nil) async throws -> Bool {
+        let lowered = username.lowercased()
+        let snapshot = try await db.collection("users")
+            .whereField("username", isEqualTo: lowered)
+            .limit(to: 5)
+            .getDocuments()
+        return !snapshot.documents.contains { $0.documentID != excludingUid }
+    }
+
+    /// Lets a user set or change their own username, enforced unique here
+    /// (there's no Firestore rule that can guarantee uniqueness on its own —
+    /// that needs an application-level check like this one, done right
+    /// before the write so the race window is as small as practical).
+    func updateUsername(uid: String, newUsername: String) async throws {
+        let lowered = newUsername.lowercased()
+        guard try await isUsernameAvailable(lowered, excludingUid: uid) else {
+            throw FirebaseServiceError.usernameTaken
+        }
+        try await db.collection("users").document(uid).updateData(["username": lowered])
+    }
+
+    /// Previously the auto-generated username (name + random 4-digit
+    /// suffix) was never checked against existing usernames at all — with
+    /// a common first name, the ~9000-value suffix space collides often
+    /// enough (birthday-paradox effect) to be a real problem now that
+    /// usernames back both friend search and leaderboards. This retries
+    /// with a fresh random suffix until an actually-free one is found.
+    private func generateUniqueUsername(from seed: String) async throws -> String {
+        for _ in 0..<10 {
+            let candidate = Self.generateUsername(from: seed)
+            if try await isUsernameAvailable(candidate) {
+                return candidate
+            }
+        }
+        // Exceedingly unlikely fallback after 10 collisions in a row, but
+        // a UUID-derived suffix can't practically collide either way.
+        return "driver\(UUID().uuidString.prefix(8))".lowercased()
     }
 
     private static func generateUsername(from seed: String) -> String {
@@ -410,15 +454,19 @@ class FirebaseService {
 enum FirebaseServiceError: LocalizedError {
     case storageNotEnabled
     case invalidTrack
+    case usernameTaken
     var errorDescription: String? {
         switch self {
         case .storageNotEnabled:
             return NSLocalizedString("firebase.error.storageNotEnabled", comment: "")
         case .invalidTrack:
             return NSLocalizedString("firebase.error.invalidTrack", comment: "")
+        case .usernameTaken:
+            return NSLocalizedString("firebase.error.usernameTaken", comment: "")
         }
     }
 }
+
 
 
 
