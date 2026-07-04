@@ -27,7 +27,6 @@ struct StatsView: View {
                             recapBanner
                         }
                         totalDistanceCard
-                        comparisonBars
                         longestDriveCard
                         topSpeedCard
                         fastestDriveCard
@@ -182,17 +181,6 @@ struct StatsView: View {
             }
             Text(String(format: NSLocalizedString("stats.avgDriveDistance", comment: ""), distanceText1dp(viewModel.averageDriveDistanceKm)))
                 .font(.system(size: 14)).foregroundColor(.ftTextSecondary)
-        }
-    }
-
-    // MARK: - Distance comparisons
-
-    private var comparisonBars: some View {
-        VStack(spacing: 10) {
-            ComparisonRow(emoji: "🏁", value: viewModel.indy500Laps, label: NSLocalizedString("stats.compare.indy500", comment: ""), highlighted: true)
-            ComparisonRow(emoji: "🇺🇸", value: viewModel.coastToCoastRatio, label: NSLocalizedString("stats.compare.coastToCoast", comment: ""))
-            ComparisonRow(emoji: "🌍", value: viewModel.aroundEarthRatio, label: NSLocalizedString("stats.compare.aroundEarth", comment: ""))
-            ComparisonRow(emoji: "🌕", value: viewModel.toTheMoonRatio, label: NSLocalizedString("stats.compare.toTheMoon", comment: ""))
         }
     }
 
@@ -441,27 +429,6 @@ struct StatsView: View {
     }
 }
 
-private struct ComparisonRow: View {
-    let emoji: String
-    let value: Double
-    let label: String
-    var highlighted: Bool = false
-
-    var body: some View {
-        HStack {
-            Text(emoji).font(.system(size: 20))
-                .frame(width: 36, height: 36)
-                .background(Circle().fill(Color.black.opacity(0.2)))
-            Text(String(format: "%.2fx", value)).font(.system(size: 16, weight: .bold)).foregroundColor(.white)
-            Text(label).font(.system(size: 15)).foregroundColor(.white.opacity(0.85))
-            Spacer()
-        }
-        .padding(.horizontal, 14).padding(.vertical, 12)
-        .background(highlighted ? Color.ftAccent : Color.ftCard)
-        .cornerRadius(20)
-    }
-}
-
 private struct PersonalBestRow: View {
     let emoji: String
     let title: String
@@ -490,6 +457,7 @@ private extension Drive {
         useMetric ? String(format: "%.0f km/h", value) : String(format: "%.0f mph", value * 0.621371)
     }
 }
+
 
 
 
