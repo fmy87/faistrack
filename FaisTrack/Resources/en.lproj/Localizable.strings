@@ -345,3 +345,9 @@
 "firebase.error.usernameTaken" = "That username was just taken. Please try another.";
 
 
+
+
+// MARK: - Onboarding username selection
+"onboarding.chooseUsername.title" = "Pick your username";
+"onboarding.chooseUsername.subtitle" = "This is how friends will find and see you across FaisTrack. You can change it later in your profile.";
+"onboarding.chooseUsername.continue" = "Continue";
