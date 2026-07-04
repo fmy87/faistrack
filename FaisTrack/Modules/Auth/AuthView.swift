@@ -4,6 +4,7 @@ import AuthenticationServices
 struct AuthView: View {
     @EnvironmentObject var appState: AppState
     @State private var isLoading = false
+    @State private var showChooseUsername = false
     @State private var showSafety = false
     @State private var errorMessage: String?
 
@@ -48,6 +49,9 @@ struct AuthView: View {
             }
             .padding(.horizontal, 24)
         }
+        .sheet(isPresented: $showChooseUsername, onDismiss: { showSafety = true }) {
+            ChooseUsernameView()
+        }
         .sheet(isPresented: $showSafety) { SafetyView() }
     }
 
@@ -65,7 +69,7 @@ struct AuthView: View {
                     try await AuthService.shared.signInWithApple(credential: credential)
                     await MainActor.run {
                         isLoading = false
-                        showSafety = true
+                        showChooseUsername = true
                     }
                 } catch {
                     await MainActor.run {
@@ -92,7 +96,7 @@ struct AuthView: View {
                 try await AuthService.shared.signInWithGoogle(presenting: vc)
                 await MainActor.run {
                     isLoading = false
-                    showSafety = true
+                    showChooseUsername = true
                 }
             } catch {
                 await MainActor.run {
@@ -103,3 +107,4 @@ struct AuthView: View {
         }
     }
 }
+
