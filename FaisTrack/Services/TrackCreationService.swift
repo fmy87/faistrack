@@ -90,7 +90,7 @@ class TrackCreationService: NSObject, ObservableObject {
     /// since there's no pre-existing finish point to detect arrival at.
     func endRecording() {
         guard case .recording(let elapsed, let distance) = state, coordinates.count > 1 else {
-            errorMessage = NSLocalizedString("createTrack.tooShort", comment: "")
+            errorMessage = NSLocalizedString("createTrack.tooFewPoints", comment: "")
             reset()
             return
         }
@@ -107,11 +107,19 @@ class TrackCreationService: NSObject, ObservableObject {
         guard case .finished(let distance, let duration) = state,
               let first = coordinates.first, let last = coordinates.last,
               let uid = AuthService.shared.currentUser?.uid else {
-            errorMessage = NSLocalizedString("createTrack.tooShort", comment: "")
+            errorMessage = NSLocalizedString("createTrack.tooFewPoints", comment: "")
             return false
         }
         guard distance >= Track.minimumDistanceMeters else {
-            errorMessage = NSLocalizedString("createTrack.tooShort", comment: "")
+            // Previously this just said "too short" with no numbers — if
+            // someone recorded a real drive and it still failed (weak GPS
+            // undercounting distance, or a genuinely short lap), they had
+            // no way to tell whether they were close or way off. Showing
+            // both numbers makes the actual gap obvious instead of feeling
+            // like the save is silently broken.
+            let recorded = distance >= 1000 ? String(format: "%.2f km", distance / 1000) : String(format: "%.0f m", distance)
+            let required = String(format: "%.0f m", Track.minimumDistanceMeters)
+            errorMessage = String(format: NSLocalizedString("createTrack.tooShort", comment: ""), required, recorded)
             return false
         }
         do {
@@ -148,4 +156,5 @@ class TrackCreationService: NSObject, ObservableObject {
         state = .idle
     }
 }
+
 
