@@ -4,6 +4,7 @@ import CoreLocation
 struct TrackDetailView: View {
     let track: Track
     @State private var results: [TrackResult] = []
+    @State private var showShareCard = false
 
     private var routeCoordinates: [CLLocationCoordinate2D] {
         PolylineCodec.decode(track.polylineEncoded)
@@ -17,6 +18,14 @@ struct TrackDetailView: View {
                         .frame(height: 220)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
+
+                // Makes it explicit this track (and every other one in the
+                // Tracks list) can belong to anyone, not just you — the list
+                // shows every user's published tracks and this one is
+                // fully competable regardless of who created it.
+                Text(String(format: NSLocalizedString("tracks.createdBy", comment: ""), track.ownerUsername))
+                    .font(.system(size: 13)).foregroundColor(.ftTextSecondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
                 FTCard {
                     HStack {
@@ -37,6 +46,10 @@ struct TrackDetailView: View {
                         .padding(.vertical, 14)
                         .background(Color.ftGradient)
                         .cornerRadius(16)
+                }
+
+                FTSecondaryButton(title: NSLocalizedString("tracks.shareCard", comment: "")) {
+                    showShareCard = true
                 }
 
                 if !results.isEmpty {
@@ -63,6 +76,9 @@ struct TrackDetailView: View {
         .background(Color.ftBackground.ignoresSafeArea())
         .navigationTitle(track.name)
         .task { await loadLeaderboard() }
+        .sheet(isPresented: $showShareCard) {
+            TrackShareCardView(track: track)
+        }
     }
 
     private func loadLeaderboard() async {
@@ -70,3 +86,4 @@ struct TrackDetailView: View {
         results = (try? await FirebaseService.shared.getTrackLeaderboard(trackId: id)) ?? []
     }
 }
+
