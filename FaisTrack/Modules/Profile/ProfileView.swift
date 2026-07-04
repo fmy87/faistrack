@@ -9,98 +9,96 @@ struct ProfileView: View {
     @State private var deleteError: String?
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.ftBackground.ignoresSafeArea()
-                ScrollView {
-                    VStack(spacing: 24) {
-                        VStack(spacing: 8) {
-                            Image(systemName: "person.crop.circle.fill")
-                                .font(.system(size: 72))
-                                .foregroundColor(.ftAccent)
-                            Text(viewModel.user?.name ?? "")
-                                .font(.system(size: 22, weight: .bold))
-                            if let username = viewModel.user?.username, !username.isEmpty {
-                                Text("@\(username)")
-                                    .foregroundColor(.ftTextSecondary)
-                            }
+        ZStack {
+            Color.ftBackground.ignoresSafeArea()
+            ScrollView {
+                VStack(spacing: 24) {
+                    VStack(spacing: 8) {
+                        Image(systemName: "person.crop.circle.fill")
+                            .font(.system(size: 72))
+                            .foregroundColor(.ftAccent)
+                        Text(viewModel.user?.name ?? "")
+                            .font(.system(size: 22, weight: .bold))
+                        if let username = viewModel.user?.username, !username.isEmpty {
+                            Text("@\(username)")
+                                .foregroundColor(.ftTextSecondary)
                         }
+                    }
 
-                        FTCard {
-                            VStack(alignment: .leading, spacing: 12) {
-                                Toggle(isOn: Binding(
-                                    get: { viewModel.isPrivateProfile },
-                                    set: { newValue in Task { await viewModel.setPrivateProfile(newValue) } }
-                                )) {
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text(NSLocalizedString("profile.privateProfile", comment: ""))
-                                            .font(.system(size: 15, weight: .semibold))
-                                        Text(viewModel.isPrivateProfile
-                                             ? NSLocalizedString("profile.privateProfile.desc", comment: "")
-                                             : NSLocalizedString("profile.publicProfile.desc", comment: ""))
-                                            .font(.system(size: 12))
-                                            .foregroundColor(.ftTextSecondary)
-                                    }
+                    FTCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Toggle(isOn: Binding(
+                                get: { viewModel.isPrivateProfile },
+                                set: { newValue in Task { await viewModel.setPrivateProfile(newValue) } }
+                            )) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(NSLocalizedString("profile.privateProfile", comment: ""))
+                                        .font(.system(size: 15, weight: .semibold))
+                                    Text(viewModel.isPrivateProfile
+                                         ? NSLocalizedString("profile.privateProfile.desc", comment: "")
+                                         : NSLocalizedString("profile.publicProfile.desc", comment: ""))
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.ftTextSecondary)
                                 }
-                                .tint(.ftAccent)
                             }
+                            .tint(.ftAccent)
                         }
+                    }
 
-                        Button(role: .destructive) {
-                            showSignOutConfirm = true
-                        } label: {
-                            Text(NSLocalizedString("profile.signOut", comment: ""))
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.speedRed)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 14)
-                                .background(Color.ftCard)
-                                .cornerRadius(16)
-                        }
-
-                        Button(role: .destructive) {
-                            showDeleteConfirm = true
-                        } label: {
-                            HStack {
-                                if isDeletingAccount { ProgressView().tint(.speedRed) }
-                                Text(NSLocalizedString("profile.deleteAccount", comment: ""))
-                                    .font(.system(size: 14, weight: .semibold))
-                            }
-                            .foregroundColor(.speedRed.opacity(0.8))
+                    Button(role: .destructive) {
+                        showSignOutConfirm = true
+                    } label: {
+                        Text(NSLocalizedString("profile.signOut", comment: ""))
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(.speedRed)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 10)
-                        }
-                        .disabled(isDeletingAccount)
+                            .padding(.vertical, 14)
+                            .background(Color.ftCard)
+                            .cornerRadius(16)
+                    }
 
-                        if let deleteError {
-                            Text(deleteError).font(.system(size: 12)).foregroundColor(.speedRed)
-                                .multilineTextAlignment(.center)
+                    Button(role: .destructive) {
+                        showDeleteConfirm = true
+                    } label: {
+                        HStack {
+                            if isDeletingAccount { ProgressView().tint(.speedRed) }
+                            Text(NSLocalizedString("profile.deleteAccount", comment: ""))
+                                .font(.system(size: 14, weight: .semibold))
                         }
-                    }.padding(20)
-                }
+                        .foregroundColor(.speedRed.opacity(0.8))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                    }
+                    .disabled(isDeletingAccount)
+
+                    if let deleteError {
+                        Text(deleteError).font(.system(size: 12)).foregroundColor(.speedRed)
+                            .multilineTextAlignment(.center)
+                    }
+                }.padding(20)
             }
-            .navigationTitle(NSLocalizedString("tab.profile", comment: ""))
-            .task { await viewModel.load() }
-            .confirmationDialog(
-                NSLocalizedString("profile.signOutConfirm", comment: ""),
-                isPresented: $showSignOutConfirm,
-                titleVisibility: .visible
-            ) {
-                Button(NSLocalizedString("profile.signOut", comment: ""), role: .destructive) {
-                    signOut()
-                }
-                Button(NSLocalizedString("general.cancel", comment: ""), role: .cancel) {}
+        }
+        .navigationTitle(NSLocalizedString("tab.profile", comment: ""))
+        .task { await viewModel.load() }
+        .confirmationDialog(
+            NSLocalizedString("profile.signOutConfirm", comment: ""),
+            isPresented: $showSignOutConfirm,
+            titleVisibility: .visible
+        ) {
+            Button(NSLocalizedString("profile.signOut", comment: ""), role: .destructive) {
+                signOut()
             }
-            .confirmationDialog(
-                NSLocalizedString("profile.deleteAccountConfirm", comment: ""),
-                isPresented: $showDeleteConfirm,
-                titleVisibility: .visible
-            ) {
-                Button(NSLocalizedString("profile.deleteAccount", comment: ""), role: .destructive) {
-                    Task { await deleteAccount() }
-                }
-                Button(NSLocalizedString("general.cancel", comment: ""), role: .cancel) {}
+            Button(NSLocalizedString("general.cancel", comment: ""), role: .cancel) {}
+        }
+        .confirmationDialog(
+            NSLocalizedString("profile.deleteAccountConfirm", comment: ""),
+            isPresented: $showDeleteConfirm,
+            titleVisibility: .visible
+        ) {
+            Button(NSLocalizedString("profile.deleteAccount", comment: ""), role: .destructive) {
+                Task { await deleteAccount() }
             }
+            Button(NSLocalizedString("general.cancel", comment: ""), role: .cancel) {}
         }
     }
 
@@ -182,3 +180,4 @@ class ProfileViewModel: ObservableObject {
         }
     }
 }
+
