@@ -59,7 +59,16 @@ struct TrackRowView: View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
                 Text(track.name).font(.system(size: 16, weight: .semibold))
-                Text(track.distanceFormatted).font(.system(size: 13)).foregroundColor(.ftTextSecondary)
+                HStack(spacing: 6) {
+                    Text(track.distanceFormatted)
+                    Text("·")
+                    // Shows who published this track — since the Tracks tab
+                    // lists every user's tracks (not just your own), this
+                    // makes it obvious you can browse and compete on tracks
+                    // other people created, not only ones you made yourself.
+                    Text("@\(track.ownerUsername)")
+                }
+                .font(.system(size: 13)).foregroundColor(.ftTextSecondary)
             }
             Spacer()
             if let bestTime = track.bestTime {
@@ -84,4 +93,5 @@ class TracksViewModel: ObservableObject {
         tracks = (try? await FirebaseService.shared.getTracks()) ?? []
     }
 }
+
 
