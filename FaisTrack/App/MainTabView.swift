@@ -37,6 +37,10 @@ struct MainTabView: View {
                 .tabItem {
                     Label(NSLocalizedString("tab.profile", comment: ""), systemImage: "person.crop.circle.fill")
                 }
+            MoreView()
+                .tabItem {
+                    Label(NSLocalizedString("tab.more", comment: ""), systemImage: "ellipsis.circle.fill")
+                }
         }
         .accentColor(.ftAccent)
         .onAppear {
@@ -60,5 +64,6 @@ struct MainTabView: View {
         }
     }
 }
+
 
 
