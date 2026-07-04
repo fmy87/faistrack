@@ -13,6 +13,18 @@ class FirebaseService {
 
     func getUser(uid: String) async throws -> FTUser? {
         let doc = try await db.collection("users").document(uid).getDocument()
+        // Critical: .data(as:) throws for a nonexistent document rather than
+        // returning nil — without this check, ProfileViewModel.load()'s
+        // "if let existing = try await getUser(...)" would throw before it
+        // ever reached the `else` branch that recreates a missing profile
+        // via ensureUserProfile(). That meant any account with no Firestore
+        // document (e.g. one where "Delete Account" wiped Firestore data
+        // but Auth deletion failed and left the session signed in) could
+        // never self-heal — every load() attempt just threw and left
+        // `user` permanently nil, which is exactly what breaks both the
+        // private-profile toggle (silently refuses to move) and username
+        // saving ("No document to update").
+        guard doc.exists else { return nil }
         return try doc.data(as: FTUser.self)
     }
 
@@ -61,7 +73,14 @@ class FirebaseService {
         guard try await isUsernameAvailable(lowered, excludingUid: uid) else {
             throw FirebaseServiceError.usernameTaken
         }
-        try await db.collection("users").document(uid).updateData(["username": lowered])
+        // setData(merge:) rather than updateData() — updateData() throws
+        // "No document to update" outright if the document doesn't exist
+        // yet, which is exactly the failure mode this hit for an account
+        // whose profile document was missing (see getUser() fix above for
+        // the actual root cause). merge:true is safe here regardless: it
+        // updates just the username field on an existing doc, or creates a
+        // new doc with just that field set if one doesn't exist at all.
+        try await db.collection("users").document(uid).setData(["username": lowered], merge: true)
     }
 
     /// Previously the auto-generated username (name + random 4-digit
@@ -474,6 +493,7 @@ enum FirebaseServiceError: LocalizedError {
         }
     }
 }
+
 
 
 
