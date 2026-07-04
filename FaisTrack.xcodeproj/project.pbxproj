@@ -37,6 +37,8 @@
 		6C868668A5C54A45A7288C9C /* FTStatBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A504669E64DA1B79C4C8D /* FTStatBadge.swift */; };
 		17AD512A229A43FFB2A921F6 /* SpeedGaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94109C40E42A431E9A2804BE /* SpeedGaugeView.swift */; };
 		EA1BF75FD8BA4B758AC1E0C4 /* F1StartingLightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2908F1257694B9A940A321D /* F1StartingLightsView.swift */; };
+		D93BC3D120AC40878FF1EA23 /* RouteTraceShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00FA0A553348F387F85125 /* RouteTraceShape.swift */; };
+		64B87DC332F441FEB203BC97 /* StaggeredAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6179ED6C7384416A39CCD36 /* StaggeredAppear.swift */; };
 		6E70056B17604A09A573478C /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3667A7FC0FE43538C7858D0 /* LeaderboardService.swift */; };
 		71648FA86C1F4B5AA0E2EEAD /* DrivesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745B92B0060E48168B2F237F /* DrivesView.swift */; };
 		6D4D11D1F0F44102A6A3F366 /* LiveDriveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B901DBBE222441AF905E7247 /* LiveDriveView.swift */; };
@@ -129,6 +131,8 @@
 		C63A504669E64DA1B79C4C8D /* FTStatBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FTStatBadge.swift; path = Components/FTStatBadge.swift; sourceTree = "<group>"; };
 		94109C40E42A431E9A2804BE /* SpeedGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SpeedGaugeView.swift; path = Components/SpeedGaugeView.swift; sourceTree = "<group>"; };
 		A2908F1257694B9A940A321D /* F1StartingLightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = F1StartingLightsView.swift; path = Components/F1StartingLightsView.swift; sourceTree = "<group>"; };
+		BB00FA0A553348F387F85125 /* RouteTraceShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RouteTraceShape.swift; path = Components/RouteTraceShape.swift; sourceTree = "<group>"; };
+		A6179ED6C7384416A39CCD36 /* StaggeredAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StaggeredAppear.swift; path = Components/StaggeredAppear.swift; sourceTree = "<group>"; };
 		C6BF4A5613304A679C499225 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FirebaseService.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		C7E28CF592D248B189E6CAEC /* FTCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FTCard.swift; path = Components/FTCard.swift; sourceTree = "<group>"; };
 		CC41065721DB4C75872B45D9 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StatsView.swift; path = StatsView.swift; sourceTree = "<group>"; };
@@ -393,6 +397,8 @@
 				C63A504669E64DA1B79C4C8D /* FTStatBadge.swift */,
 				94109C40E42A431E9A2804BE /* SpeedGaugeView.swift */,
 				A2908F1257694B9A940A321D /* F1StartingLightsView.swift */,
+				BB00FA0A553348F387F85125 /* RouteTraceShape.swift */,
+				A6179ED6C7384416A39CCD36 /* StaggeredAppear.swift */,
 				E98D41A499B592656D29632C /* SpeedLinesBackground.swift */,
 			);
 			name = DesignSystem;
@@ -496,6 +502,8 @@
 				6C868668A5C54A45A7288C9C /* FTStatBadge.swift in Sources */,
 				17AD512A229A43FFB2A921F6 /* SpeedGaugeView.swift in Sources */,
 				EA1BF75FD8BA4B758AC1E0C4 /* F1StartingLightsView.swift in Sources */,
+				D93BC3D120AC40878FF1EA23 /* RouteTraceShape.swift in Sources */,
+				64B87DC332F441FEB203BC97 /* StaggeredAppear.swift in Sources */,
 				2942245D9C894AA887DB445C /* Car.swift in Sources */,
 				A5FB71D579214E9193FC2028 /* Drive.swift in Sources */,
 				244D3361B8BA432B870138D9 /* LeaderboardEntry.swift in Sources */,
@@ -673,6 +681,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
