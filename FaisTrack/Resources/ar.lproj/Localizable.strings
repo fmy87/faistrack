@@ -158,7 +158,8 @@
 "createTrack.startCountdown" = "ابدأ";
 "createTrack.namePlaceholder" = "اسم المضمار";
 "createTrack.save" = "حفظ المضمار";
-"createTrack.tooShort" = "هذا المضمار قصير جدًا أو لم يُسجَّل بشكل صحيح. حاول مرة أخرى بمسار أطول.";
+"createTrack.tooShort" = "يجب أن يكون هذا المضمار %@ على الأقل — لقد سجّلت %@. تابع القيادة مسافة أطول قبل إنهاء التسجيل.";
+"createTrack.tooFewPoints" = "لم يتم تسجيل نقاط GPS كافية لحفظ هذا المضمار. تأكد من ضبط الوصول للموقع على \"دائمًا\" وحاول مرة أخرى بتسجيل أطول.";
 "drive.publishTrack" = "نشر كمسار";
 "drive.trackPublished" = "تم النشر كمسار";
 "compete.locating" = "جارٍ تحديد موقعك…";
@@ -340,3 +341,4 @@
 "profile.username.available" = "اسم المستخدم متاح";
 "profile.username.taken" = "اسم المستخدم هذا مستخدم أو غير صالح (3-20 حرفًا أو رقمًا أو شرطة سفلية)";
 "firebase.error.usernameTaken" = "تم أخذ اسم المستخدم هذا للتو. الرجاء تجربة اسم آخر.";
+
