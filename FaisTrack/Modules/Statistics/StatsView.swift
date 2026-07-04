@@ -14,39 +14,37 @@ struct StatsView: View {
     }
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.ftBackground.ignoresSafeArea()
-                if viewModel.isLoading {
-                    ProgressView()
-                } else if viewModel.drives.isEmpty {
-                    emptyView
-                } else {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 24) {
-                            if viewModel.showRecapBanner {
-                                recapBanner
-                            }
-                            totalDistanceCard
-                            comparisonBars
-                            longestDriveCard
-                            topSpeedCard
-                            fastestDriveCard
-                            totalTimeCard
-                            safetyScoreCard
-                            vehicleBreakdownSection
-                            mostDrivenVehicleCard
-                            personalBestsSection
+        ZStack {
+            Color.ftBackground.ignoresSafeArea()
+            if viewModel.isLoading {
+                ProgressView()
+            } else if viewModel.drives.isEmpty {
+                emptyView
+            } else {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        if viewModel.showRecapBanner {
+                            recapBanner
                         }
-                        .padding(20)
+                        totalDistanceCard
+                        comparisonBars
+                        longestDriveCard
+                        topSpeedCard
+                        fastestDriveCard
+                        totalTimeCard
+                        safetyScoreCard
+                        vehicleBreakdownSection
+                        mostDrivenVehicleCard
+                        personalBestsSection
                     }
+                    .padding(20)
                 }
             }
-            .navigationTitle(NSLocalizedString("tab.stats", comment: ""))
-            .task { await viewModel.load() }
-            .sheet(isPresented: $showRecap) {
-                MonthlyRecapView(viewModel: viewModel, useMetric: useMetric)
-            }
+        }
+        .navigationTitle(NSLocalizedString("tab.stats", comment: ""))
+        .task { await viewModel.load() }
+        .sheet(isPresented: $showRecap) {
+            MonthlyRecapView(viewModel: viewModel, useMetric: useMetric)
         }
     }
 
@@ -492,5 +490,6 @@ private extension Drive {
         useMetric ? String(format: "%.0f km/h", value) : String(format: "%.0f mph", value * 0.621371)
     }
 }
+
 
 
