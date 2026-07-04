@@ -104,12 +104,21 @@ struct CreateTrackView: View {
         }
     }
 
+    /// Same F1-style starting lights as CompeteView's race countdown (see
+    /// F1StartingLightsView) — this was previously just a plain number with
+    /// no lights at all, which looked inconsistent with the "compete" flow's
+    /// countdown right next to it in the same tab.
     private func countdownView(_ n: Int) -> some View {
-        Text("\(n)")
-            .font(.system(size: 96, weight: .black))
-            .foregroundColor(.ftAccent)
-            .id(n)
-            .transition(.scale.combined(with: .opacity))
+        VStack(spacing: 32) {
+            F1StartingLightsView(litCount: F1StartingLightsView.litCount(
+                remaining: n, total: TrackCreationService.countdownDurationSeconds
+            ))
+            Text("\(n)")
+                .font(.system(size: 64, weight: .black))
+                .foregroundColor(.ftAccent)
+                .id(n)
+                .transition(.scale.combined(with: .opacity))
+        }
     }
 
     private func recordingView(elapsed: TimeInterval, distance: Double) -> some View {
@@ -178,4 +187,5 @@ struct CreateTrackView: View {
         }
     }
 }
+
 
