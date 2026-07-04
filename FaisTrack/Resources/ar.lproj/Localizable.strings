@@ -60,6 +60,8 @@
 "garage.edit" = "تعديل";
 "garage.saveChanges" = "حفظ التغييرات";
 "garage.shareCard" = "مشاركة بطاقة السيارة";
+"tracks.shareCard" = "مشاركة بطاقة المضمار";
+"tracks.createdBy" = "أنشأه @%@";
 "garage.addPhoto" = "إضافة صورة";
 "garage.empty.title" = "جراجك فارغ";
 "garage.empty.subtitle" = "أضف سيارتك الأولى لبدء تسجيل الرحلات.";
@@ -341,4 +343,5 @@
 "profile.username.available" = "اسم المستخدم متاح";
 "profile.username.taken" = "اسم المستخدم هذا مستخدم أو غير صالح (3-20 حرفًا أو رقمًا أو شرطة سفلية)";
 "firebase.error.usernameTaken" = "تم أخذ اسم المستخدم هذا للتو. الرجاء تجربة اسم آخر.";
+
 
