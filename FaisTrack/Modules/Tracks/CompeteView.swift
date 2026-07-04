@@ -93,20 +93,14 @@ struct CompeteView: View {
     /// Mirrors a real Formula 1 start: 5 red lights illuminate one at a
     /// time, then all extinguish together the instant the race actually
     /// starts (the switch to racingView happens immediately when the
-    /// countdown reaches zero, standing in for "lights out"). The lights
-    /// fill in over the final 5 seconds of the countdown so there's still a
-    /// numeric readout during the earlier "get to the line" seconds.
+    /// countdown reaches zero, standing in for "lights out"). Shared with
+    /// CreateTrackView's countdown via F1StartingLightsView so both
+    /// countdowns in the app look identical.
     private func countdownView(_ n: Int) -> some View {
         VStack(spacing: 32) {
-            HStack(spacing: 14) {
-                ForEach(0..<5, id: \.self) { index in
-                    Circle()
-                        .fill(litCount(for: n) > index ? Color.speedRed : Color.speedRed.opacity(0.15))
-                        .frame(width: 44, height: 44)
-                        .overlay(Circle().stroke(Color.speedRed.opacity(0.5), lineWidth: 2))
-                        .shadow(color: litCount(for: n) > index ? Color.speedRed.opacity(0.8) : .clear, radius: 10)
-                }
-            }
+            F1StartingLightsView(litCount: F1StartingLightsView.litCount(
+                remaining: n, total: TrackRaceService.countdownDurationSeconds
+            ))
             Text("\(n)")
                 .font(.system(size: 64, weight: .black))
                 .foregroundColor(.white)
@@ -115,14 +109,6 @@ struct CompeteView: View {
         }
         .onAppear { fireHaptic() }
         .onChange(of: n) { _ in fireHaptic() }
-    }
-
-    /// How many of the 5 lights are lit for a given countdown value — all
-    /// come on one per second during the final 5 seconds, so at n=5 one
-    /// light is lit and at n=1 all five are lit, immediately before "go".
-    private func litCount(for n: Int) -> Int {
-        guard n <= 5 else { return 0 }
-        return 6 - n
     }
 
     private func fireHaptic() {
@@ -168,4 +154,5 @@ struct CompeteView: View {
         }
     }
 }
+
 
