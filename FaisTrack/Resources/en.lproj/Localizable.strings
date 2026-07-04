@@ -351,3 +351,7 @@
 "onboarding.chooseUsername.title" = "Pick your username";
 "onboarding.chooseUsername.subtitle" = "This is how friends will find and see you across FaisTrack. You can change it later in your profile.";
 "onboarding.chooseUsername.continue" = "Continue";
+
+
+// MARK: - Drive card passenger badge
+"drive.passengerBadge" = "Passenger";
