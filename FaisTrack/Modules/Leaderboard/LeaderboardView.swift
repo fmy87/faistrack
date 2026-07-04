@@ -16,83 +16,81 @@ struct LeaderboardView: View {
     }
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.ftBackground.ignoresSafeArea()
-                VStack(spacing: 0) {
+        ZStack {
+            Color.ftBackground.ignoresSafeArea()
+            VStack(spacing: 0) {
+                HStack {
+                    Menu {
+                        ForEach(LeaderboardScope.allCases, id: \.self) { s in
+                            Button(s.displayName) { scope = s }
+                        }
+                    } label: {
+                        filterPill(scope.displayName)
+                    }
+                    Menu {
+                        ForEach(LeaderboardPeriod.allCases, id: \.self) { p in
+                            Button(p.displayName) { period = p }
+                        }
+                    } label: {
+                        filterPill(period.displayName)
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal).padding(.top, 8)
+
+                ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        Menu {
-                            ForEach(LeaderboardScope.allCases, id: \.self) { s in
-                                Button(s.displayName) { scope = s }
-                            }
-                        } label: {
-                            filterPill(scope.displayName)
+                        ForEach(LeaderboardMetric.allCases.filter { $0 != .avgSpeed && $0 != .topSpeed }, id: \.self) { m in
+                            Button(m.displayName) { metric = m }
+                                .font(.system(size: 14, weight: .semibold))
+                                .padding(.horizontal, 16).padding(.vertical, 8)
+                                .background(metric == m ? Color.ftAccent : Color.ftCard)
+                                .foregroundColor(metric == m ? .white : .ftTextPrimary)
+                                .cornerRadius(20)
                         }
-                        Menu {
-                            ForEach(LeaderboardPeriod.allCases, id: \.self) { p in
-                                Button(p.displayName) { period = p }
-                            }
-                        } label: {
-                            filterPill(period.displayName)
-                        }
-                        Spacer()
-                    }
-                    .padding(.horizontal).padding(.top, 8)
+                    }.padding(.horizontal).padding(.vertical, 10)
+                }
 
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(LeaderboardMetric.allCases.filter { $0 != .avgSpeed && $0 != .topSpeed }, id: \.self) { m in
-                                Button(m.displayName) { metric = m }
-                                    .font(.system(size: 14, weight: .semibold))
-                                    .padding(.horizontal, 16).padding(.vertical, 8)
-                                    .background(metric == m ? Color.ftAccent : Color.ftCard)
-                                    .foregroundColor(metric == m ? .white : .ftTextPrimary)
-                                    .cornerRadius(20)
+                if isLoading {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                } else if entries.isEmpty {
+                    Spacer()
+                    Image(systemName: "trophy.fill").font(.system(size: 64)).foregroundColor(.ftAccent)
+                    Text(NSLocalizedString("leaderboard.empty", comment: ""))
+                        .foregroundColor(.ftTextSecondary).padding()
+                    Spacer()
+                } else {
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            if entries.count >= 1 {
+                                podium
                             }
-                        }.padding(.horizontal).padding(.vertical, 10)
-                    }
-
-                    if isLoading {
-                        Spacer()
-                        ProgressView()
-                        Spacer()
-                    } else if entries.isEmpty {
-                        Spacer()
-                        Image(systemName: "trophy.fill").font(.system(size: 64)).foregroundColor(.ftAccent)
-                        Text(NSLocalizedString("leaderboard.empty", comment: ""))
-                            .foregroundColor(.ftTextSecondary).padding()
-                        Spacer()
-                    } else {
-                        ScrollView {
-                            VStack(spacing: 20) {
-                                if entries.count >= 1 {
-                                    podium
-                                }
-                                if let myRank, myRank.rank > 3 {
-                                    YourRankRow(rank: myRank.rank, entry: myRank.entry, metric: metric)
-                                        .padding(.horizontal)
-                                }
-                                VStack(spacing: 0) {
-                                    ForEach(Array(entries.enumerated()).filter { $0.0 >= 3 }, id: \.1.id) { index, entry in
-                                        LeaderboardRowView(rank: index + 1, entry: entry, metric: metric, isMe: entry.uid == AuthService.shared.currentUser?.uid)
-                                        Divider().background(Color.ftTextSecondary.opacity(0.2))
-                                    }
-                                }
-                                .background(Color.ftCard)
-                                .cornerRadius(16)
-                                .padding(.horizontal)
+                            if let myRank, myRank.rank > 3 {
+                                YourRankRow(rank: myRank.rank, entry: myRank.entry, metric: metric)
+                                    .padding(.horizontal)
                             }
-                            .padding(.vertical, 12)
+                            VStack(spacing: 0) {
+                                ForEach(Array(entries.enumerated()).filter { $0.0 >= 3 }, id: \.1.id) { index, entry in
+                                    LeaderboardRowView(rank: index + 1, entry: entry, metric: metric, isMe: entry.uid == AuthService.shared.currentUser?.uid)
+                                    Divider().background(Color.ftTextSecondary.opacity(0.2))
+                                }
+                            }
+                            .background(Color.ftCard)
+                            .cornerRadius(16)
+                            .padding(.horizontal)
                         }
+                        .padding(.vertical, 12)
                     }
                 }
             }
-            .navigationTitle(NSLocalizedString("tab.leaderboard", comment: ""))
-            .task { await loadEntries() }
-            .onChange(of: metric) { _ in Task { await loadEntries() } }
-            .onChange(of: period) { _ in Task { await loadEntries() } }
-            .onChange(of: scope) { _ in Task { await loadEntries() } }
         }
+        .navigationTitle(NSLocalizedString("tab.leaderboard", comment: ""))
+        .task { await loadEntries() }
+        .onChange(of: metric) { _ in Task { await loadEntries() } }
+        .onChange(of: period) { _ in Task { await loadEntries() } }
+        .onChange(of: scope) { _ in Task { await loadEntries() } }
     }
 
     private func filterPill(_ text: String) -> some View {
@@ -247,4 +245,5 @@ struct YourRankRow: View {
         }
     }
 }
+
 
