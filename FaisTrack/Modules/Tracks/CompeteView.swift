@@ -5,7 +5,6 @@ struct CompeteView: View {
     let track: Track
     @ObservedObject private var race = TrackRaceService.shared
     @Environment(\.presentationMode) var presentationMode
-    @State private var pulseCountdown = false
 
     var body: some View {
         ZStack {
@@ -91,32 +90,39 @@ struct CompeteView: View {
         }
     }
 
+    /// Mirrors a real Formula 1 start: 5 red lights illuminate one at a
+    /// time, then all extinguish together the instant the race actually
+    /// starts (the switch to racingView happens immediately when the
+    /// countdown reaches zero, standing in for "lights out"). The lights
+    /// fill in over the final 5 seconds of the countdown so there's still a
+    /// numeric readout during the earlier "get to the line" seconds.
     private func countdownView(_ n: Int) -> some View {
-        ZStack {
-            Circle()
-                .fill(countdownColor(n).opacity(0.18))
-                .frame(width: 220, height: 220)
-                .scaleEffect(pulseCountdown ? 1.12 : 0.92)
-                .animation(.easeInOut(duration: 0.45).repeatForever(autoreverses: true), value: pulseCountdown)
+        VStack(spacing: 32) {
+            HStack(spacing: 14) {
+                ForEach(0..<5, id: \.self) { index in
+                    Circle()
+                        .fill(litCount(for: n) > index ? Color.speedRed : Color.speedRed.opacity(0.15))
+                        .frame(width: 44, height: 44)
+                        .overlay(Circle().stroke(Color.speedRed.opacity(0.5), lineWidth: 2))
+                        .shadow(color: litCount(for: n) > index ? Color.speedRed.opacity(0.8) : .clear, radius: 10)
+                }
+            }
             Text("\(n)")
-                .font(.system(size: 96, weight: .black))
-                .foregroundColor(countdownColor(n))
+                .font(.system(size: 64, weight: .black))
+                .foregroundColor(.white)
                 .id(n)
                 .transition(.scale.combined(with: .opacity))
         }
-        .onAppear {
-            pulseCountdown = true
-            fireHaptic()
-        }
-        .onChange(of: n) { _ in
-            fireHaptic()
-        }
+        .onAppear { fireHaptic() }
+        .onChange(of: n) { _ in fireHaptic() }
     }
 
-    /// Mimics drag-racing "starting lights": red while counting down,
-    /// flashing green in the final couple of seconds before launch.
-    private func countdownColor(_ n: Int) -> Color {
-        n <= 2 ? .speedGreen : .ftAccent
+    /// How many of the 5 lights are lit for a given countdown value — all
+    /// come on one per second during the final 5 seconds, so at n=5 one
+    /// light is lit and at n=1 all five are lit, immediately before "go".
+    private func litCount(for n: Int) -> Int {
+        guard n <= 5 else { return 0 }
+        return 6 - n
     }
 
     private func fireHaptic() {
@@ -162,3 +168,4 @@ struct CompeteView: View {
         }
     }
 }
+
