@@ -175,6 +175,7 @@
 
 // Profile
 "tab.profile" = "Profile";
+"tab.more" = "More";
 "profile.instagram" = "Instagram";
 "profile.saved" = "Saved";
 "profile.manageDrives" = "Manage Drives";
@@ -330,3 +331,4 @@
 
 // MARK: - Live friend driving status
 "friends.drivingNow" = "Driving now";
+
