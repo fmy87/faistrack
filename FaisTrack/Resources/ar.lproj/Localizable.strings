@@ -175,6 +175,7 @@
 
 // Profile
 "tab.profile" = "الملف الشخصي";
+"tab.more" = "المزيد";
 "profile.instagram" = "إنستغرام";
 "profile.saved" = "تم الحفظ";
 "profile.manageDrives" = "إدارة الرحلات";
@@ -330,3 +331,4 @@
 
 // MARK: - Live friend driving status
 "friends.drivingNow" = "يقود الآن";
+
