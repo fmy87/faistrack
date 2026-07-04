@@ -133,40 +133,6 @@ struct TrackShareCard: View {
     }
 }
 
-/// Traces the track's actual recorded route into a small drawing area,
-/// normalizing lat/lng into the shape's bounds. This is what makes each
-/// card visually distinct per track instead of every share looking
-/// identical with a generic flag icon.
-private struct RouteTraceShape: Shape {
-    let coordinates: [CLLocationCoordinate2D]
 
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        guard coordinates.count > 1 else { return path }
 
-        let lats = coordinates.map(\.latitude)
-        let lngs = coordinates.map(\.longitude)
-        let minLat = lats.min() ?? 0, maxLat = lats.max() ?? 0
-        let minLng = lngs.min() ?? 0, maxLng = lngs.max() ?? 0
-        // Guards against a division by zero for a perfectly straight
-        // north-south or east-west route, where one range would be 0.
-        let latRange = max(maxLat - minLat, 0.00001)
-        let lngRange = max(maxLng - minLng, 0.00001)
-        let padding: CGFloat = 10
-
-        func point(for coordinate: CLLocationCoordinate2D) -> CGPoint {
-            let x = padding + CGFloat((coordinate.longitude - minLng) / lngRange) * (rect.width - padding * 2)
-            // Latitude increases northward, but SwiftUI's y-axis increases
-            // downward — flip so the route isn't drawn upside down.
-            let y = padding + CGFloat(1 - (coordinate.latitude - minLat) / latRange) * (rect.height - padding * 2)
-            return CGPoint(x: x, y: y)
-        }
-
-        path.move(to: point(for: coordinates[0]))
-        for coordinate in coordinates.dropFirst() {
-            path.addLine(to: point(for: coordinate))
-        }
-        return path
-    }
-}
 
