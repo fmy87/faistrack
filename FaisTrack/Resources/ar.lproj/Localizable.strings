@@ -345,3 +345,9 @@
 "firebase.error.usernameTaken" = "تم أخذ اسم المستخدم هذا للتو. الرجاء تجربة اسم آخر.";
 
 
+
+
+// MARK: - Onboarding username selection
+"onboarding.chooseUsername.title" = "اختر اسم المستخدم الخاص بك";
+"onboarding.chooseUsername.subtitle" = "بهذا الاسم سيجدك أصدقاؤك ويرونك في فايس تراك. يمكنك تغييره لاحقًا من ملفك الشخصي.";
+"onboarding.chooseUsername.continue" = "متابعة";
