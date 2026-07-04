@@ -332,3 +332,11 @@
 // MARK: - Live friend driving status
 "friends.drivingNow" = "يقود الآن";
 
+
+
+// MARK: - Username editing, uniqueness
+"profile.username" = "اسم المستخدم";
+"profile.username.placeholder" = "اسم المستخدم";
+"profile.username.available" = "اسم المستخدم متاح";
+"profile.username.taken" = "اسم المستخدم هذا مستخدم أو غير صالح (3-20 حرفًا أو رقمًا أو شرطة سفلية)";
+"firebase.error.usernameTaken" = "تم أخذ اسم المستخدم هذا للتو. الرجاء تجربة اسم آخر.";
