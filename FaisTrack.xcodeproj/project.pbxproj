@@ -67,6 +67,7 @@
 		DA9A45248AA90F3AD72CEA06 /* CompeteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EC40558ECB28745AFDA98F /* CompeteView.swift */; };
 		DC004B8896319E7E1AFC372F /* TracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9994164A22A2BBB9852771E /* TracksView.swift */; };
 		DF8849778F7039C35F93B59A /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05496C97F077B4C7CDD701 /* ProfileView.swift */; };
+		1EA87B11F5A1492DA61F25C5 /* MoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029FD0E8C01545F1947F4FC5 /* MoreView.swift */; };
 		E2424F4D7DA04C25AEADD0F2 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BF4A5613304A679C499225 /* FirebaseService.swift */; };
 		E28B428ABDFA1CC66D724304 /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C4FC8952001473810C9D7 /* LocalizationManager.swift */; };
 		E9F3E58453404FACA8D15E7A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87F416F0F2046A88D8E2C58 /* User.swift */; };
@@ -105,6 +106,7 @@
 		77294006A9F95692DBAECD08 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "FaisTrack/Supporting/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		78EEA8E815214FC7BF672B88 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Colors.swift; path = Colors.swift; sourceTree = "<group>"; };
 		7F05496C97F077B4C7CDD701 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileView.swift; path = FaisTrack/Modules/Profile/ProfileView.swift; sourceTree = SOURCE_ROOT; };
+		029FD0E8C01545F1947F4FC5 /* MoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MoreView.swift; path = FaisTrack/Modules/Profile/MoreView.swift; sourceTree = SOURCE_ROOT; };
 		8EE0E2847F7444B1A098C551 /* GarageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GarageView.swift; path = GarageView.swift; sourceTree = "<group>"; };
 		953C603DF4FC422991B10BAA /* ProPaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProPaywallView.swift; path = ProPaywallView.swift; sourceTree = "<group>"; };
 		962C04FF8E5D4263B8252ABA /* UserSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserSearchView.swift; path = UserSearchView.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				7F05496C97F077B4C7CDD701 /* ProfileView.swift */,
+				029FD0E8C01545F1947F4FC5 /* MoreView.swift */,
 				613D43A5900955C6EC194D09 /* ManageDrivesView.swift */,
 				A185405498BBC8FE281BF201 /* ManageTracksView.swift */,
 			);
@@ -526,6 +529,7 @@
 				92764D9182A65359A47D21D8 /* TrackDetailView.swift in Sources */,
 				DA9A45248AA90F3AD72CEA06 /* CompeteView.swift in Sources */,
 				DF8849778F7039C35F93B59A /* ProfileView.swift in Sources */,
+				1EA87B11F5A1492DA61F25C5 /* MoreView.swift in Sources */,
 				F3634CBC888AB258996184F3 /* ManageDrivesView.swift in Sources */,
 				A0E24671B7E014E670C2D795 /* ManageTracksView.swift in Sources */,
 				E28B428ABDFA1CC66D724304 /* LocalizationManager.swift in Sources */,
@@ -653,6 +657,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
