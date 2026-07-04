@@ -39,7 +39,10 @@ class TrackRaceService: NSObject, ObservableObject {
     /// GPS accuracy in cities is typically 5-15m, so this gives reasonable
     /// tolerance without being so wide that it triggers early.
     private let proximityRadiusMeters: Double = 20
-    private let countdownSeconds = 10
+    /// Exposed so CompeteView's countdown UI can compute F1-style light
+    /// progression proportionally, without duplicating this number.
+    static let countdownDurationSeconds = 10
+    private let countdownSeconds = countdownDurationSeconds
 
     func beginApproaching(track: Track) {
         self.track = track
@@ -147,4 +150,5 @@ class TrackRaceService: NSObject, ObservableObject {
         distanceToStart = 0
     }
 }
+
 
