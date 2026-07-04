@@ -27,43 +27,6 @@ struct ProfileView: View {
                         }
 
                         FTCard {
-                            VStack(alignment: .leading, spacing: 16) {
-                                Text(NSLocalizedString("profile.instagram", comment: ""))
-                                    .font(.system(size: 14, weight: .medium)).foregroundColor(.ftTextSecondary)
-                                HStack {
-                                    Text("@").foregroundColor(.ftTextSecondary)
-                                    TextField(NSLocalizedString("profile.instagramPlaceholder", comment: ""), text: $viewModel.instagramHandle)
-                                        .autocapitalization(.none)
-                                        .disableAutocorrection(true)
-                                        .foregroundColor(.ftTextPrimary)
-                                }
-                                .padding(12).background(Color.ftBackground).cornerRadius(10)
-
-                                Button(action: { Task { await viewModel.saveInstagram() } }) {
-                                    HStack {
-                                        if viewModel.isSaving { ProgressView().tint(.white) }
-                                        Text(NSLocalizedString("general.save", comment: ""))
-                                            .font(.system(size: 15, weight: .bold))
-                                    }
-                                    .foregroundColor(.white)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 12)
-                                    .background(Color.ftGradient)
-                                    .cornerRadius(12)
-                                }
-                                .disabled(viewModel.isSaving)
-
-                                if viewModel.saveConfirmed {
-                                    Text(NSLocalizedString("profile.saved", comment: ""))
-                                        .font(.system(size: 12)).foregroundColor(.speedGreen)
-                                }
-                                if let error = viewModel.errorMessage {
-                                    Text(error).font(.system(size: 12)).foregroundColor(.speedRed)
-                                }
-                            }
-                        }
-
-                        FTCard {
                             VStack(alignment: .leading, spacing: 12) {
                                 Toggle(isOn: Binding(
                                     get: { viewModel.isPrivateProfile },
@@ -80,18 +43,6 @@ struct ProfileView: View {
                                     }
                                 }
                                 .tint(.ftAccent)
-                            }
-                        }
-
-                        VStack(spacing: 12) {
-                            NavigationLink(destination: SettingsView()) {
-                                ProfileRow(icon: "gearshape.fill", title: NSLocalizedString("settings.title", comment: ""))
-                            }
-                            NavigationLink(destination: ManageDrivesView()) {
-                                ProfileRow(icon: "car.fill", title: NSLocalizedString("profile.manageDrives", comment: ""))
-                            }
-                            NavigationLink(destination: ManageTracksView()) {
-                                ProfileRow(icon: "flag.checkered", title: NSLocalizedString("profile.manageTracks", comment: ""))
                             }
                         }
 
@@ -194,10 +145,7 @@ struct ProfileRow: View {
 @MainActor
 class ProfileViewModel: ObservableObject {
     @Published var user: FTUser?
-    @Published var instagramHandle: String = ""
     @Published var isPrivateProfile: Bool = false
-    @Published var isSaving = false
-    @Published var saveConfirmed = false
     @Published var errorMessage: String?
 
     func load() async {
@@ -213,41 +161,10 @@ class ProfileViewModel: ObservableObject {
                     uid: uid, name: fallbackName, email: AuthService.shared.currentUser?.email
                 )
             }
-            instagramHandle = user?.instagramHandle ?? ""
             isPrivateProfile = user?.isPrivateProfile ?? false
         } catch {
             errorMessage = error.localizedDescription
         }
-    }
-
-    func saveInstagram() async {
-        isSaving = true
-        saveConfirmed = false
-        errorMessage = nil
-
-        // The profile is loaded asynchronously via .task { load() } when this
-        // view appears. If the user types and taps Save before that request
-        // finishes, `user` is still nil here — previously this failed
-        // permanently with "profile not loaded" even though the profile does
-        // exist (or is about to). Try loading it once now instead of giving up.
-        if user == nil {
-            await load()
-        }
-
-        guard var user = user else {
-            errorMessage = NSLocalizedString("profile.noProfile", comment: "")
-            isSaving = false
-            return
-        }
-        user.instagramHandle = instagramHandle
-        do {
-            try await FirebaseService.shared.saveUser(user)
-            self.user = user
-            saveConfirmed = true
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-        isSaving = false
     }
 
     func setPrivateProfile(_ value: Bool) async {
@@ -265,5 +182,3 @@ class ProfileViewModel: ObservableObject {
         }
     }
 }
-
-
