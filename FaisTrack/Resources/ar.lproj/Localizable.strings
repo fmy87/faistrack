@@ -372,3 +372,9 @@
 
 // MARK: - Intro video
 "intro.skip" = "تخطي";
+
+
+// MARK: - Intro video Settings toggle
+"settings.introVideo" = "فيديو المقدمة";
+"settings.introVideo.everyLaunch" = "يتم تشغيله في كل مرة تفتح فيها التطبيق.";
+"settings.introVideo.onceOnly" = "يتم تشغيله مرة واحدة فقط عند أول فتح.";
