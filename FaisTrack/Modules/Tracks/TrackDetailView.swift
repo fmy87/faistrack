@@ -27,12 +27,11 @@ struct TrackDetailView: View {
                     .font(.system(size: 13)).foregroundColor(.ftTextSecondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
+                recordHolderCard
+
                 FTCard {
                     HStack {
                         FTStatBadge(value: track.distanceFormatted, label: NSLocalizedString("tracks.distance", comment: ""))
-                        Divider()
-                        FTStatBadge(value: track.bestTime.map { String(format: "%.1fs", $0) } ?? "—",
-                                    label: NSLocalizedString("tracks.bestTime", comment: ""))
                         Divider()
                         FTStatBadge(value: "\(track.attemptCount)", label: NSLocalizedString("tracks.attempts", comment: ""))
                     }
@@ -81,9 +80,63 @@ struct TrackDetailView: View {
         }
     }
 
+    /// A distinct, trophy-styled card for whoever currently holds this
+    /// track's best time — previously the best time was just another
+    /// number in a plain stat row, easy to miss as "the thing everyone's
+    /// actually competing for." Reuses bestTimeTopSpeed/bestTimeCarName
+    /// (already captured whenever a new record is set) so this can show
+    /// the record holder's speed and car with no extra lookup.
+    private var recordHolderCard: some View {
+        Group {
+            if let bestTime = track.bestTime, let holder = track.bestTimeUsername {
+                ZStack {
+                    LinearGradient(colors: [.black, Color(hex: "#1A0000")],
+                                   startPoint: .topLeading, endPoint: .bottomTrailing)
+                    VStack(spacing: 10) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "trophy.fill").foregroundColor(.yellow)
+                            Text(NSLocalizedString("tracks.recordHolder", comment: ""))
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundColor(.yellow)
+                        }
+                        Text("@\(holder)")
+                            .font(.system(size: 20, weight: .black))
+                            .foregroundColor(.white)
+                        Text(String(format: "%.2fs", bestTime))
+                            .font(.system(size: 44, weight: .black))
+                            .foregroundColor(.ftAccent)
+                        HStack(spacing: 16) {
+                            if let topSpeed = track.bestTimeTopSpeed, topSpeed > 0 {
+                                Label(String(format: "%.0f km/h", topSpeed), systemImage: "gauge.with.dots.needle.67percent")
+                            }
+                            if let carName = track.bestTimeCarName {
+                                Label(carName, systemImage: "car.fill")
+                            }
+                        }
+                        .font(.system(size: 12))
+                        .foregroundColor(.white.opacity(0.7))
+                    }
+                    .padding(20)
+                }
+                .cornerRadius(20)
+            } else {
+                FTCard {
+                    VStack(spacing: 8) {
+                        Image(systemName: "flag.checkered").font(.system(size: 28)).foregroundColor(.ftTextSecondary)
+                        Text(NSLocalizedString("tracks.noRecordYet", comment: ""))
+                            .font(.system(size: 14)).foregroundColor(.ftTextSecondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+                }
+            }
+        }
+    }
+
     private func loadLeaderboard() async {
         guard let id = track.id else { return }
         results = (try? await FirebaseService.shared.getTrackLeaderboard(trackId: id)) ?? []
     }
 }
+
 
