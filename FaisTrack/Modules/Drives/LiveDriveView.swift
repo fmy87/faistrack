@@ -118,11 +118,14 @@ struct LiveDriveView: View {
                     .cornerRadius(14)
             }
 
-            SpeedGaugeView(
-                value: speedValue(driveDetection.currentSpeedKmh),
-                unit: speedUnit,
-                color: gaugeColor
-            )
+            ZStack {
+                SpeedActionLinesView(speedKmh: driveDetection.currentSpeedKmh, color: gaugeColor)
+                SpeedGaugeView(
+                    value: speedValue(driveDetection.currentSpeedKmh),
+                    unit: speedUnit,
+                    color: gaugeColor
+                )
+            }
 
             statsGrid
         }
@@ -267,5 +270,6 @@ struct LiveDriveView: View {
 /// centered digital readout — modeled on the reference screenshot. Shared
 /// with CreateTrackView (see SpeedGaugeView.swift) so live driving and live
 /// track recording use the same visual language.
+
 
 
