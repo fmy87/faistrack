@@ -378,3 +378,7 @@
 "settings.introVideo" = "Intro Video";
 "settings.introVideo.everyLaunch" = "Plays every time you open the app.";
 "settings.introVideo.onceOnly" = "Only plays once, on first launch.";
+
+
+// MARK: - Intro video welcome message
+"intro.welcome" = "Welcome to FaisTrack";
