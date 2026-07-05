@@ -368,3 +368,7 @@
 "admin.createTrack.title" = "Create Track (Admin)";
 "admin.createTrack.instructions" = "Tap the map to place a start point, then tap again to place the end point. Tap a third time to start over.";
 "admin.createTrack.save" = "Create Track";
+
+
+// MARK: - Intro video
+"intro.skip" = "Skip";
