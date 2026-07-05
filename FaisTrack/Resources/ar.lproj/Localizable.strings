@@ -378,3 +378,7 @@
 "settings.introVideo" = "فيديو المقدمة";
 "settings.introVideo.everyLaunch" = "يتم تشغيله في كل مرة تفتح فيها التطبيق.";
 "settings.introVideo.onceOnly" = "يتم تشغيله مرة واحدة فقط عند أول فتح.";
+
+
+// MARK: - Intro video welcome message
+"intro.welcome" = "مرحبًا بك في فايس تراك";
