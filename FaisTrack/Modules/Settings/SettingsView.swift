@@ -4,6 +4,7 @@ struct SettingsView: View {
     @EnvironmentObject var appState: AppState
     @StateObject private var viewModel = SettingsViewModel()
     @AppStorage("unitsPreference") private var unitsPreference: String = "km"
+    @AppStorage("introPlayEveryLaunch") private var introPlayEveryLaunch: Bool = false
 
     var body: some View {
         ZStack {
@@ -44,6 +45,21 @@ struct SettingsView: View {
                                 Text(error).font(.system(size: 12)).foregroundColor(.speedRed)
                             }
                         }
+                    }
+
+                    FTCard {
+                        Toggle(isOn: $introPlayEveryLaunch) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(NSLocalizedString("settings.introVideo", comment: ""))
+                                    .font(.system(size: 15, weight: .semibold))
+                                Text(introPlayEveryLaunch
+                                     ? NSLocalizedString("settings.introVideo.everyLaunch", comment: "")
+                                     : NSLocalizedString("settings.introVideo.onceOnly", comment: ""))
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.ftTextSecondary)
+                            }
+                        }
+                        .tint(.ftAccent)
                     }
                 }.padding(20)
             }
@@ -102,4 +118,5 @@ class SettingsViewModel: ObservableObject {
         }
     }
 }
+
 
