@@ -1,16 +1,20 @@
 import SwiftUI
 import AVKit
+import AVFoundation
 
 /// A short branded video shown once, on the very first launch after
 /// install — right after the system's static Launch Screen dismisses.
 /// Apple requires the actual Launch Screen itself to be a static image
 /// (not something this can work around), so this is the earliest point in
-/// the app a video can play. Gated to first-launch-only via AppState so
-/// returning users aren't shown this every single time they open the app.
+/// the app a video can play. Gated to first-launch-only (or every launch,
+/// per the Settings toggle) via AppState.
 struct IntroVideoView: View {
     @EnvironmentObject var appState: AppState
     @State private var player: AVPlayer?
-    @State private var isMuted = true
+    // Plays with sound by default — a silent "intro video" undersells an
+    // engine/burnout clip. The person can still mute it themselves via the
+    // button, which is the more natural direction for this kind of content.
+    @State private var isMuted = false
     @State private var endObserver: NSObjectProtocol?
 
     var body: some View {
@@ -38,6 +42,11 @@ struct IntroVideoView: View {
 
                 Spacer()
 
+                FlameWelcomeText(text: NSLocalizedString("intro.welcome", comment: ""))
+                    .padding(.bottom, 24)
+
+                Spacer()
+
                 Button(action: finish) {
                     Text(NSLocalizedString("intro.skip", comment: ""))
                         .font(.system(size: 14, weight: .semibold))
@@ -59,6 +68,16 @@ struct IntroVideoView: View {
     }
 
     private func setupPlayer() {
+        // By default, AVPlayer's audio respects the hardware silent switch
+        // the way "ambient" sounds do — meaning even with isMuted = false,
+        // a phone with the silent switch flipped on would still play this
+        // silently, which looks identical to "the video is muted" from the
+        // person's perspective. Setting the session to .playback makes this
+        // behave like actual video/music content and ignore the silent
+        // switch, matching what people expect from an intro video with sound.
+        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback, options: [])
+        try? AVAudioSession.sharedInstance().setActive(true)
+
         guard let url = Bundle.main.url(forResource: "GTR_Burnout", withExtension: "mp4") else {
             // Video missing from the bundle for some reason — don't strand
             // the person on a black screen forever, just skip straight past
