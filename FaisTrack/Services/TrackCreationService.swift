@@ -119,6 +119,13 @@ class TrackCreationService: NSObject, ObservableObject {
             errorMessage = NSLocalizedString("createTrack.tooFewPoints", comment: "")
             return false
         }
+        // Enforced here too, not just in the UI's disabled-button state —
+        // a track's name should always come from the person who created
+        // it, never silently fall back to a generic default.
+        guard !name.trimmingCharacters(in: .whitespaces).isEmpty else {
+            errorMessage = NSLocalizedString("createTrack.nameRequired", comment: "")
+            return false
+        }
         guard distance >= Track.minimumDistanceMeters else {
             // Previously this just said "too short" with no numbers — if
             // someone recorded a real drive and it still failed (weak GPS
@@ -137,7 +144,7 @@ class TrackCreationService: NSObject, ObservableObject {
             let track = Track(
                 ownerUID: uid,
                 ownerUsername: username,
-                name: name.isEmpty ? NSLocalizedString("tracks.defaultName", comment: "") : name,
+                name: name,
                 startLatitude: first.latitude,
                 startLongitude: first.longitude,
                 endLatitude: last.latitude,
@@ -167,6 +174,7 @@ class TrackCreationService: NSObject, ObservableObject {
         state = .idle
     }
 }
+
 
 
 
