@@ -372,3 +372,9 @@
 
 // MARK: - Intro video
 "intro.skip" = "Skip";
+
+
+// MARK: - Intro video Settings toggle
+"settings.introVideo" = "Intro Video";
+"settings.introVideo.everyLaunch" = "Plays every time you open the app.";
+"settings.introVideo.onceOnly" = "Only plays once, on first launch.";
