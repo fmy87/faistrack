@@ -173,6 +173,14 @@ struct CreateTrackView: View {
                 .font(.system(size: 14)).foregroundColor(.ftTextSecondary)
             TextField(NSLocalizedString("createTrack.namePlaceholder", comment: ""), text: $trackName)
                 .padding(14).background(Color.ftCard).cornerRadius(12)
+            // The track's name is required to come from the person who
+            // created it — this used to silently fall back to "Untitled
+            // Track" if left blank, which meant it wasn't really guaranteed
+            // to be user-named at all.
+            if trackName.trimmingCharacters(in: .whitespaces).isEmpty {
+                Text(NSLocalizedString("createTrack.nameRequired", comment: ""))
+                    .font(.system(size: 12)).foregroundColor(.ftTextSecondary)
+            }
             FTPrimaryButton(title: NSLocalizedString("createTrack.save", comment: ""), isLoading: isSaving) {
                 Task {
                     isSaving = true
@@ -184,8 +192,10 @@ struct CreateTrackView: View {
                     }
                 }
             }
+            .disabled(trackName.trimmingCharacters(in: .whitespaces).isEmpty || isSaving)
         }
     }
 }
+
 
 
