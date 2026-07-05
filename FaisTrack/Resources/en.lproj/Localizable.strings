@@ -355,3 +355,9 @@
 
 // MARK: - Drive card passenger badge
 "drive.passengerBadge" = "Passenger";
+
+
+// MARK: - Track record holder card, mandatory naming
+"tracks.recordHolder" = "RECORD HOLDER";
+"tracks.noRecordYet" = "No attempts yet — be the first to set a record.";
+"createTrack.nameRequired" = "Give this track a name before saving.";
