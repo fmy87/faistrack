@@ -2,6 +2,7 @@ import SwiftUI
 import Combine
 
 enum AppScreen {
+    case intro
     case onboarding
     case auth
     case permissions
@@ -18,9 +19,23 @@ class AppState: ObservableObject {
     /// strings from the newly selected language bundle.
     @Published var languageRefreshID = UUID()
 
+    private static let hasSeenIntroKey = "hasSeenIntroVideo"
+
     var isArabic: Bool { selectedLanguage == "ar" }
 
     init() {
+        if UserDefaults.standard.bool(forKey: Self.hasSeenIntroKey) {
+            checkAuthState()
+        } else {
+            currentScreen = .intro
+        }
+    }
+
+    /// Called once the intro video finishes playing or is skipped —
+    /// records that it's been seen so it never shows again on this device,
+    /// then proceeds to whatever screen the person would normally land on.
+    func finishIntro() {
+        UserDefaults.standard.set(true, forKey: Self.hasSeenIntroKey)
         checkAuthState()
     }
 
@@ -39,3 +54,4 @@ class AppState: ObservableObject {
         languageRefreshID = UUID()
     }
 }
+
