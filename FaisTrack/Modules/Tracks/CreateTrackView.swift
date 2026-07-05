@@ -135,11 +135,14 @@ struct CreateTrackView: View {
                     .cornerRadius(14)
             }
 
-            SpeedGaugeView(
-                value: speedValue(service.currentSpeedKmh),
-                unit: speedUnit,
-                color: gaugeColor
-            )
+            ZStack {
+                SpeedActionLinesView(speedKmh: service.currentSpeedKmh, color: gaugeColor)
+                SpeedGaugeView(
+                    value: speedValue(service.currentSpeedKmh),
+                    unit: speedUnit,
+                    color: gaugeColor
+                )
+            }
 
             VStack(spacing: 4) {
                 Text(String(format: "%.1f", elapsed))
@@ -196,6 +199,7 @@ struct CreateTrackView: View {
         }
     }
 }
+
 
 
 
