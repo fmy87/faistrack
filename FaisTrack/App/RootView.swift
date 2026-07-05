@@ -6,6 +6,7 @@ struct RootView: View {
     var body: some View {
         Group {
             switch appState.currentScreen {
+            case .intro:       IntroVideoView()
             case .onboarding:  OnboardingView()
             case .auth:        AuthView()
             case .permissions: PermissionsView()
@@ -16,3 +17,4 @@ struct RootView: View {
         .environment(\.layoutDirection, appState.isArabic ? .rightToLeft : .leftToRight)
     }
 }
+
