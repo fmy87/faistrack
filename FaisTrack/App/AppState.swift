@@ -20,14 +20,19 @@ class AppState: ObservableObject {
     @Published var languageRefreshID = UUID()
 
     private static let hasSeenIntroKey = "hasSeenIntroVideo"
+    /// Same key SettingsView's toggle writes to — checked directly here
+    /// rather than duplicating the preference, so the two always agree.
+    private static let playEveryLaunchKey = "introPlayEveryLaunch"
 
     var isArabic: Bool { selectedLanguage == "ar" }
 
     init() {
-        if UserDefaults.standard.bool(forKey: Self.hasSeenIntroKey) {
-            checkAuthState()
-        } else {
+        let playEveryLaunch = UserDefaults.standard.bool(forKey: Self.playEveryLaunchKey)
+        let hasSeenIntro = UserDefaults.standard.bool(forKey: Self.hasSeenIntroKey)
+        if playEveryLaunch || !hasSeenIntro {
             currentScreen = .intro
+        } else {
+            checkAuthState()
         }
     }
 
@@ -54,4 +59,5 @@ class AppState: ObservableObject {
         languageRefreshID = UUID()
     }
 }
+
 
