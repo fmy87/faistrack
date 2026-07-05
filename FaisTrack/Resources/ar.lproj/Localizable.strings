@@ -368,3 +368,7 @@
 "admin.createTrack.title" = "إنشاء مضمار (المسؤول)";
 "admin.createTrack.instructions" = "اضغط على الخريطة لتحديد نقطة البداية، ثم اضغط مرة أخرى لتحديد نقطة النهاية. اضغط للمرة الثالثة لإعادة البدء.";
 "admin.createTrack.save" = "إنشاء المضمار";
+
+
+// MARK: - Intro video
+"intro.skip" = "تخطي";
