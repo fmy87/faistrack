@@ -361,3 +361,10 @@
 "tracks.recordHolder" = "صاحب الرقم القياسي";
 "tracks.noRecordYet" = "لا توجد محاولات بعد — كن أول من يسجل رقمًا قياسيًا.";
 "createTrack.nameRequired" = "أدخل اسمًا لهذا المضمار قبل الحفظ.";
+
+
+// MARK: - Admin track creation, delete restriction
+"tracks.deleteRestricted" = "لم يعد بإمكان منشئ المضمار حذفه، وذلك لحماية النتائج التي سجّلها آخرون عليه.";
+"admin.createTrack.title" = "إنشاء مضمار (المسؤول)";
+"admin.createTrack.instructions" = "اضغط على الخريطة لتحديد نقطة البداية، ثم اضغط مرة أخرى لتحديد نقطة النهاية. اضغط للمرة الثالثة لإعادة البدء.";
+"admin.createTrack.save" = "إنشاء المضمار";
