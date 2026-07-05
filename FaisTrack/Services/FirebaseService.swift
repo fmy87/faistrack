@@ -179,35 +179,13 @@ class FirebaseService {
         return ref.documentID
     }
 
-    /// Publishes a drive's recorded route as a competable Track. The start
-    /// and end points come from the decoded polyline (the drive model only
-    /// stores place-name strings, not raw coordinates).
-    func publishTrack(from drive: Drive, coordinates: [CLLocationCoordinate2D], ownerUID: String, ownerUsername: String) async throws -> String {
-        guard let first = coordinates.first, let last = coordinates.last,
-              let encoded = drive.polylineEncoded else {
-            throw FirebaseServiceError.invalidTrack
-        }
-        let name: String
-        if let start = drive.startPlaceName, let end = drive.endPlaceName {
-            name = "\(start) → \(end)"
-        } else {
-            name = NSLocalizedString("tracks.defaultName", comment: "")
-        }
-        let track = Track(
-            ownerUID: ownerUID,
-            ownerUsername: ownerUsername,
-            name: name,
-            startLatitude: first.latitude,
-            startLongitude: first.longitude,
-            endLatitude: last.latitude,
-            endLongitude: last.longitude,
-            distance: drive.distance * 1000,
-            polylineEncoded: encoded
-        )
-        let ref = db.collection("tracks").document()
-        try await ref.setData(from: track)
-        return ref.documentID
-    }
+    // publishTrack(from: Drive, ...) was removed — Tracks are now only ever
+    // created through the explicit manual "+ → Start" flow (see
+    // TrackCreationService.saveTrack / createTrack above), never derived
+    // from a passively auto-detected Drive. That old path also
+    // auto-generated the track's name from place names rather than letting
+    // the user actually name it, which is exactly the behavior this change
+    // was meant to get rid of.
 
     func getTracks(limit: Int = 50) async throws -> [Track] {
         let snapshot = try await db.collection("tracks")
@@ -493,6 +471,7 @@ enum FirebaseServiceError: LocalizedError {
         }
     }
 }
+
 
 
 
