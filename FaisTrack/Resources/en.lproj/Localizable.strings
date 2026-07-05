@@ -361,3 +361,10 @@
 "tracks.recordHolder" = "RECORD HOLDER";
 "tracks.noRecordYet" = "No attempts yet — be the first to set a record.";
 "createTrack.nameRequired" = "Give this track a name before saving.";
+
+
+// MARK: - Admin track creation, delete restriction
+"tracks.deleteRestricted" = "Published tracks can no longer be deleted by their creator, to protect results other people have already set on them.";
+"admin.createTrack.title" = "Create Track (Admin)";
+"admin.createTrack.instructions" = "Tap the map to place a start point, then tap again to place the end point. Tap a third time to start over.";
+"admin.createTrack.save" = "Create Track";
