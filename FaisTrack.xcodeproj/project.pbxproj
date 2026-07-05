@@ -25,6 +25,7 @@
 		2BD649AF917D9956478F2835 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB408BA9F25A61225D8955 /* SettingsView.swift */; };
 		31DF0CF53A504CB0B7094EC8 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52888D24069445E6A16750A5 /* RootView.swift */; };
 		349435386BA54F5883C6DC7B /* IntroVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DCAF9AA86460C81479042 /* IntroVideoView.swift */; };
+		CCC33519367E4541BD9C6068 /* FlameWelcomeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C8103342314EAE8C93B993 /* FlameWelcomeText.swift */; };
 		346059DD29E6447686DDE7C9 /* None in Resources */ = {isa = PBXBuildFile; fileRef = 1260ED1DF6E848A797444369; };
 		36C24728A3709ACDEE565ABD /* SpeedLinesBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D41A499B592656D29632C /* SpeedLinesBackground.swift */; };
 		3C5375B644F84030A48AA605 /* GarageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE0E2847F7444B1A098C551 /* GarageView.swift */; };
@@ -106,6 +107,7 @@
 		51EC40558ECB28745AFDA98F /* CompeteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CompeteView.swift; path = FaisTrack/Modules/Tracks/CompeteView.swift; sourceTree = SOURCE_ROOT; };
 		52888D24069445E6A16750A5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootView.swift; path = RootView.swift; sourceTree = "<group>"; };
 		AA0DCAF9AA86460C81479042 /* IntroVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IntroVideoView.swift; path = IntroVideoView.swift; sourceTree = "<group>"; };
+		50C8103342314EAE8C93B993 /* FlameWelcomeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlameWelcomeText.swift; path = FlameWelcomeText.swift; sourceTree = "<group>"; };
 		531A617F905340959D3DBEB3 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationService.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		537648BB94ADB4C179ECC0EA /* PolylineCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PolylineCodec.swift; path = FaisTrack/Services/PolylineCodec.swift; sourceTree = SOURCE_ROOT; };
 		5D934D6E0CFA4EA3926012FE /* FTButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FTButton.swift; path = Components/FTButton.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				E82E1472DA9B48B89905579F /* MainTabView.swift */,
 				52888D24069445E6A16750A5 /* RootView.swift */,
 				AA0DCAF9AA86460C81479042 /* IntroVideoView.swift */,
+				50C8103342314EAE8C93B993 /* FlameWelcomeText.swift */,
 			);
 			name = App;
 			path = App;
@@ -519,6 +522,7 @@
 				B34E5C4A39074218A783CC37 /* MainTabView.swift in Sources */,
 				31DF0CF53A504CB0B7094EC8 /* RootView.swift in Sources */,
 				349435386BA54F5883C6DC7B /* IntroVideoView.swift in Sources */,
+				CCC33519367E4541BD9C6068 /* FlameWelcomeText.swift in Sources */,
 				C3052B926FA24C2B885B4624 /* Colors.swift in Sources */,
 				741E2D4C2CD24F79B40DDAC6 /* FTButton.swift in Sources */,
 				82A96434D12D4FD6A81DE482 /* FTCard.swift in Sources */,
@@ -709,6 +713,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
