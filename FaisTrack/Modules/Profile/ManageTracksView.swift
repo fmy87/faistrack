@@ -1,10 +1,17 @@
 import SwiftUI
 
-/// Lets the user review and delete tracks they've published.
+/// Lets the user review tracks they've published. Deleting a published
+/// track is intentionally restricted to the admin account (see
+/// AdminConfig) — once a track is out in the world and other people may
+/// have raced it, its creator shouldn't be able to erase it and their
+/// results out from under them. The matching Firestore rule enforces this
+/// server-side too, not just here in the UI.
 struct ManageTracksView: View {
     @State private var tracks: [Track] = []
     @State private var isLoading = true
     @State private var deleteError: String?
+
+    private var canDelete: Bool { AdminConfig.isCurrentUserAdmin }
 
     var body: some View {
         ZStack {
@@ -23,14 +30,25 @@ struct ManageTracksView: View {
                         TrackRowView(track: track)
                             .listRowBackground(Color.ftCard)
                     }
-                    .onDelete(perform: delete)
+                    .onDelete(perform: canDelete ? delete : nil)
                 }
                 .listStyle(.insetGrouped)
+
+                if !canDelete && !tracks.isEmpty {
+                    Text(NSLocalizedString("tracks.deleteRestricted", comment: ""))
+                        .font(.system(size: 12)).foregroundColor(.ftTextSecondary)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                }
             }
         }
         .navigationTitle(NSLocalizedString("profile.manageTracks", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { EditButton() }
+        .toolbar {
+            if canDelete {
+                EditButton()
+            }
+        }
         .task { await load() }
         .alert(NSLocalizedString("general.error", comment: ""), isPresented: Binding(
             get: { deleteError != nil }, set: { if !$0 { deleteError = nil } }
@@ -66,4 +84,3 @@ struct ManageTracksView: View {
         }
     }
 }
-
