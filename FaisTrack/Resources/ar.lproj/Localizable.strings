@@ -355,3 +355,9 @@
 
 // MARK: - Drive card passenger badge
 "drive.passengerBadge" = "راكب";
+
+
+// MARK: - Track record holder card, mandatory naming
+"tracks.recordHolder" = "صاحب الرقم القياسي";
+"tracks.noRecordYet" = "لا توجد محاولات بعد — كن أول من يسجل رقمًا قياسيًا.";
+"createTrack.nameRequired" = "أدخل اسمًا لهذا المضمار قبل الحفظ.";
