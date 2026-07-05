@@ -12,6 +12,7 @@ struct AuthView: View {
         ZStack {
             Color.ftBackground.ignoresSafeArea()
             SpeedLinesBackground()
+            DriftingCarEffectView()
             VStack(spacing: 20) {
                 Spacer()
                 Text("FaisTrack").font(.system(size: 42, weight: .black))
@@ -107,4 +108,5 @@ struct AuthView: View {
         }
     }
 }
+
 
