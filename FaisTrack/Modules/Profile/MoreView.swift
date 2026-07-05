@@ -6,6 +6,14 @@ import SwiftUI
 /// automatic "More" collapse, burying this screen inside a system-generated
 /// one instead of showing it directly.
 struct MoreView: View {
+    // Without this, SwiftUI has no reason to ever re-render MoreView when
+    // the signed-in user changes — AdminConfig.isCurrentUserAdmin would
+    // only ever be checked once, at whatever moment this view first
+    // rendered (which can easily be before Firebase finishes restoring the
+    // session on launch), and never again. Observing AuthService directly
+    // means this view's body re-runs — and re-checks admin status fresh —
+    // any time currentUser changes.
+    @ObservedObject private var authService = AuthService.shared
     @State private var showAdminCreateTrack = false
 
     var body: some View {
@@ -56,4 +64,5 @@ struct MoreView: View {
         }
     }
 }
+
 
