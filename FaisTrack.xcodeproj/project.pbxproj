@@ -24,6 +24,7 @@
 		2A9C12210C194E3A8161B6A7 /* UserSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962C04FF8E5D4263B8252ABA /* UserSearchView.swift */; };
 		2BD649AF917D9956478F2835 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB408BA9F25A61225D8955 /* SettingsView.swift */; };
 		31DF0CF53A504CB0B7094EC8 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52888D24069445E6A16750A5 /* RootView.swift */; };
+		349435386BA54F5883C6DC7B /* IntroVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DCAF9AA86460C81479042 /* IntroVideoView.swift */; };
 		346059DD29E6447686DDE7C9 /* None in Resources */ = {isa = PBXBuildFile; fileRef = 1260ED1DF6E848A797444369; };
 		36C24728A3709ACDEE565ABD /* SpeedLinesBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D41A499B592656D29632C /* SpeedLinesBackground.swift */; };
 		3C5375B644F84030A48AA605 /* GarageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE0E2847F7444B1A098C551 /* GarageView.swift */; };
@@ -57,6 +58,7 @@
 		01CCF93A015D4229BC663DA8 /* AdminCreateTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FE29F3BA9A4DCFA88E20E1 /* AdminCreateTrackView.swift */; };
 		A1CCE70606074AD8BE3FC738 /* TrackShareCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56BF1D7208A4128B335D332 /* TrackShareCardView.swift */; };
 		958B4F73B01421F147B9A69A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77294006A9F95692DBAECD08 /* GoogleService-Info.plist */; };
+		3459A091DCDD4170A371A5FB /* GTR_Burnout.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1F1DFFD7EF9B474A81E67973 /* GTR_Burnout.mp4 */; };
 		9859C4FE0C17401CBF4BF296 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC41065721DB4C75872B45D9 /* StatsView.swift */; };
 		08A1298908CF4296940C7A87 /* MonthlyRecapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4989DD8942D4F0692A782A3 /* MonthlyRecapView.swift */; };
 		F55CCB0D07E14545B9E9F4DE /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C337DB3C72CD454A8A80878F /* StatsViewModel.swift */; };
@@ -103,6 +105,7 @@
 		4E7CF4BEB818490998830CD0 /* ShareCarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ShareCarCardView.swift; path = ShareCarCardView.swift; sourceTree = "<group>"; };
 		51EC40558ECB28745AFDA98F /* CompeteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CompeteView.swift; path = FaisTrack/Modules/Tracks/CompeteView.swift; sourceTree = SOURCE_ROOT; };
 		52888D24069445E6A16750A5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootView.swift; path = RootView.swift; sourceTree = "<group>"; };
+		AA0DCAF9AA86460C81479042 /* IntroVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IntroVideoView.swift; path = IntroVideoView.swift; sourceTree = "<group>"; };
 		531A617F905340959D3DBEB3 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationService.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		537648BB94ADB4C179ECC0EA /* PolylineCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PolylineCodec.swift; path = FaisTrack/Services/PolylineCodec.swift; sourceTree = SOURCE_ROOT; };
 		5D934D6E0CFA4EA3926012FE /* FTButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FTButton.swift; path = Components/FTButton.swift; sourceTree = "<group>"; };
@@ -119,6 +122,7 @@
 		B901DBBE222441AF905E7247 /* LiveDriveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LiveDriveView.swift; path = LiveDriveView.swift; sourceTree = "<group>"; };
 		76C781CC8A1E416FB07FA782 /* StoreKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StoreKitService.swift; path = StoreKitService.swift; sourceTree = "<group>"; };
 		77294006A9F95692DBAECD08 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "FaisTrack/Supporting/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		1F1DFFD7EF9B474A81E67973 /* GTR_Burnout.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "GTR_Burnout.mp4"; path = "FaisTrack/Supporting/GTR_Burnout.mp4"; sourceTree = SOURCE_ROOT; };
 		78EEA8E815214FC7BF672B88 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Colors.swift; path = Colors.swift; sourceTree = "<group>"; };
 		7F05496C97F077B4C7CDD701 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileView.swift; path = FaisTrack/Modules/Profile/ProfileView.swift; sourceTree = SOURCE_ROOT; };
 		029FD0E8C01545F1947F4FC5 /* MoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MoreView.swift; path = FaisTrack/Modules/Profile/MoreView.swift; sourceTree = SOURCE_ROOT; };
@@ -214,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				77294006A9F95692DBAECD08 /* GoogleService-Info.plist */,
+				1F1DFFD7EF9B474A81E67973 /* GTR_Burnout.mp4 */,
 			);
 			name = Supporting;
 			path = Supporting;
@@ -369,6 +374,7 @@
 				DBCC1483973240D69E85323F /* FaisTrackApp.swift */,
 				E82E1472DA9B48B89905579F /* MainTabView.swift */,
 				52888D24069445E6A16750A5 /* RootView.swift */,
+				AA0DCAF9AA86460C81479042 /* IntroVideoView.swift */,
 			);
 			name = App;
 			path = App;
@@ -496,6 +502,7 @@
 				346059DD29E6447686DDE7C9 /* None in Resources */,
 				A41D0873F51A4FFA8B7E1D84 /* Localizable.strings in Resources */,
 				958B4F73B01421F147B9A69A /* GoogleService-Info.plist in Resources */,
+				3459A091DCDD4170A371A5FB /* GTR_Burnout.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,6 +518,7 @@
 				A49AE6B22B144242A89CA19D /* FaisTrackApp.swift in Sources */,
 				B34E5C4A39074218A783CC37 /* MainTabView.swift in Sources */,
 				31DF0CF53A504CB0B7094EC8 /* RootView.swift in Sources */,
+				349435386BA54F5883C6DC7B /* IntroVideoView.swift in Sources */,
 				C3052B926FA24C2B885B4624 /* Colors.swift in Sources */,
 				741E2D4C2CD24F79B40DDAC6 /* FTButton.swift in Sources */,
 				82A96434D12D4FD6A81DE482 /* FTCard.swift in Sources */,
@@ -701,6 +709,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
