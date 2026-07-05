@@ -6,6 +6,8 @@ import SwiftUI
 /// automatic "More" collapse, burying this screen inside a system-generated
 /// one instead of showing it directly.
 struct MoreView: View {
+    @State private var showAdminCreateTrack = false
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -33,11 +35,25 @@ struct MoreView: View {
                         NavigationLink(destination: ManageTracksView()) {
                             ProfileRow(icon: "flag.checkered", title: NSLocalizedString("profile.manageTracks", comment: ""))
                         }
+
+                        // Only ever visible to the admin account (see
+                        // AdminConfig) — everyone else's More screen ends
+                        // above this without any sign it exists.
+                        if AdminConfig.isCurrentUserAdmin {
+                            Divider().background(Color.ftTextSecondary.opacity(0.2)).padding(.vertical, 8)
+                            Button(action: { showAdminCreateTrack = true }) {
+                                ProfileRow(icon: "wand.and.stars", title: NSLocalizedString("admin.createTrack.title", comment: ""))
+                            }
+                        }
                     }
                     .padding(20)
                 }
             }
             .navigationTitle(NSLocalizedString("tab.more", comment: ""))
         }
+        .sheet(isPresented: $showAdminCreateTrack) {
+            AdminCreateTrackView()
+        }
     }
 }
+
