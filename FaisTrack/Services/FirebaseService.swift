@@ -195,6 +195,15 @@ class FirebaseService {
         return snapshot.documents.compactMap { try? $0.data(as: Track.self) }
     }
 
+    /// Used to enforce the free-tier track creation cap — a single-field
+    /// equality query, so no composite index is needed.
+    func getTrackCount(ownerUID: String) async throws -> Int {
+        let snapshot = try await db.collection("tracks")
+            .whereField("ownerUID", isEqualTo: ownerUID)
+            .getDocuments()
+        return snapshot.documents.count
+    }
+
     func saveTrackResult(_ result: TrackResult) async throws {
         guard !result.trackId.isEmpty else { return }
         let ref = db.collection("tracks").document(result.trackId)
@@ -471,6 +480,7 @@ enum FirebaseServiceError: LocalizedError {
         }
     }
 }
+
 
 
 
