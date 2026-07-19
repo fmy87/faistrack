@@ -392,3 +392,13 @@
 "tracks.sort.longest" = "Longest";
 "tracks.sort.bestTime" = "Best Time";
 "tracks.sort.nearest" = "Nearest";
+
+
+// MARK: - Pro gating: track cap, leaderboard depth, personal bests
+"pro.feature.tracks" = "Unlimited track creation";
+"pro.feature.leaderboard" = "Full leaderboard, not just the top 3";
+"pro.feature.stats" = "Every personal best stat, unlocked";
+"createTrack.limitReached.title" = "Track Limit Reached";
+"createTrack.limitReached.subtitle" = "Free accounts can create up to %d tracks. Upgrade to Pro for unlimited tracks.";
+"leaderboard.fullListLocked" = "See where everyone ranks, not just the top 3 — unlock the full leaderboard with Pro.";
+"stats.unlockAll" = "Unlock All Stats";
