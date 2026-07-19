@@ -392,3 +392,13 @@
 "tracks.sort.longest" = "الأطول";
 "tracks.sort.bestTime" = "أفضل وقت";
 "tracks.sort.nearest" = "الأقرب";
+
+
+// MARK: - Pro gating: track cap, leaderboard depth, personal bests
+"pro.feature.tracks" = "إنشاء مضامير غير محدود";
+"pro.feature.leaderboard" = "لوحة المتصدرين الكاملة، وليس فقط أفضل 3";
+"pro.feature.stats" = "جميع إحصاءات أفضل الإنجازات، مفتوحة";
+"createTrack.limitReached.title" = "تم الوصول للحد الأقصى من المضامير";
+"createTrack.limitReached.subtitle" = "يمكن للحسابات المجانية إنشاء ما يصل إلى %d مضامير. قم بالترقية إلى Pro لإنشاء مضامير غير محدودة.";
+"leaderboard.fullListLocked" = "شاهد ترتيب الجميع، وليس فقط أفضل 3 — افتح لوحة المتصدرين الكاملة مع Pro.";
+"stats.unlockAll" = "فتح جميع الإحصاءات";
