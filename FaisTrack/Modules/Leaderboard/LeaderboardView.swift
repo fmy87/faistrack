@@ -1,12 +1,18 @@
 import SwiftUI
 
 struct LeaderboardView: View {
+    @ObservedObject private var store = StoreKitService.shared
     @State private var scope: LeaderboardScope = .global
     @State private var metric: LeaderboardMetric = .distance
     @State private var period: LeaderboardPeriod = .monthly
     @State private var entries: [LeaderboardEntry] = []
     @State private var myRank: (rank: Int, entry: LeaderboardEntry)?
     @State private var isLoading = true
+    @State private var showPaywall = false
+
+    /// Free accounts see the top 3 (via the podium) plus their own rank —
+    /// the full ranked list beyond that is Pro. Admin always sees everything.
+    private var canSeeFullList: Bool { store.isPro || AdminConfig.isCurrentUserAdmin }
 
     enum LeaderboardScope: String, CaseIterable {
         case global, friends
@@ -71,15 +77,21 @@ struct LeaderboardView: View {
                                 YourRankRow(rank: myRank.rank, entry: myRank.entry, metric: metric)
                                     .padding(.horizontal)
                             }
-                            VStack(spacing: 0) {
-                                ForEach(Array(entries.enumerated()).filter { $0.0 >= 3 }, id: \.1.id) { index, entry in
-                                    LeaderboardRowView(rank: index + 1, entry: entry, metric: metric, isMe: entry.uid == AuthService.shared.currentUser?.uid)
-                                    Divider().background(Color.ftTextSecondary.opacity(0.2))
+                            if entries.count > 3 {
+                                if canSeeFullList {
+                                    VStack(spacing: 0) {
+                                        ForEach(Array(entries.enumerated()).filter { $0.0 >= 3 }, id: \.1.id) { index, entry in
+                                            LeaderboardRowView(rank: index + 1, entry: entry, metric: metric, isMe: entry.uid == AuthService.shared.currentUser?.uid)
+                                            Divider().background(Color.ftTextSecondary.opacity(0.2))
+                                        }
+                                    }
+                                    .background(Color.ftCard)
+                                    .cornerRadius(16)
+                                    .padding(.horizontal)
+                                } else {
+                                    lockedListCard
                                 }
                             }
-                            .background(Color.ftCard)
-                            .cornerRadius(16)
-                            .padding(.horizontal)
                         }
                         .padding(.vertical, 12)
                     }
@@ -91,6 +103,31 @@ struct LeaderboardView: View {
         .onChange(of: metric) { _ in Task { await loadEntries() } }
         .onChange(of: period) { _ in Task { await loadEntries() } }
         .onChange(of: scope) { _ in Task { await loadEntries() } }
+        .sheet(isPresented: $showPaywall) { ProPaywallView() }
+    }
+
+    /// Shown instead of ranks 4+ for free accounts — the podium (ranks 1-3)
+    /// and "Your Rank" row are still fully visible either way, so nobody
+    /// loses visibility into their own standing, just the full list of
+    /// everyone else.
+    private var lockedListCard: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "lock.fill").font(.system(size: 28)).foregroundColor(.ftAccentOrange)
+            Text(NSLocalizedString("leaderboard.fullListLocked", comment: ""))
+                .font(.system(size: 14)).foregroundColor(.ftTextSecondary)
+                .multilineTextAlignment(.center)
+            Button(NSLocalizedString("pro.unlock", comment: "")) { showPaywall = true }
+                .font(.system(size: 14, weight: .bold))
+                .foregroundColor(.white)
+                .padding(.horizontal, 20).padding(.vertical, 10)
+                .background(Color.ftGradient)
+                .cornerRadius(14)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 24)
+        .background(Color.ftCard)
+        .cornerRadius(16)
+        .padding(.horizontal)
     }
 
     private func filterPill(_ text: String) -> some View {
@@ -245,5 +282,6 @@ struct YourRankRow: View {
         }
     }
 }
+
 
 
