@@ -2,11 +2,25 @@ import SwiftUI
 
 struct CreateTrackView: View {
     @ObservedObject private var service = TrackCreationService.shared
+    @ObservedObject private var store = StoreKitService.shared
     @AppStorage("unitsPreference") private var unitsPreference: String = "km"
     @Environment(\.dismiss) var dismiss
     @State private var trackName: String = ""
     @State private var isSaving = false
+    @State private var ownedTrackCount: Int?
+    @State private var showPaywall = false
     var onCreated: (() -> Void)?
+
+    /// Free accounts can create a small number of tracks total; Pro and the
+    /// admin account are unlimited. Checked before the countdown even
+    /// starts, rather than after recording a whole drive, so someone at the
+    /// cap isn't asked to drive somewhere first only to be told no at the end.
+    private let freeTrackLimit = 3
+    private var isUnlimited: Bool { store.isPro || AdminConfig.isCurrentUserAdmin }
+    private var hasReachedFreeLimit: Bool {
+        guard !isUnlimited, let ownedTrackCount else { return false }
+        return ownedTrackCount >= freeTrackLimit
+    }
 
     private var useMetric: Bool { unitsPreference == "km" }
     private func speedValue(_ kmh: Double) -> Double { useMetric ? kmh : kmh * 0.621371 }
@@ -64,7 +78,14 @@ struct CreateTrackView: View {
             .onDisappear {
                 if case .finished = service.state {} else { service.reset() }
             }
+            .task { await loadOwnedTrackCount() }
+            .sheet(isPresented: $showPaywall) { ProPaywallView() }
         }
+    }
+
+    private func loadOwnedTrackCount() async {
+        guard let uid = AuthService.shared.currentUser?.uid else { return }
+        ownedTrackCount = (try? await FirebaseService.shared.getTrackCount(ownerUID: uid)) ?? 0
     }
 
     private var isRecordingActive: Bool {
@@ -92,14 +113,32 @@ struct CreateTrackView: View {
     }
 
     private var idleView: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "flag.checkered.circle.fill")
-                .font(.system(size: 56)).foregroundColor(.ftAccent)
-            Text(NSLocalizedString("createTrack.explainer", comment: ""))
-                .font(.system(size: 16)).foregroundColor(.ftTextSecondary)
-                .multilineTextAlignment(.center)
-            FTPrimaryButton(title: NSLocalizedString("createTrack.startCountdown", comment: "")) {
-                service.beginCountdown()
+        Group {
+            if hasReachedFreeLimit {
+                VStack(spacing: 20) {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 48)).foregroundColor(.ftAccentOrange)
+                    Text(NSLocalizedString("createTrack.limitReached.title", comment: ""))
+                        .font(.system(size: 18, weight: .bold))
+                        .multilineTextAlignment(.center)
+                    Text(String(format: NSLocalizedString("createTrack.limitReached.subtitle", comment: ""), freeTrackLimit))
+                        .font(.system(size: 14)).foregroundColor(.ftTextSecondary)
+                        .multilineTextAlignment(.center)
+                    FTPrimaryButton(title: NSLocalizedString("pro.unlock", comment: "")) {
+                        showPaywall = true
+                    }
+                }
+            } else {
+                VStack(spacing: 20) {
+                    Image(systemName: "flag.checkered.circle.fill")
+                        .font(.system(size: 56)).foregroundColor(.ftAccent)
+                    Text(NSLocalizedString("createTrack.explainer", comment: ""))
+                        .font(.system(size: 16)).foregroundColor(.ftTextSecondary)
+                        .multilineTextAlignment(.center)
+                    FTPrimaryButton(title: NSLocalizedString("createTrack.startCountdown", comment: "")) {
+                        service.beginCountdown()
+                    }
+                }
             }
         }
     }
@@ -199,6 +238,7 @@ struct CreateTrackView: View {
         }
     }
 }
+
 
 
 
