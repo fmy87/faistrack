@@ -4,6 +4,7 @@ struct StatsView: View {
     @StateObject private var viewModel = StatsViewModel()
     @AppStorage("unitsPreference") private var unitsPreference: String = "km"
     @State private var showRecap = false
+    @State private var showPaywall = false
 
     private var useMetric: Bool { unitsPreference == "km" }
     private func distanceText(_ km: Double) -> String {
@@ -45,6 +46,7 @@ struct StatsView: View {
         .sheet(isPresented: $showRecap) {
             MonthlyRecapView(viewModel: viewModel, useMetric: useMetric)
         }
+        .sheet(isPresented: $showPaywall) { ProPaywallView() }
     }
 
     private var emptyView: some View {
@@ -350,7 +352,11 @@ struct StatsView: View {
     // MARK: - Personal Bests
 
     private var personalBestsSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        // Free accounts get the first 3 (the ones that need only a single
+        // drive to earn, not a history of them) unlocked; the rest need Pro.
+        let isUnlocked = StoreKitService.shared.isPro || AdminConfig.isCurrentUserAdmin
+
+        return VStack(alignment: .leading, spacing: 4) {
             Text(NSLocalizedString("stats.personalBests", comment: ""))
                 .font(.system(size: 17, weight: .semibold))
                 .padding(.bottom, 8)
@@ -369,47 +375,71 @@ struct StatsView: View {
 
             PersonalBestRow(emoji: "🏎️", title: NSLocalizedString("stats.pb.smoothOperator", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.smoothOperator.sub", comment: ""),
-                             value: viewModel.bestAvgSpeedDrive.map { $0.speedFormatted(useMetric: useMetric, value: $0.avgSpeed) } ?? "—")
+                             value: viewModel.bestAvgSpeedDrive.map { $0.speedFormatted(useMetric: useMetric, value: $0.avgSpeed) } ?? "—",
+                             isLocked: !isUnlocked, onTapLocked: { showPaywall = true })
 
             PersonalBestRow(emoji: "📍", title: NSLocalizedString("stats.pb.bigDayEnergy", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.bigDayEnergy.sub", comment: ""),
-                             value: viewModel.bigDayEnergyKm > 0 ? distanceText1dp(viewModel.bigDayEnergyKm) : "—")
+                             value: viewModel.bigDayEnergyKm > 0 ? distanceText1dp(viewModel.bigDayEnergyKm) : "—",
+                             isLocked: !isUnlocked, onTapLocked: { showPaywall = true })
 
             PersonalBestRow(emoji: "🕰️", title: NSLocalizedString("stats.pb.roadWarrior", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.roadWarrior.sub", comment: ""),
-                             value: viewModel.roadWarriorHours > 0 ? String(format: "%.1f hrs", viewModel.roadWarriorHours) : "—")
+                             value: viewModel.roadWarriorHours > 0 ? String(format: "%.1f hrs", viewModel.roadWarriorHours) : "—",
+                             isLocked: !isUnlocked, onTapLocked: { showPaywall = true })
 
             PersonalBestRow(emoji: "🔁", title: NSLocalizedString("stats.pb.errandEra", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.errandEra.sub", comment: ""),
-                             value: viewModel.errandEraCount > 0 ? "\(viewModel.errandEraCount)" : "—")
+                             value: viewModel.errandEraCount > 0 ? "\(viewModel.errandEraCount)" : "—",
+                             isLocked: !isUnlocked, onTapLocked: { showPaywall = true })
 
             PersonalBestRow(emoji: "🗓️", title: NSLocalizedString("stats.pb.hotWeek", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.hotWeek.sub", comment: ""),
-                             value: viewModel.hotWeekKm > 0 ? distanceText1dp(viewModel.hotWeekKm) : "—")
+                             value: viewModel.hotWeekKm > 0 ? distanceText1dp(viewModel.hotWeekKm) : "—",
+                             isLocked: !isUnlocked, onTapLocked: { showPaywall = true })
 
             PersonalBestRow(emoji: "🏁", title: NSLocalizedString("stats.pb.mileageMonster", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.mileageMonster.sub", comment: ""),
-                             value: viewModel.mileageMonsterKm > 0 ? distanceText1dp(viewModel.mileageMonsterKm) : "—")
+                             value: viewModel.mileageMonsterKm > 0 ? distanceText1dp(viewModel.mileageMonsterKm) : "—",
+                             isLocked: !isUnlocked, onTapLocked: { showPaywall = true })
 
             PersonalBestRow(emoji: "🔥", title: NSLocalizedString("stats.pb.onARoll", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.onARoll.sub", comment: ""),
-                             value: viewModel.onARollStreak > 0 ? "\(viewModel.onARollStreak) \(NSLocalizedString("stats.daysShort", comment: ""))" : "—")
+                             value: viewModel.onARollStreak > 0 ? "\(viewModel.onARollStreak) \(NSLocalizedString("stats.daysShort", comment: ""))" : "—",
+                             isLocked: !isUnlocked, onTapLocked: { showPaywall = true })
 
             PersonalBestRow(emoji: "👑", title: NSLocalizedString("stats.pb.passengerPrincess", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.passengerPrincess.sub", comment: ""),
-                             value: viewModel.passengerMiles > 0 ? distanceText1dp(viewModel.passengerMiles) : "—")
+                             value: viewModel.passengerMiles > 0 ? distanceText1dp(viewModel.passengerMiles) : "—",
+                             isLocked: !isUnlocked, onTapLocked: { showPaywall = true })
 
             PersonalBestRow(emoji: "🚗", title: NSLocalizedString("stats.pb.garageRocket", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.garageRocket.sub", comment: ""),
-                             value: viewModel.garageRocketCar.map { "\($0.car.displayName)" } ?? "—")
+                             value: viewModel.garageRocketCar.map { "\($0.car.displayName)" } ?? "—",
+                             isLocked: !isUnlocked, onTapLocked: { showPaywall = true })
 
             PersonalBestRow(emoji: "🧭", title: NSLocalizedString("stats.pb.favoriteRide", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.favoriteRide.sub", comment: ""),
-                             value: viewModel.favoriteRideCar.map { "\($0.car.displayName)" } ?? "—")
+                             value: viewModel.favoriteRideCar.map { "\($0.car.displayName)" } ?? "—",
+                             isLocked: !isUnlocked, onTapLocked: { showPaywall = true })
 
             PersonalBestRow(emoji: "🔑", title: NSLocalizedString("stats.pb.dailyDriver", comment: ""),
                              subtitle: NSLocalizedString("stats.pb.dailyDriver.sub", comment: ""),
-                             value: viewModel.mostDrivenCar.map { "\($0.car.displayName)" } ?? "—")
+                             value: viewModel.mostDrivenCar.map { "\($0.car.displayName)" } ?? "—",
+                             isLocked: !isUnlocked, onTapLocked: { showPaywall = true })
+
+            if !isUnlocked {
+                Button(action: { showPaywall = true }) {
+                    Text(NSLocalizedString("stats.unlockAll", comment: ""))
+                        .font(.system(size: 15, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(Color.ftGradient)
+                        .cornerRadius(16)
+                }
+                .padding(.top, 12)
+            }
         }
     }
 
@@ -434,20 +464,31 @@ private struct PersonalBestRow: View {
     let title: String
     let subtitle: String
     let value: String
+    var isLocked: Bool = false
+    var onTapLocked: (() -> Void)? = nil
 
     var body: some View {
         HStack {
             Text(emoji).font(.system(size: 22)).frame(width: 32)
+                .opacity(isLocked ? 0.4 : 1)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title).font(.system(size: 15, weight: .semibold))
+                    .opacity(isLocked ? 0.5 : 1)
                 Text(subtitle).font(.system(size: 12)).foregroundColor(.ftTextSecondary)
             }
             Spacer()
-            Text(value).font(.system(size: 15, weight: .bold)).foregroundColor(.ftAccent)
-                .multilineTextAlignment(.trailing)
-                .frame(maxWidth: 110, alignment: .trailing)
+            if isLocked {
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 14)).foregroundColor(.ftTextSecondary)
+            } else {
+                Text(value).font(.system(size: 15, weight: .bold)).foregroundColor(.ftAccent)
+                    .multilineTextAlignment(.trailing)
+                    .frame(maxWidth: 110, alignment: .trailing)
+            }
         }
         .padding(.vertical, 10)
+        .contentShape(Rectangle())
+        .onTapGesture { if isLocked { onTapLocked?() } }
     }
 }
 
@@ -457,6 +498,7 @@ private extension Drive {
         useMetric ? String(format: "%.0f km/h", value) : String(format: "%.0f mph", value * 0.621371)
     }
 }
+
 
 
 
