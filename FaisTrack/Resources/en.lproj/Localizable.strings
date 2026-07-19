@@ -382,3 +382,13 @@
 
 // MARK: - Intro video welcome message
 "intro.welcome" = "Welcome to FaisTrack";
+
+
+// MARK: - Track search and sort
+"tracks.searchPrompt" = "Search tracks or creators";
+"tracks.noSearchResults" = "No tracks match your search.";
+"tracks.sort.newest" = "Newest";
+"tracks.sort.shortest" = "Shortest";
+"tracks.sort.longest" = "Longest";
+"tracks.sort.bestTime" = "Best Time";
+"tracks.sort.nearest" = "Nearest";
