@@ -1,9 +1,53 @@
 import SwiftUI
+import CoreLocation
 
 struct TracksView: View {
     @StateObject private var viewModel = TracksViewModel()
     @State private var showCreateTrack = false
     @State private var selectedTrackFromMap: Track?
+    @State private var searchText = ""
+    @State private var sortOption: TrackSortOption = .newest
+
+    /// Applies the search text and sort option on top of whatever tracks
+    /// have loaded — computed fresh each render rather than stored, since
+    /// there's no expensive work here and it keeps the two controls always
+    /// in sync with the underlying data with no extra state to manage.
+    private var displayedTracks: [Track] {
+        var result = viewModel.tracks
+        let query = searchText.trimmingCharacters(in: .whitespaces).lowercased()
+        if !query.isEmpty {
+            result = result.filter {
+                $0.name.lowercased().contains(query) || $0.ownerUsername.lowercased().contains(query)
+            }
+        }
+        switch sortOption {
+        case .newest:
+            result.sort { $0.createdAt.dateValue() > $1.createdAt.dateValue() }
+        case .shortest:
+            result.sort { $0.distance < $1.distance }
+        case .longest:
+            result.sort { $0.distance > $1.distance }
+        case .bestTime:
+            // Tracks with no attempts yet sink to the bottom rather than
+            // sorting as if their best time were 0 seconds.
+            result.sort { a, b in
+                switch (a.bestTime, b.bestTime) {
+                case let (x?, y?): return x < y
+                case (.some, nil): return true
+                case (nil, .some): return false
+                case (nil, nil): return false
+                }
+            }
+        case .nearest:
+            guard let userLocation = LocationService.shared.currentLocation else { break }
+            result.sort { a, b in
+                let da = CLLocation(latitude: a.startLatitude, longitude: a.startLongitude).distance(from: userLocation)
+                let db = CLLocation(latitude: b.startLatitude, longitude: b.startLongitude).distance(from: userLocation)
+                return da < db
+            }
+        }
+        return result
+    }
 
     var body: some View {
         NavigationView {
@@ -32,6 +76,8 @@ struct TracksView: View {
                     ) { EmptyView() }
                     .hidden()
 
+                    sortBar
+
                     if viewModel.tracks.isEmpty {
                         Spacer()
                         Image(systemName: "flag.checkered").font(.system(size: 64)).foregroundColor(.ftAccent)
@@ -40,8 +86,14 @@ struct TracksView: View {
                             .multilineTextAlignment(.center)
                             .padding()
                         Spacer()
+                    } else if displayedTracks.isEmpty {
+                        Spacer()
+                        Text(NSLocalizedString("tracks.noSearchResults", comment: ""))
+                            .foregroundColor(.ftTextSecondary)
+                            .padding()
+                        Spacer()
                     } else {
-                        List(viewModel.tracks) { track in
+                        List(displayedTracks) { track in
                             NavigationLink(destination: TrackDetailView(track: track)) {
                                 TrackRowView(track: track)
                             }
@@ -52,6 +104,7 @@ struct TracksView: View {
                 }
             }
             .navigationTitle(NSLocalizedString("tab.tracks", comment: ""))
+            .searchable(text: $searchText, prompt: NSLocalizedString("tracks.searchPrompt", comment: ""))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button { showCreateTrack = true } label: {
@@ -66,6 +119,36 @@ struct TracksView: View {
                 LocationService.shared.startUpdating()
                 await viewModel.load()
             }
+        }
+    }
+
+    private var sortBar: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(TrackSortOption.allCases, id: \.self) { option in
+                    Button(option.label) { sortOption = option }
+                        .font(.system(size: 13, weight: .semibold))
+                        .padding(.horizontal, 14).padding(.vertical, 7)
+                        .background(sortOption == option ? Color.ftAccent : Color.ftCard)
+                        .foregroundColor(sortOption == option ? .white : .ftTextPrimary)
+                        .cornerRadius(16)
+                }
+            }
+            .padding(.horizontal).padding(.vertical, 8)
+        }
+    }
+}
+
+enum TrackSortOption: String, CaseIterable {
+    case newest, shortest, longest, bestTime, nearest
+
+    var label: String {
+        switch self {
+        case .newest: return NSLocalizedString("tracks.sort.newest", comment: "")
+        case .shortest: return NSLocalizedString("tracks.sort.shortest", comment: "")
+        case .longest: return NSLocalizedString("tracks.sort.longest", comment: "")
+        case .bestTime: return NSLocalizedString("tracks.sort.bestTime", comment: "")
+        case .nearest: return NSLocalizedString("tracks.sort.nearest", comment: "")
         }
     }
 }
@@ -110,6 +193,3 @@ class TracksViewModel: ObservableObject {
         tracks = (try? await FirebaseService.shared.getTracks()) ?? []
     }
 }
-
-
-
