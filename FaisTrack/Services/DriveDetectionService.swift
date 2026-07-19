@@ -77,6 +77,30 @@ class DriveDetectionService: ObservableObject {
     /// view reasonably fresh without hammering the free-tier write quota.
     private let locationBroadcastInterval: TimeInterval = 15
 
+    // MARK: - Aircraft detection
+    // The strongest signal that something is a flight rather than a drive
+    // isn't speed alone — a fast car and a taxiing plane can both hit
+    // 100+ km/h — it's speed *combined with* altitude and climb rate,
+    // since no road on Earth lets you combine highway speeds with rapid
+    // altitude gain or true cruising altitude. None of these thresholds are
+    // reachable by a car, but a plane crosses at least one within its
+    // first minute or two of climbing.
+    private var startAltitude: Double?
+    /// No car anywhere sustains this regardless of context — a hard
+    /// backstop that catches cruise speed even if the altitude reading is
+    /// briefly noisy.
+    private let impossibleDrivingSpeedKmh: Double = 300
+    /// Combined with high speed, this altitude is the discriminator for
+    /// "high mountain road" vs "in the air" — very few public roads sit
+    /// above this AND allow highway speeds at the same time.
+    private let aircraftAltitudeMeters: Double = 1800
+    private let aircraftAltitudeSpeedThresholdKmh: Double = 180
+    /// A climb this fast, sustained while already moving quickly, is a
+    /// takeoff — no road gains this much elevation this fast, even a steep
+    /// mountain pass, at anything close to these speeds.
+    private let aircraftClimbMeters: Double = 500
+    private let aircraftClimbSpeedThresholdKmh: Double = 80
+
     init() {
         isGhostMode = UserDefaults.standard.bool(forKey: "isGhostMode")
     }
@@ -143,6 +167,15 @@ class DriveDetectionService: ObservableObject {
         if pendingAutomotiveConfirmation {
             let speedKmh = max(0, location.speed * 3.6)
             if speedKmh >= drivingSpeedThresholdKmh {
+                // Even at the moment GPS would otherwise confirm this as a
+                // drive, check whether it already looks like a flight (e.g.
+                // the phone was already at cruising altitude, or mid-taxi
+                // acceleration already reads as a plane) — don't start
+                // tracking a "drive" that's actually a flight from the outset.
+                if isAircraftSignature(speedKmh: speedKmh, altitude: location.altitude, climbFrom: nil) {
+                    cancelPendingAutomotiveConfirmation()
+                    return
+                }
                 cancelPendingAutomotiveConfirmation()
                 driveDidStart()
             }
@@ -150,6 +183,17 @@ class DriveDetectionService: ObservableObject {
         }
 
         guard isDriving else { return }
+        if startAltitude == nil { startAltitude = location.altitude }
+
+        if isAircraftSignature(speedKmh: max(0, location.speed * 3.6), altitude: location.altitude, climbFrom: startAltitude) {
+            // This looked like a real drive at first (e.g. taxiing, or the
+            // takeoff roll before liftoff), but has now clearly become a
+            // flight — discard it entirely rather than saving a "drive"
+            // that would show an impossible top speed or distance.
+            cancelDriveAsAircraft()
+            return
+        }
+
         if let last = locationBuffer.last {
             liveDistanceKm += location.distance(from: last) / 1000
         }
@@ -175,9 +219,38 @@ class DriveDetectionService: ObservableObject {
         }
     }
 
+    /// True if this reading looks like a flight rather than driving —
+    /// see the constants above for exactly which combinations trigger this.
+    /// `climbFrom` is the drive's starting altitude, if known; pass nil
+    /// when there's no baseline yet (e.g. checking the very first
+    /// confirming location before a drive has technically started).
+    private func isAircraftSignature(speedKmh: Double, altitude: Double, climbFrom startAltitude: Double?) -> Bool {
+        if speedKmh > impossibleDrivingSpeedKmh { return true }
+        if altitude > aircraftAltitudeMeters && speedKmh > aircraftAltitudeSpeedThresholdKmh { return true }
+        if let startAltitude, altitude - startAltitude > aircraftClimbMeters && speedKmh > aircraftClimbSpeedThresholdKmh {
+            return true
+        }
+        return false
+    }
+
+    /// Discards the in-progress drive entirely once it's been identified as
+    /// a flight — deliberately does NOT save anything or touch the
+    /// leaderboard, as if this "drive" never happened.
+    private func cancelDriveAsAircraft() {
+        isDriving = false
+        currentSpeedKmh = 0
+        movingStoppedTimer?.invalidate()
+        broadcastLiveStatus(isDriving: false)
+        locationBuffer = []
+        liveRouteCoordinates = []
+        driveStartTime = nil
+        startAltitude = nil
+    }
+
     private func driveDidStart() {
         isDriving = true
         driveStartTime = Date()
+        startAltitude = nil
         locationBuffer = []
         liveRouteCoordinates = []
         liveDistanceKm = 0
@@ -211,6 +284,7 @@ class DriveDetectionService: ObservableObject {
     private func driveDidEnd() {
         isDriving = false
         currentSpeedKmh = 0
+        startAltitude = nil
         movingStoppedTimer?.invalidate()
         broadcastLiveStatus(isDriving: false)
         guard let startTime = driveStartTime,
@@ -400,6 +474,7 @@ private struct PendingDrive: Codable {
     let uid: String
     let drive: Drive
 }
+
 
 
 
