@@ -382,3 +382,13 @@
 
 // MARK: - Intro video welcome message
 "intro.welcome" = "مرحبًا بك في فايس تراك";
+
+
+// MARK: - Track search and sort
+"tracks.searchPrompt" = "ابحث عن مضمار أو منشئ";
+"tracks.noSearchResults" = "لا توجد مضامير مطابقة لبحثك.";
+"tracks.sort.newest" = "الأحدث";
+"tracks.sort.shortest" = "الأقصر";
+"tracks.sort.longest" = "الأطول";
+"tracks.sort.bestTime" = "أفضل وقت";
+"tracks.sort.nearest" = "الأقرب";
