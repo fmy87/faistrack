@@ -13,8 +13,15 @@ struct ProPaywallView: View {
                     .foregroundStyle(LinearGradient(colors: [.ftAccent, .ftAccentOrange],
                                                     startPoint: .leading, endPoint: .trailing))
                 VStack(alignment: .leading, spacing: 12) {
-                    ProFeatureRow(icon: "car.2.fill", text: NSLocalizedString("pro.feature.garage", comment: ""))
-                    ProFeatureRow(icon: "shield.fill", text: NSLocalizedString("pro.feature.score", comment: ""))
+                    // Previously listed "unlimited garage" and "safety
+                    // score" — neither of which is actually enforced
+                    // anywhere in the app. Listing features in a paywall
+                    // that don't actually do anything is the kind of thing
+                    // that should never ship, subscription or not — this
+                    // now reflects the three things Pro genuinely unlocks.
+                    ProFeatureRow(icon: "flag.checkered", text: NSLocalizedString("pro.feature.tracks", comment: ""))
+                    ProFeatureRow(icon: "list.number", text: NSLocalizedString("pro.feature.leaderboard", comment: ""))
+                    ProFeatureRow(icon: "chart.bar.fill", text: NSLocalizedString("pro.feature.stats", comment: ""))
                 }
                 HStack(spacing: 12) {
                     ForEach(store.products) { product in
@@ -50,3 +57,4 @@ struct ProFeatureRow: View {
         }
     }
 }
+
