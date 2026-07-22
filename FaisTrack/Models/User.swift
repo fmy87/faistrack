@@ -31,6 +31,11 @@ struct FTUser: Identifiable, Codable {
     var units: String = "km"         // "km" or "mi"
     var fcmToken: String?
     var createdAt: Timestamp = Timestamp()
+    /// The friend picked as this user's Rival for head-to-head comparison
+    /// (see RivalCardView) — Optional and added well after this model
+    /// already had real documents, same reasoning as isPrivateProfileRaw
+    /// and referralCode above.
+    var rivalUID: String?
 
     var isMetric: Bool { units == "km" }
 
@@ -39,4 +44,5 @@ struct FTUser: Identifiable, Codable {
         set { isPrivateProfileRaw = newValue }
     }
 }
+
 
