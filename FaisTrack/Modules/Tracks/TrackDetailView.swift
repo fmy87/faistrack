@@ -10,6 +10,18 @@ struct TrackDetailView: View {
         PolylineCodec.decode(track.polylineEncoded)
     }
 
+    /// Results are fetched with a generous limit (see loadLeaderboard) so
+    /// this can find the user's own best attempt even if they're not
+    /// ranked in the visible top of the list.
+    private var myBestResult: TrackResult? {
+        guard let uid = AuthService.shared.currentUser?.uid else { return nil }
+        return results.first { $0.uid == uid } // already sorted ascending by duration
+    }
+
+    private var myMedal: TrackMedal {
+        TrackMedal.evaluate(myBestDuration: myBestResult?.duration, trackBestDuration: track.bestTime)
+    }
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
@@ -28,6 +40,10 @@ struct TrackDetailView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 recordHolderCard
+
+                if myMedal != .none {
+                    myMedalCard
+                }
 
                 FTCard {
                     HStack {
@@ -55,7 +71,7 @@ struct TrackDetailView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         Text(NSLocalizedString("tracks.leaderboard", comment: ""))
                             .font(.system(size: 16, weight: .bold))
-                        ForEach(Array(results.enumerated()), id: \.1.id) { index, result in
+                        ForEach(Array(results.prefix(20).enumerated()), id: \.1.id) { index, result in
                             HStack {
                                 Text("#\(index + 1)").font(.system(size: 14, weight: .bold))
                                     .foregroundColor(index == 0 ? .ftAccent : .ftTextSecondary)
@@ -133,10 +149,35 @@ struct TrackDetailView: View {
         }
     }
 
+    /// Shown only once the user has actually attempted this track — no
+    /// medal card at all before that, rather than showing a "locked" state,
+    /// since there's nothing to chase yet without a first attempt.
+    private var myMedalCard: some View {
+        HStack(spacing: 14) {
+            Text(myMedal.icon).font(.system(size: 32))
+            VStack(alignment: .leading, spacing: 2) {
+                Text(myMedal.label).font(.system(size: 15, weight: .bold)).foregroundColor(myMedal.color)
+                if let mine = myBestResult?.duration {
+                    Text(String(format: "%.2fs", mine)).font(.system(size: 13)).foregroundColor(.ftTextSecondary)
+                }
+            }
+            Spacer()
+        }
+        .padding(14)
+        .background(Color.ftCard)
+        .cornerRadius(16)
+    }
+
     private func loadLeaderboard() async {
         guard let id = track.id else { return }
-        results = (try? await FirebaseService.shared.getTrackLeaderboard(trackId: id)) ?? []
+        // A generous limit here (not the small number actually displayed)
+        // is what lets myBestResult find the user's own attempt even if
+        // they're not ranked near the top — filtering client-side avoids
+        // needing a second query (and the composite index that would
+        // require) just to look up one person's own result.
+        results = (try? await FirebaseService.shared.getTrackLeaderboard(trackId: id, limit: 500)) ?? []
     }
 }
+
 
 
