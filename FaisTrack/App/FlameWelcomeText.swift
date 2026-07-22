@@ -1,10 +1,11 @@
 import SwiftUI
 
-/// A premium, animated "flame text" treatment for the intro's welcome
-/// message — each letter ignites into place individually rather than the
-/// whole word just appearing, the flame-colored fill actually shifts over
-/// time (not a static print), and it sits inside an ambient glow halo with
-/// a denser, more varied field of embers than a plain caption would have.
+/// "Welcome to FaisTrack" styled like text on fire — bigger and more
+/// dramatic than a plain caption: a flame-colored gradient fill that
+/// actually shifts over time, a periodic white shine sweep across the
+/// letters, a layered flickering glow, and embers rising behind it. Each
+/// letter ignites into place individually rather than the whole phrase
+/// just appearing.
 struct FlameWelcomeText: View {
     let text: String
     @State private var hasIgnited = false
@@ -19,33 +20,43 @@ struct FlameWelcomeText: View {
             let flicker = 0.6 + 0.4 * (sin(time * 5.3) * 0.6 + sin(time * 9.1) * 0.4)
             // A very slight "breathing" scale keeps the whole word feeling
             // alive even once every letter has finished igniting.
-            let breathe = 1.0 + 0.018 * sin(time * 2.4)
+            let breathe = 1.0 + 0.02 * sin(time * 2.4)
+            // A bright highlight sweeps left-to-right across the word every
+            // few seconds — a classic premium-brand wordmark treatment,
+            // distinct from the flame flicker itself.
+            let shinePhase = (time / 3.2).truncatingRemainder(dividingBy: 1.0)
 
             ZStack {
-                // Soft ambient glow behind the whole word — distinct from
-                // the per-letter shadow and the embers, giving the effect
-                // some depth rather than one flat glow source.
                 Circle()
                     .fill(RadialGradient(
-                        colors: [Color.orange.opacity(0.35 * flicker), .clear],
-                        center: .center, startRadius: 4, endRadius: 130
+                        colors: [Color.orange.opacity(0.4 * flicker), .clear],
+                        center: .center, startRadius: 4, endRadius: 170
                     ))
-                    .frame(width: 260, height: 260)
-                    .blur(radius: 10)
+                    .frame(width: 340, height: 340)
+                    .blur(radius: 14)
 
                 EmberParticlesView()
-                    .frame(height: 120)
+                    .frame(height: 150)
 
-                HStack(spacing: 0) {
+                HStack(spacing: 1) {
                     ForEach(Array(letters.enumerated()), id: \.offset) { index, letter in
                         Text(String(letter))
-                            // .rounded design + a slight italic slant reads
-                            // as far more "branded racing" than the plain
-                            // system sans-serif this replaced.
-                            .font(.system(size: 32, weight: .black, design: .rounded))
+                            .font(.system(size: 46, weight: .black, design: .rounded))
                             .italic()
                             .kerning(0.5)
                             .foregroundStyle(flameGradient(time: time, letterIndex: index))
+                            .overlay(
+                                // The shine sweep — a narrow bright band that
+                                // crosses the word, masked to only ever show
+                                // through the letter shapes themselves.
+                                shineOverlay(letterIndex: index, totalLetters: letters.count, shinePhase: shinePhase)
+                                    .mask(
+                                        Text(String(letter))
+                                            .font(.system(size: 46, weight: .black, design: .rounded))
+                                            .italic()
+                                            .kerning(0.5)
+                                    )
+                            )
                             .scaleEffect(hasIgnited ? breathe : 0.2)
                             .opacity(hasIgnited ? 1 : 0)
                             .animation(
@@ -55,13 +66,24 @@ struct FlameWelcomeText: View {
                             )
                     }
                 }
-                .shadow(color: Color.yellow.opacity(flicker * 0.5), radius: 6)
-                .shadow(color: Color.orange.opacity(flicker), radius: 14)
-                .shadow(color: Color.red.opacity(flicker * 0.7), radius: 30)
+                .shadow(color: Color.yellow.opacity(flicker * 0.6), radius: 8)
+                .shadow(color: Color.orange.opacity(flicker), radius: 18)
+                .shadow(color: Color.red.opacity(flicker * 0.8), radius: 36)
+                .shadow(color: Color.red.opacity(flicker * 0.4), radius: 60)
             }
         }
         .onAppear { hasIgnited = true }
         .accessibilityLabel(text)
+    }
+
+    private func shineOverlay(letterIndex: Int, totalLetters: Int, shinePhase: Double) -> some View {
+        // The sweep travels the width of the whole word; each letter's
+        // brightness depends on how close the current sweep position is to
+        // that letter's position in the word.
+        let letterPosition = Double(letterIndex) / Double(max(totalLetters - 1, 1))
+        let distance = abs(shinePhase - letterPosition)
+        let intensity = max(0, 1 - distance * 6)
+        return Color.white.opacity(intensity * 0.85)
     }
 
     /// A gradient whose stops drift slightly over time and per-letter, so
@@ -87,7 +109,7 @@ struct FlameWelcomeText: View {
 /// length, horizontal drift, and size so the field doesn't read as a
 /// repeating pattern.
 private struct EmberParticlesView: View {
-    private let particleCount = 28
+    private let particleCount = 34
 
     var body: some View {
         TimelineView(.animation) { timeline in
@@ -97,14 +119,14 @@ private struct EmberParticlesView: View {
                     let seed = Double(i) / Double(particleCount)
                     let cycle = 2.0 + seed * 1.8
                     let progress = (time / cycle + seed).truncatingRemainder(dividingBy: 1.0)
-                    let drift = sin(seed * 17) * 14 // per-particle horizontal drift direction/amount
-                    let x = size.width * (0.06 + seed * 0.88)
-                        + CGFloat(sin(progress * .pi * 3 + seed * 10)) * 8
+                    let drift = sin(seed * 17) * 16 // per-particle horizontal drift direction/amount
+                    let x = size.width * (0.04 + seed * 0.92)
+                        + CGFloat(sin(progress * .pi * 3 + seed * 10)) * 9
                         + CGFloat(drift) * CGFloat(progress)
                     let y = size.height * (1 - progress)
                     let fade = sin(progress * .pi) // fades in, peaks, fades out
                     guard fade > 0.02 else { continue }
-                    let radius: CGFloat = 1.5 + CGFloat(seed) * 3.5
+                    let radius: CGFloat = 1.5 + CGFloat(seed) * 4
                     let colorPick = i % 3
                     let color: Color = colorPick == 0 ? .yellow : (colorPick == 1 ? .orange : .speedRed)
                     context.opacity = fade * 0.85
