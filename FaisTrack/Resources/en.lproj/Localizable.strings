@@ -402,3 +402,46 @@
 "createTrack.limitReached.subtitle" = "Free accounts can create up to %d tracks. Upgrade to Pro for unlimited tracks.";
 "leaderboard.fullListLocked" = "See where everyone ranks, not just the top 3 — unlock the full leaderboard with Pro.";
 "stats.unlockAll" = "Unlock All Stats";
+
+
+// MARK: - Rival system
+"rival.title" = "RIVAL";
+"rival.distance" = "Total Distance";
+"rival.topSpeed" = "Top Speed";
+"rival.trackRecords" = "Track Records";
+
+// MARK: - Achievements
+"achievements.title" = "Achievements";
+"achievements.firstDrive" = "First Drive";
+"achievements.firstDrive.desc" = "Complete your first drive";
+"achievements.club100" = "100km Club";
+"achievements.club100.desc" = "Drive 100km total";
+"achievements.club500" = "500km Club";
+"achievements.club500.desc" = "Drive 500km total";
+"achievements.nightOwl" = "Night Owl";
+"achievements.nightOwl.desc" = "Complete 10 night drives";
+"achievements.trackMaster" = "Track Master";
+"achievements.trackMaster.desc" = "Create 5 tracks";
+"achievements.speedDemon" = "Speed Demon";
+"achievements.speedDemon.desc" = "Hit 200 km/h";
+"achievements.centurion" = "Centurion";
+"achievements.centurion.desc" = "Complete 100 drives";
+"achievements.recordHolder" = "Record Holder";
+"achievements.recordHolder.desc" = "Hold the record on a track";
+"achievements.onFire" = "On Fire";
+"achievements.onFire.desc" = "Drive 7 days in a row";
+"achievements.socialButterfly" = "Social Butterfly";
+"achievements.socialButterfly.desc" = "Add 5 friends";
+
+// MARK: - Track medals
+"trackMedal.gold" = "Gold — You hold the record!";
+"trackMedal.silver" = "Silver — Within 10% of the record";
+"trackMedal.bronze" = "Bronze — You've completed this track";
+"trackMedal.none" = "";
+
+// MARK: - Driver rank
+"rank.rookie" = "Rookie";
+"rank.streetRacer" = "Street Racer";
+"rank.pro" = "Pro Driver";
+"rank.veteran" = "Veteran";
+"rank.legend" = "Legend";
