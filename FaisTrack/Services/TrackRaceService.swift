@@ -27,6 +27,17 @@ class TrackRaceService: NSObject, ObservableObject {
 
     @Published var state: RaceState = .idle
     @Published var distanceToStart: Double = 0
+    /// The current record holder's telemetry for this track, decoded once
+    /// when the race begins — nil/empty if nobody's set a record yet (or
+    /// it was set before telemetry capture existed). Both live delta and
+    /// the ghost marker read from this.
+    @Published private(set) var ghostTelemetry: [TelemetryPoint] = []
+    /// Positive = behind the ghost's pace at this point in the run,
+    /// negative = ahead. Nil when there's no ghost to compare against.
+    @Published private(set) var liveDeltaSeconds: Double?
+    /// Where the ghost currently is on the map, interpolated from
+    /// ghostTelemetry at the current elapsed time — nil with no ghost data.
+    @Published private(set) var ghostPosition: CLLocationCoordinate2D?
 
     private var track: Track?
     private var raceStartDate: Date?
@@ -34,6 +45,18 @@ class TrackRaceService: NSObject, ObservableObject {
     private var raceTimer: Timer?
     private var locationCancellable: AnyCancellable?
     private var topSpeedKmh: Double = 0
+    /// Cumulative distance actually traveled since the race started —
+    /// distinct from distanceToFinish (which shrinks toward the finish
+    /// line); this only ever grows, and is what live delta timing indexes
+    /// against in the ghost's telemetry.
+    private var distanceCoveredMeters: Double = 0
+    private var lastSampleLocation: CLLocation?
+    private var telemetrySamples: [TelemetryPoint] = []
+    private var lastTelemetrySampleTime: Date?
+    /// Sampling this often is frequent enough for smooth ghost movement
+    /// and accurate delta timing without storing an excessive number of
+    /// points for a run that might last a couple of minutes.
+    private let telemetrySampleInterval: TimeInterval = 1.5
 
     /// How close (meters) the user must be to trigger arrival/finish detection.
     /// GPS accuracy in cities is typically 5-15m, so this gives reasonable
@@ -46,6 +69,7 @@ class TrackRaceService: NSObject, ObservableObject {
 
     func beginApproaching(track: Track) {
         self.track = track
+        ghostTelemetry = TelemetryCodec.decode(track.bestTimeTelemetry)
         state = .navigatingToStart
         LocationService.shared.startUpdating()
         locationCancellable = LocationService.shared.$currentLocation
@@ -71,6 +95,30 @@ class TrackRaceService: NSObject, ObservableObject {
             let finishLocation = CLLocation(latitude: track.endCoordinate.latitude, longitude: track.endCoordinate.longitude)
             let distanceToFinish = location.distance(from: finishLocation)
             topSpeedKmh = max(topSpeedKmh, max(0, location.speed * 3.6))
+
+            if let last = lastSampleLocation {
+                distanceCoveredMeters += location.distance(from: last)
+            }
+            lastSampleLocation = location
+
+            if !ghostTelemetry.isEmpty {
+                if let ghostElapsed = TelemetryCodec.elapsedTime(atDistance: distanceCoveredMeters, in: ghostTelemetry) {
+                    // Positive means the ghost reached this same distance
+                    // faster than we did — i.e. we're behind.
+                    liveDeltaSeconds = elapsed - ghostElapsed
+                }
+                ghostPosition = TelemetryCodec.position(atElapsed: elapsed, in: ghostTelemetry)
+            }
+
+            if lastTelemetrySampleTime == nil || Date().timeIntervalSince(lastTelemetrySampleTime!) >= telemetrySampleInterval {
+                lastTelemetrySampleTime = Date()
+                telemetrySamples.append(TelemetryPoint(
+                    d: distanceCoveredMeters, t: elapsed,
+                    lat: location.coordinate.latitude, lng: location.coordinate.longitude,
+                    s: max(0, location.speed * 3.6)
+                ))
+            }
+
             state = .racing(elapsed: elapsed, distanceToFinish: distanceToFinish)
             if distanceToFinish <= proximityRadiusMeters {
                 finishRace()
@@ -101,6 +149,12 @@ class TrackRaceService: NSObject, ObservableObject {
     private func startRace() {
         raceStartDate = Date()
         topSpeedKmh = 0
+        distanceCoveredMeters = 0
+        lastSampleLocation = nil
+        telemetrySamples = []
+        lastTelemetrySampleTime = nil
+        liveDeltaSeconds = nil
+        ghostPosition = ghostTelemetry.first.map { CLLocationCoordinate2D(latitude: $0.lat, longitude: $0.lng) }
         state = .racing(elapsed: 0, distanceToFinish: distanceToStart)
         raceTimer?.invalidate()
         raceTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
@@ -125,7 +179,7 @@ class TrackRaceService: NSObject, ObservableObject {
             let carName = await Self.resolveActiveCarName(uid: uid)
             let result = TrackResult(trackId: track.id ?? "", uid: uid, username: username, duration: duration,
                                       topSpeed: topSpeedKmh, carName: carName)
-            try? await FirebaseService.shared.saveTrackResult(result)
+            try? await FirebaseService.shared.saveTrackResult(result, telemetry: telemetrySamples)
         }
     }
 
@@ -148,7 +202,15 @@ class TrackRaceService: NSObject, ObservableObject {
         track = nil
         raceStartDate = nil
         distanceToStart = 0
+        ghostTelemetry = []
+        liveDeltaSeconds = nil
+        ghostPosition = nil
+        distanceCoveredMeters = 0
+        lastSampleLocation = nil
+        telemetrySamples = []
+        lastTelemetrySampleTime = nil
     }
 }
+
 
 
