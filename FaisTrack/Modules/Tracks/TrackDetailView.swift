@@ -6,8 +6,25 @@ struct TrackDetailView: View {
     @State private var results: [TrackResult] = []
     @State private var showShareCard = false
 
+    /// The record holder's telemetry decoded once — powers the speed
+    /// heatmap below. Empty for tracks where nobody's set a record with
+    /// telemetry yet (e.g. tracks created before this existed).
+    private var telemetry: [TelemetryPoint] {
+        TelemetryCodec.decode(track.bestTimeTelemetry)
+    }
+
+    /// Falls back to the plain route (from polylineEncoded) when there's
+    /// no telemetry to color by speed — every track still shows *a* map,
+    /// just without the heatmap treatment.
     private var routeCoordinates: [CLLocationCoordinate2D] {
-        PolylineCodec.decode(track.polylineEncoded)
+        if !telemetry.isEmpty {
+            return telemetry.map { CLLocationCoordinate2D(latitude: $0.lat, longitude: $0.lng) }
+        }
+        return PolylineCodec.decode(track.polylineEncoded)
+    }
+
+    private var speedSegmentsKmh: [Double]? {
+        telemetry.isEmpty ? nil : telemetry.map(\.s)
     }
 
     /// Results are fetched with a generous limit (see loadLeaderboard) so
@@ -22,11 +39,21 @@ struct TrackDetailView: View {
         TrackMedal.evaluate(myBestDuration: myBestResult?.duration, trackBestDuration: track.bestTime)
     }
 
+    /// Held for 30+ consecutive days — Strava-KOM style recognition for
+    /// the current record holder. False for anyone else, or if the record
+    /// is too recent, or if recordSetAt is missing (records set before
+    /// this field existed).
+    private var isTrackLegend: Bool {
+        guard let uid = AuthService.shared.currentUser?.uid, track.bestTimeUid == uid,
+              let recordSetAt = track.recordSetAt else { return false }
+        return Date().timeIntervalSince(recordSetAt.dateValue()) >= 30 * 24 * 60 * 60
+    }
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 if routeCoordinates.count > 1 {
-                    RouteMapView(coordinates: routeCoordinates)
+                    RouteMapView(coordinates: routeCoordinates, speedSegmentsKmh: speedSegmentsKmh)
                         .frame(height: 220)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
@@ -40,6 +67,10 @@ struct TrackDetailView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 recordHolderCard
+
+                if isTrackLegend {
+                    trackLegendCard
+                }
 
                 if myMedal != .none {
                     myMedalCard
@@ -149,6 +180,26 @@ struct TrackDetailView: View {
         }
     }
 
+    /// Only ever shown to the record holder themselves, once they've held
+    /// it a full 30 days — a small nod to Strava's "Local Legend," giving
+    /// long-held records their own recognition beyond just being #1 today.
+    private var trackLegendCard: some View {
+        HStack(spacing: 14) {
+            Text("🏛️").font(.system(size: 32))
+            VStack(alignment: .leading, spacing: 2) {
+                Text(NSLocalizedString("trackLegend.title", comment: ""))
+                    .font(.system(size: 15, weight: .bold)).foregroundColor(.yellow)
+                Text(NSLocalizedString("trackLegend.subtitle", comment: ""))
+                    .font(.system(size: 12)).foregroundColor(.ftTextSecondary)
+            }
+            Spacer()
+        }
+        .padding(14)
+        .background(Color.yellow.opacity(0.12))
+        .cornerRadius(16)
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.yellow.opacity(0.4), lineWidth: 1))
+    }
+
     /// Shown only once the user has actually attempted this track — no
     /// medal card at all before that, rather than showing a "locked" state,
     /// since there's nothing to chase yet without a first attempt.
@@ -178,6 +229,7 @@ struct TrackDetailView: View {
         results = (try? await FirebaseService.shared.getTrackLeaderboard(trackId: id, limit: 500)) ?? []
     }
 }
+
 
 
 
