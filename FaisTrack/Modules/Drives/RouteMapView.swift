@@ -18,6 +18,13 @@ struct FriendMapPin: Identifiable {
 struct RouteMapView: UIViewRepresentable {
     let coordinates: [CLLocationCoordinate2D]
     var friendPins: [FriendMapPin] = []
+    /// When provided (same count/order as `coordinates`), renders the route
+    /// as a series of short color-coded segments (green = slow, red = fast)
+    /// instead of one solid color — the speed heatmap used on
+    /// TrackDetailView. Every other call site (drives, friend live map)
+    /// leaves this nil and keeps the plain single-color route exactly as
+    /// it was.
+    var speedSegmentsKmh: [Double]? = nil
 
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
@@ -35,8 +42,16 @@ struct RouteMapView: UIViewRepresentable {
         var boundingPoints: [MKMapPoint] = []
 
         if coordinates.count > 1 {
-            let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
-            mapView.addOverlay(polyline)
+            if let speeds = speedSegmentsKmh, speeds.count == coordinates.count {
+                for i in 1..<coordinates.count {
+                    let segment = SpeedSegmentPolyline(coordinates: [coordinates[i - 1], coordinates[i]], count: 2)
+                    segment.color = UIColor(SpeedGaugeView.colorForSpeed((speeds[i - 1] + speeds[i]) / 2))
+                    mapView.addOverlay(segment)
+                }
+            } else {
+                let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
+                mapView.addOverlay(polyline)
+            }
             boundingPoints.append(contentsOf: coordinates.map { MKMapPoint($0) })
 
             if let start = coordinates.first {
@@ -74,6 +89,13 @@ struct RouteMapView: UIViewRepresentable {
         Coordinator()
     }
 
+    /// Carries its own color so the renderer can paint each short segment
+    /// differently — a plain MKPolyline has no room for per-overlay data,
+    /// which is why the heatmap needs many small polylines instead of one.
+    private final class SpeedSegmentPolyline: MKPolyline {
+        var color: UIColor = .white
+    }
+
     private class LabeledAnnotation: MKPointAnnotation {
         enum Kind { case start, end, friend }
         var kind: Kind = .start
@@ -85,8 +107,13 @@ struct RouteMapView: UIViewRepresentable {
                 return MKOverlayRenderer(overlay: overlay)
             }
             let renderer = MKPolylineRenderer(polyline: polyline)
-            renderer.strokeColor = UIColor(red: 1.0, green: 0.176, blue: 0.176, alpha: 1.0) // matches AccentRed #FF2D2D
-            renderer.lineWidth = 4
+            if let segment = overlay as? SpeedSegmentPolyline {
+                renderer.strokeColor = segment.color
+                renderer.lineWidth = 5
+            } else {
+                renderer.strokeColor = UIColor(red: 1.0, green: 0.176, blue: 0.176, alpha: 1.0) // matches AccentRed #FF2D2D
+                renderer.lineWidth = 4
+            }
             renderer.lineCap = .round
             renderer.lineJoin = .round
             return renderer
@@ -112,3 +139,4 @@ struct RouteMapView: UIViewRepresentable {
         }
     }
 }
+
