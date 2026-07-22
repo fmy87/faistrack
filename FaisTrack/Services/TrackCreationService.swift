@@ -48,12 +48,21 @@ class TrackCreationService: NSObject, ObservableObject {
     /// itself is instantaneous and gets reset when recording ends, so this
     /// is the only place the actual top speed for the run is captured.
     private var topSpeedKmh: Double = 0
+    /// The creator's own run becomes the track's first record by
+    /// definition, so it needs the same telemetry sampling TrackRaceService
+    /// does — this is what seeds the very first ghost/heatmap/delta data
+    /// for a brand new track, before anyone else has ever attempted it.
+    private var telemetrySamples: [TelemetryPoint] = []
+    private var lastTelemetrySampleTime: Date?
+    private let telemetrySampleInterval: TimeInterval = 1.5
 
     func beginCountdown() {
         coordinates = []
         routeCoordinates = []
         currentSpeedKmh = 0
         topSpeedKmh = 0
+        telemetrySamples = []
+        lastTelemetrySampleTime = nil
         errorMessage = nil
         var remaining = countdownSeconds
         state = .countingDown(remaining)
@@ -96,6 +105,16 @@ class TrackCreationService: NSObject, ObservableObject {
         routeCoordinates = coordinates
         currentSpeedKmh = max(0, location.speed * 3.6)
         topSpeedKmh = max(topSpeedKmh, currentSpeedKmh)
+
+        if lastTelemetrySampleTime == nil || Date().timeIntervalSince(lastTelemetrySampleTime!) >= telemetrySampleInterval {
+            lastTelemetrySampleTime = Date()
+            telemetrySamples.append(TelemetryPoint(
+                d: distance, t: elapsed,
+                lat: location.coordinate.latitude, lng: location.coordinate.longitude,
+                s: currentSpeedKmh
+            ))
+        }
+
         state = .recording(elapsed: elapsed, distance: distance)
     }
 
@@ -173,7 +192,7 @@ class TrackCreationService: NSObject, ObservableObject {
             let carName = await TrackRaceService.resolveActiveCarName(uid: uid)
             let result = TrackResult(trackId: trackId, uid: uid, username: username, duration: duration,
                                       topSpeed: topSpeedKmh, carName: carName)
-            try await FirebaseService.shared.saveTrackResult(result)
+            try await FirebaseService.shared.saveTrackResult(result, telemetry: telemetrySamples)
             reset()
             return true
         } catch {
@@ -187,6 +206,8 @@ class TrackCreationService: NSObject, ObservableObject {
         recordingTimer?.invalidate()
         locationCancellable?.cancel()
         coordinates = []
+        telemetrySamples = []
+        lastTelemetrySampleTime = nil
         recordingStartDate = nil
         state = .idle
     }
