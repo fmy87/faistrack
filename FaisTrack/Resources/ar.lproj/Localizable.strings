@@ -402,3 +402,46 @@
 "createTrack.limitReached.subtitle" = "يمكن للحسابات المجانية إنشاء ما يصل إلى %d مضامير. قم بالترقية إلى Pro لإنشاء مضامير غير محدودة.";
 "leaderboard.fullListLocked" = "شاهد ترتيب الجميع، وليس فقط أفضل 3 — افتح لوحة المتصدرين الكاملة مع Pro.";
 "stats.unlockAll" = "فتح جميع الإحصاءات";
+
+
+// MARK: - Rival system
+"rival.title" = "المنافس";
+"rival.distance" = "المسافة الإجمالية";
+"rival.topSpeed" = "أعلى سرعة";
+"rival.trackRecords" = "أرقام المضامير القياسية";
+
+// MARK: - Achievements
+"achievements.title" = "الإنجازات";
+"achievements.firstDrive" = "أول رحلة";
+"achievements.firstDrive.desc" = "أكمل رحلتك الأولى";
+"achievements.club100" = "نادي 100 كم";
+"achievements.club100.desc" = "قد 100 كم إجماليًا";
+"achievements.club500" = "نادي 500 كم";
+"achievements.club500.desc" = "قد 500 كم إجماليًا";
+"achievements.nightOwl" = "بومة الليل";
+"achievements.nightOwl.desc" = "أكمل 10 رحلات ليلية";
+"achievements.trackMaster" = "سيد المضامير";
+"achievements.trackMaster.desc" = "أنشئ 5 مضامير";
+"achievements.speedDemon" = "شيطان السرعة";
+"achievements.speedDemon.desc" = "حقق 200 كم/س";
+"achievements.centurion" = "المئوي";
+"achievements.centurion.desc" = "أكمل 100 رحلة";
+"achievements.recordHolder" = "صاحب الرقم القياسي";
+"achievements.recordHolder.desc" = "احتفظ بالرقم القياسي في مضمار";
+"achievements.onFire" = "مشتعل";
+"achievements.onFire.desc" = "قد لمدة 7 أيام متتالية";
+"achievements.socialButterfly" = "فراشة اجتماعية";
+"achievements.socialButterfly.desc" = "أضف 5 أصدقاء";
+
+// MARK: - Track medals
+"trackMedal.gold" = "ذهبي — أنت صاحب الرقم القياسي!";
+"trackMedal.silver" = "فضي — ضمن 10% من الرقم القياسي";
+"trackMedal.bronze" = "برونزي — أكملت هذا المضمار";
+"trackMedal.none" = "";
+
+// MARK: - Driver rank
+"rank.rookie" = "مبتدئ";
+"rank.streetRacer" = "متسابق الشوارع";
+"rank.pro" = "سائق محترف";
+"rank.veteran" = "خبير";
+"rank.legend" = "أسطورة";
