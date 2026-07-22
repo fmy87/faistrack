@@ -37,8 +37,13 @@ struct FriendsView: View {
                         if !viewModel.friends.isEmpty {
                             Section(NSLocalizedString("friends.myFriends", comment: "")) {
                                 ForEach(viewModel.friends) { friend in
-                                    FriendRow(friend: friend, isDriving: viewModel.liveStatuses[friend.uid] == true)
-                                        .listRowBackground(Color.ftCard)
+                                    FriendRow(
+                                        friend: friend,
+                                        isDriving: viewModel.liveStatuses[friend.uid] == true,
+                                        isRival: viewModel.rivalUID == friend.uid,
+                                        onToggleRival: { Task { await viewModel.toggleRival(friend) } }
+                                    )
+                                    .listRowBackground(Color.ftCard)
                                 }
                                 .onDelete { offsets in
                                     Task { await viewModel.removeFriends(at: offsets) }
@@ -72,6 +77,8 @@ struct FriendsView: View {
 private struct FriendRow: View {
     let friend: Friend
     let isDriving: Bool
+    var isRival: Bool = false
+    var onToggleRival: (() -> Void)? = nil
     var body: some View {
         HStack {
             ZStack(alignment: .bottomTrailing) {
@@ -92,6 +99,15 @@ private struct FriendRow: View {
                 }
             }
             Spacer()
+            // Tapping sets this friend as Rival, or clears it if they
+            // already are one — only one rival at a time, so setting a new
+            // one implicitly replaces whichever friend held it before.
+            Button(action: { onToggleRival?() }) {
+                Image(systemName: isRival ? "flag.2.crossed.fill" : "flag.2.crossed")
+                    .font(.system(size: 16))
+                    .foregroundColor(isRival ? .ftAccentOrange : .ftTextSecondary.opacity(0.5))
+            }
+            .buttonStyle(.plain)
         }.padding(.vertical, 4)
     }
 }
@@ -122,6 +138,7 @@ class FriendsViewModel: ObservableObject {
     @Published var requests: [FriendRequest] = []
     @Published var liveStatuses: [String: Bool] = [:]
     @Published var isLoading = true
+    @Published var rivalUID: String?
 
     private var pollTask: Task<Void, Never>?
 
@@ -129,9 +146,27 @@ class FriendsViewModel: ObservableObject {
         guard let uid = AuthService.shared.currentUser?.uid else { isLoading = false; return }
         async let f = FirebaseService.shared.getFriends(uid: uid)
         async let r = FirebaseService.shared.getFriendRequests(uid: uid)
+        async let me = FirebaseService.shared.getUser(uid: uid)
         friends = (try? await f) ?? []
         requests = (try? await r) ?? []
+        rivalUID = (try? await me)?.rivalUID
         isLoading = false
+    }
+
+    /// Sets this friend as Rival, or clears the rival if they already were
+    /// one. Optimistic update with rollback, same pattern as accept/decline
+    /// above — the UI reflects the change immediately rather than waiting
+    /// on the network round trip.
+    func toggleRival(_ friend: Friend) async {
+        guard let uid = AuthService.shared.currentUser?.uid else { return }
+        let previous = rivalUID
+        let newRival = (rivalUID == friend.uid) ? nil : friend.uid
+        rivalUID = newRival
+        do {
+            try await FirebaseService.shared.setRival(uid: uid, rivalUID: newRival)
+        } catch {
+            rivalUID = previous
+        }
     }
 
     /// There's no persistent Firestore listener infrastructure elsewhere in
@@ -188,4 +223,5 @@ class FriendsViewModel: ObservableObject {
         }
     }
 }
+
 
