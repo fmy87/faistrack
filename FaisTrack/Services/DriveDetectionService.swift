@@ -83,6 +83,13 @@ class DriveDetectionService: ObservableObject {
     // (or similar, e.g. a high-speed train) rather than a drive, and the
     // in-progress "drive" is discarded entirely rather than saved.
     private let impossibleDrivingSpeedKmh: Double = 350
+    // A single GPS reading spiking above the cap is a known, ordinary
+    // artifact (signal loss in a tunnel/under a bridge, multipath near
+    // tall buildings) — not proof of a flight. Requiring it to happen on
+    // two readings in a row before canceling means a lone glitch can't
+    // wipe out an otherwise-real, in-progress drive.
+    private var consecutiveImpossibleSpeedReadings = 0
+    private let requiredConsecutiveImpossibleReadings = 2
 
     init() {
         isGhostMode = UserDefaults.standard.bool(forKey: "isGhostMode")
@@ -164,7 +171,16 @@ class DriveDetectionService: ObservableObject {
 
         guard isDriving else { return }
 
-        if max(0, location.speed * 3.6) > impossibleDrivingSpeedKmh {
+        let currentSpeedKmhReading = max(0, location.speed * 3.6)
+        if currentSpeedKmhReading > impossibleDrivingSpeedKmh {
+            consecutiveImpossibleSpeedReadings += 1
+            guard consecutiveImpossibleSpeedReadings >= requiredConsecutiveImpossibleReadings else {
+                // Only one bad reading so far — could easily be a GPS
+                // glitch rather than a real flight. Wait for confirmation
+                // on the next update instead of discarding a real drive
+                // over a momentary spike.
+                return
+            }
             // This looked like a real drive at first (e.g. taxiing, or the
             // takeoff roll before liftoff), but has now clearly become a
             // flight — discard it entirely rather than saving a "drive"
@@ -172,6 +188,7 @@ class DriveDetectionService: ObservableObject {
             cancelDriveAsAircraft()
             return
         }
+        consecutiveImpossibleSpeedReadings = 0
 
         if let last = locationBuffer.last {
             liveDistanceKm += location.distance(from: last) / 1000
@@ -214,6 +231,7 @@ class DriveDetectionService: ObservableObject {
     private func driveDidStart() {
         isDriving = true
         driveStartTime = Date()
+        consecutiveImpossibleSpeedReadings = 0
         locationBuffer = []
         liveRouteCoordinates = []
         liveDistanceKm = 0
@@ -436,6 +454,7 @@ private struct PendingDrive: Codable {
     let uid: String
     let drive: Drive
 }
+
 
 
 
