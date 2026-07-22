@@ -23,6 +23,20 @@ struct ProfileView: View {
                             Text("@\(username)")
                                 .foregroundColor(.ftTextSecondary)
                         }
+                        HStack(spacing: 6) {
+                            Text(viewModel.driverRank.icon)
+                            Text(viewModel.driverRank.title)
+                                .font(.system(size: 13, weight: .bold))
+                                .foregroundColor(.ftAccentOrange)
+                        }
+                        .padding(.horizontal, 12).padding(.vertical, 5)
+                        .background(Color.ftAccentOrange.opacity(0.15))
+                        .cornerRadius(12)
+                        if viewModel.driverRank != .legend {
+                            ProgressView(value: viewModel.rankProgress)
+                                .tint(.ftAccentOrange)
+                                .frame(width: 140)
+                        }
                     }
 
                     FTCard {
@@ -208,6 +222,10 @@ class ProfileViewModel: ObservableObject {
     @Published var user: FTUser?
     @Published var isPrivateProfile: Bool = false
     @Published var errorMessage: String?
+    @Published var driverXP: Double = 0
+
+    var driverRank: DriverRank { DriverRank.forXP(driverXP) }
+    var rankProgress: Double { DriverRank.progress(for: driverXP) }
 
     @Published var usernameInput: String = ""
     @Published var usernameAvailable: Bool?
@@ -249,6 +267,23 @@ class ProfileViewModel: ObservableObject {
         } catch {
             errorMessage = error.localizedDescription
         }
+        await loadDriverRank(uid: uid)
+    }
+
+    /// Reuses the same all-time aggregate document the Rival card reads
+    /// (distance + drive count already sit there, maintained by
+    /// LeaderboardService) rather than re-fetching and re-summing every
+    /// raw Drive just to compute XP.
+    private func loadDriverRank(uid: String) async {
+        async let totals = FirebaseService.shared.getAllTimeTotals(uid: uid)
+        async let tracksCreated = FirebaseService.shared.getTrackCount(ownerUID: uid)
+        let myTotals = (try? await totals) ?? RivalTotals(distanceKm: 0, drives: 0, hours: 0, topSpeedKmh: 0, longestKm: 0)
+        let myTracksCreated = (try? await tracksCreated) ?? 0
+        driverXP = DriverRank.computeXP(
+            totalDistanceKm: myTotals.distanceKm,
+            totalDrives: myTotals.drives,
+            tracksCreated: myTracksCreated
+        )
     }
 
     /// Debounced, same pattern as friend search — waits for typing to
@@ -323,6 +358,7 @@ class ProfileViewModel: ObservableObject {
         }
     }
 }
+
 
 
 
