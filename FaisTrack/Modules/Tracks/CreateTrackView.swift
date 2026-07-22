@@ -15,7 +15,7 @@ struct CreateTrackView: View {
     /// admin account are unlimited. Checked before the countdown even
     /// starts, rather than after recording a whole drive, so someone at the
     /// cap isn't asked to drive somewhere first only to be told no at the end.
-    private let freeTrackLimit = 3
+    private let freeTrackLimit = TrackCreationService.freeTrackLimit
     private var isUnlimited: Bool { store.isPro || AdminConfig.isCurrentUserAdmin }
     private var hasReachedFreeLimit: Bool {
         guard !isUnlimited, let ownedTrackCount else { return false }
@@ -238,6 +238,7 @@ struct CreateTrackView: View {
         }
     }
 }
+
 
 
 
