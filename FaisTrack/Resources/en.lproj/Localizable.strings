@@ -445,3 +445,9 @@
 "rank.pro" = "Pro Driver";
 "rank.veteran" = "Veteran";
 "rank.legend" = "Legend";
+
+
+// MARK: - Live delta, ghost racing, Track Legend
+"compete.vsGhost" = "vs. Record Pace";
+"trackLegend.title" = "Track Legend";
+"trackLegend.subtitle" = "You've held this record for 30+ days";
