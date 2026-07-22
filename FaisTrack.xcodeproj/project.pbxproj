@@ -18,6 +18,7 @@
 		244D3361B8BA432B870138D9 /* LeaderboardEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678C2E972160475DA7598576 /* LeaderboardEntry.swift */; };
 		66D38D3553EE40BF9A1FEAE3 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160D9EE901324E59A8C89DF0 /* Friend.swift */; };
 		265EE5D2C5794DDBAB79CD6D /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C56A16F233487CA066F40C /* AuthService.swift */; };
+		4F4B0219D06545ECAA67CC75 /* TelemetryCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9443BF5BC934F71A99F6CC9 /* TelemetryCodec.swift */; };
 		781BAEBCE7214B82983C8D35 /* AdminConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C10A11087E4E3BBF42B884 /* AdminConfig.swift */; };
 		26AB79374F0144D884F5BEAC /* DriveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18CCDB9EE8A43D58B325344 /* DriveDetailView.swift */; };
 		2942245D9C894AA887DB445C /* Car.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BD9D0E781E49EEBB4D8E77 /* Car.swift */; };
@@ -60,6 +61,7 @@
 		74AEDF35235B49D183630DCD /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D44ADE5FA4BF5B85193A6 /* AchievementsView.swift */; };
 		08AD865D05F5486C9D97A5AF /* TrackMedal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A79C81E3EF417B9F0156BE /* TrackMedal.swift */; };
 		AA4A0080540A4149A82572F8 /* DriverRank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B830D61F8F74B9FA92BF458 /* DriverRank.swift */; };
+		507E4C96FDA04F638E7F4645 /* TelemetryPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04907BF937DB4250A0861B49 /* TelemetryPoint.swift */; };
 		9F321FBA8B334B7B9C81CEBB /* AdminTrackMapPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEB60D0B4004503A587410E /* AdminTrackMapPicker.swift */; };
 		01CCF93A015D4229BC663DA8 /* AdminCreateTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FE29F3BA9A4DCFA88E20E1 /* AdminCreateTrackView.swift */; };
 		A1CCE70606074AD8BE3FC738 /* TrackShareCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56BF1D7208A4128B335D332 /* TrackShareCardView.swift */; };
@@ -84,6 +86,7 @@
 		CA72974A8FFF409491DA4BEF /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23F3C66B46D45C89DB80A52 /* AppState.swift */; };
 		D491E18C4CF44518B4BD7CA8 /* BehaviorScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D030EF4CFCA4AD29B09579E /* BehaviorScoreView.swift */; };
 		DA9A45248AA90F3AD72CEA06 /* CompeteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EC40558ECB28745AFDA98F /* CompeteView.swift */; };
+		E1394458C5204D02B61E9BCE /* RaceMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAFA20554A04F0C87D99692 /* RaceMapView.swift */; };
 		DC004B8896319E7E1AFC372F /* TracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9994164A22A2BBB9852771E /* TracksView.swift */; };
 		DF8849778F7039C35F93B59A /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05496C97F077B4C7CDD701 /* ProfileView.swift */; };
 		1EA87B11F5A1492DA61F25C5 /* MoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029FD0E8C01545F1947F4FC5 /* MoreView.swift */; };
@@ -110,6 +113,7 @@
 		2E6AE73EF21D4DABB620D573 /* ReferralService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReferralService.swift; path = ReferralService.swift; sourceTree = "<group>"; };
 		4E7CF4BEB818490998830CD0 /* ShareCarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ShareCarCardView.swift; path = ShareCarCardView.swift; sourceTree = "<group>"; };
 		51EC40558ECB28745AFDA98F /* CompeteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CompeteView.swift; path = FaisTrack/Modules/Tracks/CompeteView.swift; sourceTree = SOURCE_ROOT; };
+		FEAFA20554A04F0C87D99692 /* RaceMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RaceMapView.swift; path = "FaisTrack/Modules/Tracks/RaceMapView.swift"; sourceTree = SOURCE_ROOT; };
 		52888D24069445E6A16750A5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootView.swift; path = RootView.swift; sourceTree = "<group>"; };
 		AA0DCAF9AA86460C81479042 /* IntroVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IntroVideoView.swift; path = IntroVideoView.swift; sourceTree = "<group>"; };
 		50C8103342314EAE8C93B993 /* FlameWelcomeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlameWelcomeText.swift; path = FlameWelcomeText.swift; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 		AABA7ACA0BB846C6B96FEDC9 /* RivalTotals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RivalTotals.swift; path = "FaisTrack/Models/RivalTotals.swift"; sourceTree = SOURCE_ROOT; };
 		D5A79C81E3EF417B9F0156BE /* TrackMedal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TrackMedal.swift; path = "FaisTrack/Models/TrackMedal.swift"; sourceTree = SOURCE_ROOT; };
 		4B830D61F8F74B9FA92BF458 /* DriverRank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DriverRank.swift; path = "FaisTrack/Models/DriverRank.swift"; sourceTree = SOURCE_ROOT; };
+		04907BF937DB4250A0861B49 /* TelemetryPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TelemetryPoint.swift; path = "FaisTrack/Models/TelemetryPoint.swift"; sourceTree = SOURCE_ROOT; };
 		BCCCC5CB092D4EE3B84BC93B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C091A9B7C6214939AE4B3F51 /* Drive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Drive.swift; path = Drive.swift; sourceTree = "<group>"; };
 		C35A73C6543E41E29E0BEA20 /* CarPlaySceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CarPlaySceneDelegate.swift; path = CarPlaySceneDelegate.swift; sourceTree = "<group>"; };
@@ -171,6 +176,7 @@
 		D8BF476F82E6A487F79B8FEE /* RouteMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RouteMapView.swift; path = FaisTrack/Modules/Drives/RouteMapView.swift; sourceTree = SOURCE_ROOT; };
 		D9994164A22A2BBB9852771E /* TracksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TracksView.swift; path = FaisTrack/Modules/Tracks/TracksView.swift; sourceTree = SOURCE_ROOT; };
 		D9C56A16F233487CA066F40C /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthService.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		D9443BF5BC934F71A99F6CC9 /* TelemetryCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TelemetryCodec.swift; path = "FaisTrack/Services/TelemetryCodec.swift"; sourceTree = SOURCE_ROOT; };
 		88C10A11087E4E3BBF42B884 /* AdminConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AdminConfig.swift; path = AdminConfig.swift; sourceTree = "<group>"; };
 		DBCC1483973240D69E85323F /* FaisTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FaisTrackApp.swift; path = FaisTrackApp.swift; sourceTree = "<group>"; };
 		E08F88EEB0ED4666A8985FBB /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FriendsView.swift; path = FriendsView.swift; sourceTree = "<group>"; };
@@ -259,6 +265,7 @@
 				06FE29F3BA9A4DCFA88E20E1 /* AdminCreateTrackView.swift */,
 				C56BF1D7208A4128B335D332 /* TrackShareCardView.swift */,
 				51EC40558ECB28745AFDA98F /* CompeteView.swift */,
+				FEAFA20554A04F0C87D99692 /* RaceMapView.swift */,
 				4CE07B8E52734A1EAD31F8B4 /* CreateTrackView.swift */,
 			);
 			name = Tracks;
@@ -298,6 +305,7 @@
 				AABA7ACA0BB846C6B96FEDC9 /* RivalTotals.swift */,
 				D5A79C81E3EF417B9F0156BE /* TrackMedal.swift */,
 				4B830D61F8F74B9FA92BF458 /* DriverRank.swift */,
+				04907BF937DB4250A0861B49 /* TelemetryPoint.swift */,
 				0D664A03A5ABDB32B1DB0616 /* Track.swift */,
 				AD764AB886DC1805AD206266 /* TrackResult.swift */,
 			);
@@ -356,6 +364,7 @@
 			isa = PBXGroup;
 			children = (
 				D9C56A16F233487CA066F40C /* AuthService.swift */,
+				D9443BF5BC934F71A99F6CC9 /* TelemetryCodec.swift */,
 		88C10A11087E4E3BBF42B884 /* AdminConfig.swift */,
 				C487198D8A01473183A748C3 /* DriveDetectionService.swift */,
 				C6BF4A5613304A679C499225 /* FirebaseService.swift */,
@@ -577,6 +586,7 @@
 				08A1298908CF4296940C7A87 /* MonthlyRecapView.swift in Sources */,
 				F55CCB0D07E14545B9E9F4DE /* StatsViewModel.swift in Sources */,
 				265EE5D2C5794DDBAB79CD6D /* AuthService.swift in Sources */,
+				4F4B0219D06545ECAA67CC75 /* TelemetryCodec.swift in Sources */,
 				781BAEBCE7214B82983C8D35 /* AdminConfig.swift in Sources */,
 				6706E16EFB7B46D78AB70301 /* DriveDetectionService.swift in Sources */,
 				E2424F4D7DA04C25AEADD0F2 /* FirebaseService.swift in Sources */,
@@ -600,10 +610,12 @@
 				74AEDF35235B49D183630DCD /* AchievementsView.swift in Sources */,
 				08AD865D05F5486C9D97A5AF /* TrackMedal.swift in Sources */,
 				AA4A0080540A4149A82572F8 /* DriverRank.swift in Sources */,
+				507E4C96FDA04F638E7F4645 /* TelemetryPoint.swift in Sources */,
 				9F321FBA8B334B7B9C81CEBB /* AdminTrackMapPicker.swift in Sources */,
 				01CCF93A015D4229BC663DA8 /* AdminCreateTrackView.swift in Sources */,
 				A1CCE70606074AD8BE3FC738 /* TrackShareCardView.swift in Sources */,
 				DA9A45248AA90F3AD72CEA06 /* CompeteView.swift in Sources */,
+				E1394458C5204D02B61E9BCE /* RaceMapView.swift in Sources */,
 				DF8849778F7039C35F93B59A /* ProfileView.swift in Sources */,
 				1EA87B11F5A1492DA61F25C5 /* MoreView.swift in Sources */,
 				F3634CBC888AB258996184F3 /* ManageDrivesView.swift in Sources */,
@@ -733,6 +745,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
