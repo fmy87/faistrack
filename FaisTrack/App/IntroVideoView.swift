@@ -26,6 +26,19 @@ struct IntroVideoView: View {
                     .ignoresSafeArea()
             }
 
+            VStack(spacing: 0) {
+                // A dark scrim behind just the top portion (not the whole
+                // video) — keeps the welcome text readable regardless of
+                // what's happening in the footage there, without dimming
+                // the car itself lower in frame.
+                LinearGradient(colors: [Color.black.opacity(0.55), .clear],
+                               startPoint: .top, endPoint: .bottom)
+                    .frame(height: 260)
+                    .allowsHitTesting(false)
+
+                Spacer()
+            }
+
             VStack {
                 HStack {
                     Spacer()
@@ -40,10 +53,8 @@ struct IntroVideoView: View {
                 }
                 .padding()
 
-                Spacer()
-
                 FlameWelcomeText(text: NSLocalizedString("intro.welcome", comment: ""))
-                    .padding(.bottom, 24)
+                    .padding(.top, 8)
 
                 Spacer()
 
@@ -125,3 +136,4 @@ private struct VideoPlayerContainer: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {}
 }
+
