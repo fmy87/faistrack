@@ -22,6 +22,11 @@ enum TrackCreationState: Equatable {
 class TrackCreationService: NSObject, ObservableObject {
     static let shared = TrackCreationService()
 
+    /// Single source of truth for the free-tier cap — CreateTrackView
+    /// reads this same constant for its UI gate, so the two can't drift
+    /// out of sync with each other.
+    static let freeTrackLimit = 3
+
     @Published var state: TrackCreationState = .idle
     @Published var errorMessage: String?
     /// Live instantaneous speed, feeding the same SpeedGaugeView used on
@@ -119,6 +124,18 @@ class TrackCreationService: NSObject, ObservableObject {
             errorMessage = NSLocalizedString("createTrack.tooFewPoints", comment: "")
             return false
         }
+        // CreateTrackView already disables its Start button once a free
+        // account hits the cap, but that's only a UI-level gate — anything
+        // else that could reach this method directly (or a future screen
+        // that forgets to check first) would bypass it entirely. This is
+        // the actual enforcement point the cap can't be skipped past.
+        if !StoreKitService.shared.isPro && !AdminConfig.isCurrentUserAdmin {
+            let ownedCount = (try? await FirebaseService.shared.getTrackCount(ownerUID: uid)) ?? 0
+            guard ownedCount < Self.freeTrackLimit else {
+                errorMessage = String(format: NSLocalizedString("createTrack.limitReached.subtitle", comment: ""), Self.freeTrackLimit)
+                return false
+            }
+        }
         // Enforced here too, not just in the UI's disabled-button state —
         // a track's name should always come from the person who created
         // it, never silently fall back to a generic default.
@@ -174,6 +191,7 @@ class TrackCreationService: NSObject, ObservableObject {
         state = .idle
     }
 }
+
 
 
 
