@@ -1,10 +1,15 @@
 import SwiftUI
 import UIKit
+import CoreLocation
 
 struct CompeteView: View {
     let track: Track
     @ObservedObject private var race = TrackRaceService.shared
     @Environment(\.presentationMode) var presentationMode
+
+    private var routeCoordinates: [CLLocationCoordinate2D] {
+        PolylineCodec.decode(track.polylineEncoded)
+    }
 
     var body: some View {
         ZStack {
@@ -116,12 +121,31 @@ struct CompeteView: View {
     }
 
     private func racingView(elapsed: TimeInterval, distanceToFinish: Double) -> some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 16) {
             Text(String(format: "%.1f", elapsed))
-                .font(.system(size: 64, weight: .black, design: .monospaced))
+                .font(.system(size: 56, weight: .black, design: .monospaced))
                 .foregroundColor(.ftAccent)
+
+            if let delta = race.liveDeltaSeconds {
+                // Negative means ahead of the ghost's pace at this same
+                // point in the run — green. Positive means behind — red.
+                // This is the one number that answers "am I winning right
+                // now," not just at the very end.
+                Text(String(format: "%@%.1fs", delta <= 0 ? "-" : "+", abs(delta)))
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundColor(delta <= 0 ? .speedGreen : .speedRed)
+                Text(NSLocalizedString("compete.vsGhost", comment: ""))
+                    .font(.system(size: 11)).foregroundColor(.ftTextSecondary)
+            }
+
+            if routeCoordinates.count > 1 {
+                RaceMapView(routeCoordinates: routeCoordinates, ghostPosition: race.ghostPosition)
+                    .frame(height: 240)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+            }
+
             Text(String(format: NSLocalizedString("compete.distanceToFinish", comment: ""), Int(distanceToFinish)))
-                .font(.system(size: 16)).foregroundColor(.ftTextSecondary)
+                .font(.system(size: 14)).foregroundColor(.ftTextSecondary)
         }
     }
 
@@ -154,5 +178,6 @@ struct CompeteView: View {
         }
     }
 }
+
 
 
