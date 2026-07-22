@@ -445,3 +445,9 @@
 "rank.pro" = "سائق محترف";
 "rank.veteran" = "خبير";
 "rank.legend" = "أسطورة";
+
+
+// MARK: - Live delta, ghost racing, Track Legend
+"compete.vsGhost" = "مقارنة بالرقم القياسي";
+"trackLegend.title" = "أسطورة المضمار";
+"trackLegend.subtitle" = "لقد احتفظت بهذا الرقم القياسي لأكثر من 30 يومًا";
