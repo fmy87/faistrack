@@ -8,27 +8,34 @@ struct DrivesView: View {
         NavigationView {
             ZStack {
                 Color.ftBackground.ignoresSafeArea()
-                if viewModel.drives.isEmpty {
-                    VStack(spacing: 16) {
-                        Image(systemName: "car.fill").font(.system(size: 64)).foregroundColor(.ftAccent)
-                        Text(NSLocalizedString("drives.empty.title", comment: ""))
-                            .font(.system(size: 22, weight: .bold))
-                        Text(NSLocalizedString("drives.empty.subtitle", comment: ""))
-                            .foregroundColor(.ftTextSecondary).multilineTextAlignment(.center)
-                    }.padding(32)
-                } else {
-                    ScrollView {
-                        LazyVStack(spacing: 14) {
-                            ForEach(Array(viewModel.drives.enumerated()), id: \.1.id) { index, drive in
-                                StaggeredAppear(index: index) {
-                                    NavigationLink(destination: DriveDetailView(drive: drive)) {
-                                        DriveCardView(drive: drive)
+                VStack(spacing: 0) {
+                    // Renders nothing at all if no rival is set — see
+                    // RivalCardView's own body.
+                    RivalCardView()
+
+                    if viewModel.drives.isEmpty {
+                        VStack(spacing: 16) {
+                            Image(systemName: "car.fill").font(.system(size: 64)).foregroundColor(.ftAccent)
+                            Text(NSLocalizedString("drives.empty.title", comment: ""))
+                                .font(.system(size: 22, weight: .bold))
+                            Text(NSLocalizedString("drives.empty.subtitle", comment: ""))
+                                .foregroundColor(.ftTextSecondary).multilineTextAlignment(.center)
+                        }.padding(32)
+                        Spacer()
+                    } else {
+                        ScrollView {
+                            LazyVStack(spacing: 14) {
+                                ForEach(Array(viewModel.drives.enumerated()), id: \.1.id) { index, drive in
+                                    StaggeredAppear(index: index) {
+                                        NavigationLink(destination: DriveDetailView(drive: drive)) {
+                                            DriveCardView(drive: drive)
+                                        }
+                                        .buttonStyle(.plain)
                                     }
-                                    .buttonStyle(.plain)
                                 }
                             }
+                            .padding(16)
                         }
-                        .padding(16)
                     }
                 }
             }
@@ -174,3 +181,4 @@ class DrivesViewModel: ObservableObject {
         isTracking = DriveDetectionService.shared.isDriving
     }
 }
+
