@@ -28,6 +28,9 @@ struct MoreView: View {
                         NavigationLink(destination: LeaderboardView()) {
                             ProfileRow(icon: "trophy.fill", title: NSLocalizedString("tab.leaderboard", comment: ""))
                         }
+                        NavigationLink(destination: AchievementsView()) {
+                            ProfileRow(icon: "rosette", title: NSLocalizedString("achievements.title", comment: ""))
+                        }
                         NavigationLink(destination: ProfileView()) {
                             ProfileRow(icon: "person.crop.circle.fill", title: NSLocalizedString("tab.profile", comment: ""))
                         }
@@ -64,5 +67,6 @@ struct MoreView: View {
         }
     }
 }
+
 
 
