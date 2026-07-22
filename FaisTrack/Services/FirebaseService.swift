@@ -241,7 +241,14 @@ class FirebaseService {
         return snapshot.documents.count
     }
 
-    func saveTrackResult(_ result: TrackResult) async throws {
+    /// `telemetry` is this specific attempt's samples — deliberately NOT
+    /// stored on the TrackResult document itself (that would mean storing
+    /// a full telemetry blob for every single attempt ever made, forever,
+    /// which would bloat Firestore for no benefit since only the current
+    /// record is ever actually raced against). It's only promoted onto the
+    /// Track document, replacing whatever was there, if this attempt
+    /// becomes the new best time.
+    func saveTrackResult(_ result: TrackResult, telemetry: [TelemetryPoint] = []) async throws {
         guard !result.trackId.isEmpty else { return }
         let ref = db.collection("tracks").document(result.trackId)
             .collection("results").document()
@@ -269,8 +276,14 @@ class FirebaseService {
             if let carName = result.carName {
                 updates["bestTimeCarName"] = carName
             }
+            updates["recordSetAt"] = Timestamp()
+            if !telemetry.isEmpty, let encoded = TelemetryCodec.encode(telemetry) {
+                updates["bestTimeTelemetry"] = encoded
+            }
         }
-        try await trackRef.updateData(updates)
+        // setData(merge:) rather than updateData() — same missing-document
+        // safety already applied to the user-profile writes elsewhere.
+        try await trackRef.setData(updates, merge: true)
     }
 
     func getTrackLeaderboard(trackId: String, limit: Int = 20) async throws -> [TrackResult] {
