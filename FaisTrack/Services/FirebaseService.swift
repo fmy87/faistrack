@@ -329,6 +329,12 @@ class FirebaseService {
         return snapshot.documents
             .compactMap { try? $0.data(as: FTUser.self) }
             .filter { $0.uid != excludingUid }
+            // The "Private Profile" toggle in Settings previously did
+            // nothing at all — it was never actually checked anywhere in
+            // the app, so turning it on gave a false sense of privacy
+            // while search still surfaced the account exactly as before.
+            // This is the actual enforcement point.
+            .filter { !$0.isPrivateProfile }
     }
 
     func sendFriendRequest(from: FTUser, toUid: String) async throws {
@@ -517,6 +523,7 @@ enum FirebaseServiceError: LocalizedError {
         }
     }
 }
+
 
 
 
