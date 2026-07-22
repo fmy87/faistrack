@@ -83,6 +83,33 @@ class FirebaseService {
         try await db.collection("users").document(uid).setData(["username": lowered], merge: true)
     }
 
+    /// Sets or clears (pass nil) the user's Rival for head-to-head
+    /// comparison. setData(merge:) rather than updateData() for the same
+    /// missing-document safety as updateUsername above; FieldValue.delete()
+    /// actually removes the field rather than leaving a stale value when
+    /// clearing.
+    func setRival(uid: String, rivalUID: String?) async throws {
+        let value: Any = rivalUID ?? FieldValue.delete()
+        try await db.collection("users").document(uid).setData(["rivalUID": value], merge: true)
+    }
+
+    /// Reads the same aggregate document LeaderboardService already
+    /// maintains per (period, uid) — one document holds every metric
+    /// (distance/drives/hours/topSpeed/longest) as plain fields, so a
+    /// single direct document read (no query, no index, no new rule) is
+    /// enough to power a Rival head-to-head comparison.
+    func getAllTimeTotals(uid: String) async throws -> RivalTotals {
+        let doc = try await db.collection("leaderboard").document("allTime_\(uid)").getDocument()
+        let data = doc.data() ?? [:]
+        return RivalTotals(
+            distanceKm: data["distance"] as? Double ?? 0,
+            drives: Int(data["drives"] as? Int64 ?? 0),
+            hours: data["hours"] as? Double ?? 0,
+            topSpeedKmh: data["topSpeed"] as? Double ?? 0,
+            longestKm: data["longest"] as? Double ?? 0
+        )
+    }
+
     /// Previously the auto-generated username (name + random 4-digit
     /// suffix) was never checked against existing usernames at all — with
     /// a common first name, the ~9000-value suffix space collides often
@@ -200,6 +227,16 @@ class FirebaseService {
     func getTrackCount(ownerUID: String) async throws -> Int {
         let snapshot = try await db.collection("tracks")
             .whereField("ownerUID", isEqualTo: ownerUID)
+            .getDocuments()
+        return snapshot.documents.count
+    }
+
+    /// How many tracks this user currently holds the record on — a
+    /// single-field equality query, so no composite index is needed. Used
+    /// by both the Rival comparison and the Record Holder achievement.
+    func getTrackRecordCount(uid: String) async throws -> Int {
+        let snapshot = try await db.collection("tracks")
+            .whereField("bestTimeUid", isEqualTo: uid)
             .getDocuments()
         return snapshot.documents.count
     }
@@ -480,6 +517,7 @@ enum FirebaseServiceError: LocalizedError {
         }
     }
 }
+
 
 
 
