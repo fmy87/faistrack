@@ -2,9 +2,9 @@ import Foundation
 import FirebaseFirestore
 import CoreLocation
 
-/// A competable point-to-point route derived from a published Drive.
-/// Users race against the clock along the same path; the finish line is
-/// the original drive's last recorded point.
+/// A competable point-to-point route, created manually by a user driving
+/// (or an admin placing two points on a map) — never derived automatically
+/// from a passively detected Drive.
 struct Track: Identifiable, Codable {
     @DocumentID var id: String?
     var ownerUID: String
@@ -29,6 +29,14 @@ struct Track: Identifiable, Codable {
     /// in FirebaseService.saveTrackResult() whenever a new record is set.
     var bestTimeTopSpeed: Double?  // km/h
     var bestTimeCarName: String?
+    /// JSON-encoded [TelemetryPoint] for the current record holder's run —
+    /// powers live delta timing, ghost racing, and the speed heatmap. See
+    /// TelemetryCodec. Replaced (not appended to) whenever a new record is
+    /// set; only the current record's telemetry is ever kept.
+    var bestTimeTelemetry: String?
+    /// When the current best time was set — used for the Track Legend
+    /// badge (holding a record for 30+ consecutive days).
+    var recordSetAt: Timestamp?
     var attemptCount: Int = 0
     var createdAt: Timestamp = Timestamp()
 
@@ -45,5 +53,6 @@ struct Track: Identifiable, Codable {
     /// Tracks must be at least this long to be published.
     static let minimumDistanceMeters: Double = 200
 }
+
 
 
