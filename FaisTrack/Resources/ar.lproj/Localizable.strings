@@ -460,3 +460,28 @@
 // MARK: - Lap-time progression chart
 "track.progression" = "تقدمك";
 "track.progression.attempts" = "%d محاولات";
+
+
+// MARK: - Toast messages
+"toast.trackSaved" = "تم حفظ المضمار!";
+"toast.newRecord" = "🏆 رقم قياسي جديد!";
+"toast.rivalSet" = "تم تعيين @%@ كمنافس";
+"toast.rivalCleared" = "تم إلغاء المنافس";
+"toast.rivalFailed" = "تعذّر تعيين المنافس. حاول مرة أخرى.";
+"toast.friendAdded" = "أنت و @%@ أصبحتما أصدقاء الآن!";
+"toast.friendAddFailed" = "تعذّر قبول الطلب. حاول مرة أخرى.";
+"toast.usernameSaved" = "تم تحديث اسم المستخدم!";
+
+// MARK: - What's New sheet
+"whatsNew.title" = "ما الجديد";
+"whatsNew.gotIt" = "حسنًا";
+"whatsNew.rival.title" = "نظام المنافس";
+"whatsNew.rival.desc" = "اختر صديقًا كمنافس وشاهد مقارنة مباشرة وجهًا لوجه.";
+"whatsNew.achievements.title" = "الإنجازات";
+"whatsNew.achievements.desc" = "افتح إنجازات جديدة بينما تقود وتنشئ مضامير وتحقق أرقامًا قياسية.";
+"whatsNew.ghost.title" = "سباق الشبح";
+"whatsNew.ghost.desc" = "نافس شبحًا مباشرًا للرقم القياسي، وليس فقط وقتًا نهائيًا.";
+"whatsNew.heatmap.title" = "خرائط السرعة الحرارية";
+"whatsNew.heatmap.desc" = "شاهد بالضبط أين كنت الأسرع — والأبطأ — في كل مضمار.";
+"whatsNew.legend.title" = "أسطورة المضمار";
+"whatsNew.legend.desc" = "احتفظ برقم قياسي لأكثر من 30 يومًا واكسب تقديرًا دائمًا.";
