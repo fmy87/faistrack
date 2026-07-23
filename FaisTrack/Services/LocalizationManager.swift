@@ -33,7 +33,9 @@ class LocalizationManager {
 
     private static func systemPreferredLanguage() -> String {
         let code = Locale.preferredLanguages.first ?? "en"
-        return code.hasPrefix("ar") ? "ar" : "en"
+        if code.hasPrefix("ar") { return "ar" }
+        if code.hasPrefix("es") { return "es" }
+        return "en"
     }
 }
 
@@ -57,3 +59,4 @@ private extension Bundle {
         objc_setAssociatedObject(Bundle.main, &associatedBundleKey, languageBundle, .OBJC_ASSOCIATION_RETAIN)
     }
 }
+
