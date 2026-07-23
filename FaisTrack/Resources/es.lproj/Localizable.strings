@@ -1,0 +1,485 @@
+/* App */
+"app.name" = "FaisTrack";
+
+/* Tabs */
+"tab.drives" = "Recorridos";
+"tab.friends" = "Amigos";
+"tab.stats" = "Estadísticas";
+"tab.leaderboard" = "Clasificación";
+
+/* Onboarding */
+"onboarding.continue" = "Continuar";
+"onboarding.page1.title" = "Registra tus recorridos automáticamente";
+"onboarding.page1.subtitle" = "FaisTrack detecta cuando empiezas a conducir y registra cada detalle automáticamente.";
+"onboarding.page2.title" = "Compite con amigos";
+"onboarding.page2.subtitle" = "Añade amigos para comparar estadísticas y competir en las clasificaciones.";
+"onboarding.page3.title" = "Ve tus estadísticas";
+"onboarding.page3.subtitle" = "Observa cómo crecen tus estadísticas después de cada recorrido.";
+
+/* Auth */
+"auth.tagline" = "Registra cada recorrido, automáticamente";
+"auth.appleSignIn" = "Iniciar sesión con Apple";
+"auth.googleSignIn" = "Iniciar sesión con Google";
+"auth.error.appleCredential" = "Respuesta inesperada al iniciar sesión con Apple. Inténtalo de nuevo.";
+"auth.error.noWindow" = "No se pudo iniciar sesión con Google. Inténtalo de nuevo.";
+
+/* Safety */
+"safety.title" = "La seguridad ante todo";
+"safety.subtitle" = "FaisTrack está diseñado para una conducción responsable.";
+"safety.rule1" = "Cumple todas las leyes de tránsito y los límites de velocidad señalizados.";
+"safety.rule2" = "Usa un soporte adecuado para el teléfono si necesitas ver la app.";
+"safety.rule3" = "Nunca sostengas ni manipules tu teléfono mientras conduces.";
+"safety.rule4" = "FaisTrack no promueve las carreras ni comportamientos ilegales en la vía.";
+"safety.rule5" = "Usas FaisTrack, incluidas las funciones de carreras o pistas con tiempo, bajo tu propio riesgo.";
+"safety.rule6" = "FaisTrack y su desarrollador no son responsables de accidentes, lesiones, daños o pérdidas derivados del uso de la app.";
+"safety.rule7" = "Eres el único responsable de cumplir todas las leyes y normativas de tránsito; FaisTrack no es responsable de infracciones, multas o citaciones.";
+"safety.rule8" = "Al usar esta app, liberas a FaisTrack y a su desarrollador de toda responsabilidad relacionada con tu conducción y cualquier incidente que ocurra.";
+"safety.agree" = "He leído y acepto estas normas de seguridad. Entiendo que uso FaisTrack bajo mi entera responsabilidad, y que FaisTrack y su desarrollador no asumen ninguna responsabilidad por accidentes, incidentes, lesiones, daños o infracciones que puedan ocurrir al usar esta app.";
+"safety.continue" = "Acepto y continúo";
+
+/* Permissions */
+"permissions.title" = "Activar permisos";
+"permissions.subtitle" = "Activa estos permisos para que el registro automático de recorridos funcione correctamente.";
+"permissions.location" = "Activar \"Permitir siempre\"";
+"permissions.location.desc" = "Necesario para el seguimiento en segundo plano.";
+"permissions.motion" = "Activar acceso al movimiento";
+"permissions.motion.desc" = "Ayuda a confirmar que estás en un vehículo en movimiento.";
+"permissions.notifications" = "Activar notificaciones";
+"permissions.notifications.desc" = "Recibe resúmenes de recorridos y alertas de actividad de amigos.";
+"permissions.enable" = "Activar y continuar";
+
+/* Garage */
+"garage.title" = "Garaje";
+"garage.addCar" = "Añadir coche";
+"garage.activeCar" = "Coche activo";
+"garage.active" = "Activo";
+"garage.setActive" = "Marcar como activo";
+"garage.delete" = "Eliminar coche";
+"garage.saveCar" = "Guardar coche";
+"garage.editCar" = "Editar coche";
+"garage.edit" = "Editar";
+"garage.saveChanges" = "Guardar cambios";
+"garage.shareCard" = "Compartir tarjeta del coche";
+"tracks.shareCard" = "Compartir tarjeta del circuito";
+"tracks.createdBy" = "Creado por @%@";
+"garage.addPhoto" = "Añadir foto";
+"garage.empty.title" = "Tu garaje está vacío";
+"garage.empty.subtitle" = "Añade tu primer coche para empezar a registrar recorridos.";
+"garage.nickname" = "Apodo";
+"garage.make" = "Marca";
+"garage.model" = "Modelo";
+"garage.year" = "Año";
+"garage.engineSize" = "Cilindrada";
+"garage.hp" = "Caballos de fuerza";
+"garage.torque" = "Par motor (Nm)";
+"garage.forced" = "Inducción forzada";
+"garage.turbo" = "Turboalimentado";
+"garage.supercharged" = "Sobrealimentado";
+"garage.suspension" = "Suspensión";
+"garage.wheels" = "Llantas";
+"garage.engine" = "Motor";
+"garage.mods" = "Modificaciones";
+"garage.step.basic" = "Información básica";
+"garage.step.specs" = "Especificaciones del motor";
+"garage.step.mods" = "Modificaciones";
+"garage.step.photo" = "Añadir una foto";
+"tab.garage" = "Garaje";
+
+/* Drives */
+"drives.empty.title" = "Aún no hay recorridos";
+"drives.empty.subtitle" = "Empieza a conducir y FaisTrack registrará tus recorridos automáticamente.";
+"drives.tracking" = "Registrando";
+"drives.unknownLocation" = "Ubicación desconocida";
+"drive.topSpeed" = "Velocidad máxima";
+"drive.avgSpeed" = "Velocidad media";
+"drive.distance" = "Distancia";
+"drive.duration" = "Duración";
+"drive.night" = "Recorrido nocturno";
+"drive.detail" = "Detalle del recorrido";
+
+/* Friends */
+"friends.empty.title" = "Aún no tienes amigos";
+"friends.empty.subtitle" = "Invita a amigos para ver sus recorridos y estadísticas, y estar al día con su actividad.";
+"friends.add" = "Añadir amigos";
+"friends.search.title" = "Buscar usuarios";
+"friends.search.placeholder" = "Buscar por nombre de usuario...";
+
+/* Stats */
+"stats.empty.title" = "Aún no hay estadísticas";
+"stats.empty.subtitle" = "Completa tu primer recorrido para ver estadísticas aquí.";
+"stats.behaviorScore" = "Puntuación de seguridad";
+
+/* Leaderboard */
+"leaderboard.empty" = "Aún no hay registros. ¡Empieza a conducir!";
+"leaderboard.global" = "Global";
+"leaderboard.friends" = "Amigos";
+"leaderboard.weekly" = "Semanal";
+"leaderboard.monthly" = "Mensual";
+"leaderboard.allTime" = "Histórico";
+"leaderboard.miles" = "Distancia";
+"leaderboard.topSpeed" = "Velocidad máxima";
+"leaderboard.avgSpeed" = "Velocidad media";
+"leaderboard.hours" = "Horas";
+"leaderboard.drives" = "Recorridos";
+
+/* Pro */
+"pro.unlock" = "Actualizar a Pro";
+"pro.feature.garage" = "Coches ilimitados en tu garaje";
+"pro.feature.score" = "Comportamiento de conducción y puntuación de seguridad";
+"pro.startTrial" = "Iniciar prueba gratuita de 7 días";
+
+/* Notifications */
+"notification.driveStart.title" = "Recorrido iniciado";
+"notification.driveStart.body" = "FaisTrack está registrando tu recorrido.";
+"notification.driveEnd.title" = "Recorrido guardado";
+"notification.driveEnd.body" = "Recorrido completado: %@ • Velocidad máxima %@";
+
+/* CarPlay */
+"carplay.speed" = "Velocidad actual";
+"carplay.distance" = "Distancia";
+
+/* General */
+"general.back" = "Atrás";
+"general.next" = "Siguiente";
+"general.cancel" = "Cancelar";
+"general.share" = "Compartir";
+"general.save" = "Guardar";
+
+// Tracks / Compete feature
+"tab.tracks" = "Circuitos";
+"tracks.empty" = "Aún no hay circuitos. ¡Publica un recorrido como circuito para empezar!";
+"tracks.noAttempts" = "Aún no hay intentos";
+"tracks.distance" = "Distancia";
+"tracks.bestTime" = "Mejor tiempo";
+"tracks.attempts" = "Intentos";
+"tracks.compete" = "Competir";
+"tracks.leaderboard" = "Clasificación";
+"tracks.defaultName" = "Circuito sin nombre";
+"createTrack.title" = "Crear circuito";
+"createTrack.explainer" = "Registra un nuevo circuito conduciendo la ruta tú mismo. Pulsa Iniciar, prepárate durante la cuenta atrás y luego conduce — pulsa Terminar carrera al llegar a tu punto de meta.";
+"createTrack.startCountdown" = "Iniciar";
+"createTrack.namePlaceholder" = "Nombra este circuito";
+"createTrack.save" = "Guardar circuito";
+"createTrack.tooShort" = "Este circuito debe medir al menos %@ — has registrado %@. Conduce un poco más antes de terminar la grabación.";
+"createTrack.tooFewPoints" = "No se registraron suficientes puntos GPS para guardar este circuito. Asegúrate de que el acceso a la ubicación esté en \"Siempre\" e inténtalo de nuevo con una grabación más larga.";
+"drive.publishTrack" = "Publicar como circuito";
+"drive.trackPublished" = "Publicado como circuito";
+"compete.locating" = "Obteniendo tu ubicación…";
+"compete.headToStart" = "Dirígete a la línea de salida";
+"compete.distanceAway" = "A %d m de distancia";
+"compete.arrived" = "¡Has llegado a la línea de salida!";
+"compete.start" = "Iniciar";
+"compete.endRace" = "Terminar carrera";
+"compete.distanceToFinish" = "%d m hasta la meta";
+"compete.finished" = "¡Terminado!";
+"compete.newRecord" = "¡Nuevo récord del circuito!";
+"compete.comparedToBest" = "Récord del circuito: %.1fs";
+"general.done" = "Listo";
+
+// Profile
+"tab.profile" = "Perfil";
+"tab.more" = "Más";
+"profile.instagram" = "Instagram";
+"profile.saved" = "Guardado";
+"profile.manageDrives" = "Gestionar recorridos";
+"profile.manageTracks" = "Gestionar mis circuitos";
+"profile.signOut" = "Cerrar sesión";
+"profile.signOutConfirm" = "¿Seguro que quieres cerrar sesión?";
+
+// Error messages
+"auth.error.invalidCredential" = "Credencial no válida. Intenta iniciar sesión de nuevo.";
+"auth.error.userNotFound" = "Usuario no encontrado.";
+"auth.error.missingClientID" = "El inicio de sesión con Google no está configurado correctamente. Inténtalo más tarde.";
+"firebase.error.storageNotEnabled" = "La subida de fotos estará disponible en una futura actualización.";
+"firebase.error.invalidTrack" = "Este recorrido no tiene una ruta válida para publicar como circuito.";
+"general.defaultUsername" = "Conductor";
+
+// Garage placeholders and units
+"garage.nicknamePlaceholder" = "p. ej. La Bestia";
+"garage.makePlaceholder" = "p. ej. Nissan";
+"garage.modelPlaceholder" = "p. ej. 350Z";
+"garage.engineSizePlaceholder" = "p. ej. 3.5L";
+"garage.hpPlaceholder" = "p. ej. 300";
+"garage.torquePlaceholder" = "p. ej. 400 Nm";
+"garage.suspensionPlaceholder" = "p. ej. KW Coilovers";
+"garage.wheelsPlaceholder" = "p. ej. 19\" Rays";
+"garage.hpUnit" = "CV";
+"garage.torqueUnit" = "Nm";
+
+// Profile
+"profile.instagramPlaceholder" = "nombre de usuario";
+
+// Duration formatting
+"drive.duration.minutes" = "%d min";
+"drive.duration.hoursMinutes" = "%dh %dm";
+"garage.saveFailed" = "No se pudo guardar tu coche. Revisa tu conexión e inténtalo de nuevo.";
+"profile.privateProfile" = "Perfil privado";
+"profile.privateProfile.desc" = "Solo los amigos aprobados pueden ver tus recorridos y estadísticas.";
+"profile.publicProfile.desc" = "Cualquiera puede encontrar tu perfil y ver tu actividad pública.";
+"profile.noProfile" = "Tu perfil aún no se ha cargado. Inténtalo de nuevo en un momento.";
+
+// Settings
+"settings.title" = "Ajustes";
+"settings.language" = "Idioma";
+"settings.language.english" = "English";
+"settings.language.arabic" = "العربية";
+"settings.language.spanish" = "Español";
+"settings.units" = "Unidades";
+"settings.units.km" = "Kilómetros";
+"settings.units.mi" = "Millas";
+
+
+// MARK: - Statistics (Wheelz-parity rebuild)
+"stats.totalDistance" = "Distancia total recorrida";
+"stats.avgDriveDistance" = "Distancia media por recorrido: %@";
+"stats.compare.indy500" = "Vueltas a las 500 Millas";
+"stats.compare.coastToCoast" = "De costa a costa";
+"stats.compare.aroundEarth" = "Alrededor de la Tierra";
+"stats.compare.toTheMoon" = "Hasta la Luna";
+"stats.longestDrive" = "Recorrido más largo";
+"stats.topSpeed" = "Velocidad máxima";
+"stats.speedDistribution" = "Distribución de velocidad";
+"stats.speedBucket.city" = "0-60";
+"stats.speedBucket.road" = "60-90";
+"stats.speedBucket.highway" = "90-120";
+"stats.speedBucket.fast" = "120-150";
+"stats.speedBucket.veryFast" = "150+";
+"stats.fastestDrive" = "Recorrido más rápido";
+"stats.totalTime" = "Tiempo total conducido";
+"stats.avgDriveTime" = "Tiempo medio por recorrido: %d min";
+"stats.hoursShort" = "h";
+"stats.daysShort" = "días";
+"stats.mostDrivenVehicles" = "Vehículos más usados";
+"stats.mostDrivenVehicle" = "Vehículo más usado";
+"stats.drivesLabel" = "RECORRIDOS";
+"stats.personalBests" = "Mejores marcas personales";
+"stats.pb.rocketMode" = "Modo cohete";
+"stats.pb.rocketMode.sub" = "Velocidad máxima registrada";
+"stats.pb.longHaul" = "Larga distancia";
+"stats.pb.longHaul.sub" = "Recorrido individual más largo";
+"stats.pb.seatTime" = "Tiempo al volante";
+"stats.pb.seatTime.sub" = "Más tiempo en un solo recorrido";
+"stats.pb.smoothOperator" = "Conducción suave";
+"stats.pb.smoothOperator.sub" = "Mejor velocidad media";
+"stats.pb.bigDayEnergy" = "Día a tope";
+"stats.pb.bigDayEnergy.sub" = "Más distancia en un día";
+"stats.pb.roadWarrior" = "Guerrero de la carretera";
+"stats.pb.roadWarrior.sub" = "Más tiempo conducido en un día";
+"stats.pb.errandEra" = "Era de recados";
+"stats.pb.errandEra.sub" = "Más recorridos en un día";
+"stats.pb.hotWeek" = "Semana intensa";
+"stats.pb.hotWeek.sub" = "Más distancia en una semana";
+"stats.pb.mileageMonster" = "Monstruo del kilometraje";
+"stats.pb.mileageMonster.sub" = "Más distancia en un mes";
+"stats.pb.onARoll" = "Con buena racha";
+"stats.pb.onARoll.sub" = "Racha de conducción más larga";
+"stats.pb.garageRocket" = "Cohete del garaje";
+"stats.pb.garageRocket.sub" = "Vehículo más rápido de tu garaje";
+"stats.pb.favoriteRide" = "Vehículo favorito";
+"stats.pb.favoriteRide.sub" = "Más distancia en un vehículo";
+"stats.pb.dailyDriver" = "Coche de diario";
+"stats.pb.dailyDriver.sub" = "Más recorridos en un vehículo";
+"stats.shareText" = "¡He recorrido %@ hasta ahora en FaisTrack! 🏁";
+"leaderboard.longest" = "Más largo";
+"leaderboard.yourRank" = "TÚ";
+
+
+// MARK: - Recap, vehicle breakdown, passenger mode
+"stats.recapBanner.title" = "Tu resumen de %@ ya está aquí";
+"stats.recapBanner.subtitle" = "Toca para ver";
+"stats.distanceByVehicle" = "Distancia por vehículo";
+"stats.pb.passengerPrincess" = "Princesa del asiento";
+"stats.pb.passengerPrincess.sub" = "Millas registradas como pasajero";
+"drive.markAsPassenger" = "Era pasajero, no conducía";
+"drive.wasPassengerConfirmed" = "Marcado como pasajero";
+
+
+// MARK: - Live Drive HUD
+"liveDrive.locating" = "Localizando...";
+"liveDrive.recording" = "Registrando recorrido";
+"liveDrive.elapsed" = "TRANSCURRIDO";
+"liveDrive.distance" = "DISTANCIA";
+
+
+// MARK: - Delete account, friends system, safety score, store sync (enhancement pass)
+"profile.deleteAccount" = "Eliminar cuenta";
+"profile.deleteAccountConfirm" = "Esto elimina permanentemente tu cuenta y todos tus datos: recorridos, coches, circuitos y amigos. No se puede deshacer.";
+"auth.error.requiresRecentLogin" = "Por seguridad, cierra sesión y vuelve a iniciarla, luego intenta eliminar tu cuenta de nuevo.";
+"general.error" = "Error";
+"general.ok" = "Aceptar";
+"friends.requests" = "Solicitudes de amistad";
+"friends.myFriends" = "Mis amigos";
+"friends.requestSent" = "Solicitado";
+"friends.requestReceived" = "Responder en Amigos";
+"friends.alreadyFriends" = "Amigos";
+"friends.search.noResults" = "No se encontraron usuarios";
+"store.proSyncError" = "Tu compra se realizó correctamente, pero aún no pudimos sincronizar tu estado Pro. Se sincronizará automáticamente la próxima vez que estés en línea.";
+"stats.safetyScore" = "Puntuación de seguridad";
+"stats.safetyScore.trend" = "Recorridos recientes";
+
+
+// MARK: - Live Drive HUD redesign (speedometer gauge)
+"liveDrive.speedTab" = "Velocidad";
+"liveDrive.mapTab" = "Mapa";
+"liveDrive.endDrive" = "Terminar recorrido";
+"liveDrive.avg" = "Media";
+"liveDrive.top" = "Máx";
+"liveDrive.distanceShort" = "Distancia";
+"liveDrive.altitude" = "Altitud";
+"liveDrive.moving" = "En movimiento";
+"liveDrive.stopped" = "Detenido";
+"liveDrive.ghost" = "Fantasma";
+"liveDrive.driver" = "Conductor";
+"liveDrive.passenger" = "Pasajero";
+
+
+// MARK: - Live friend driving status
+"friends.drivingNow" = "Conduciendo ahora";
+
+
+// MARK: - Username editing, uniqueness
+"profile.username" = "Nombre de usuario";
+"profile.username.placeholder" = "nombre de usuario";
+"profile.username.available" = "Nombre de usuario disponible";
+"profile.username.taken" = "Ese nombre de usuario ya está en uso o no es válido (3-20 letras, números o guiones bajos)";
+"firebase.error.usernameTaken" = "Ese nombre de usuario acaba de ser tomado. Intenta otro.";
+
+
+// MARK: - Onboarding username selection
+"onboarding.chooseUsername.title" = "Elige tu nombre de usuario";
+"onboarding.chooseUsername.subtitle" = "Así te encontrarán y verán tus amigos en FaisTrack. Puedes cambiarlo más tarde en tu perfil.";
+"onboarding.chooseUsername.continue" = "Continuar";
+
+
+// MARK: - Drive card passenger badge
+"drive.passengerBadge" = "Pasajero";
+
+
+// MARK: - Track record holder card, mandatory naming
+"tracks.recordHolder" = "RÉCORD ACTUAL";
+"tracks.noRecordYet" = "Aún no hay intentos — sé el primero en marcar un récord.";
+"createTrack.nameRequired" = "Ponle un nombre a este circuito antes de guardarlo.";
+
+
+// MARK: - Admin track creation, delete restriction
+"tracks.deleteRestricted" = "Los circuitos publicados ya no pueden ser eliminados por su creador, para proteger los resultados que otras personas ya han registrado en ellos.";
+"admin.createTrack.title" = "Crear circuito (Admin)";
+"admin.createTrack.instructions" = "Toca el mapa para marcar un punto de inicio, luego toca de nuevo para marcar el punto final. Toca una tercera vez para empezar de nuevo.";
+"admin.createTrack.save" = "Crear circuito";
+
+
+// MARK: - Intro video
+"intro.skip" = "Saltar";
+
+
+// MARK: - Intro video Settings toggle
+"settings.introVideo" = "Video de introducción";
+"settings.introVideo.everyLaunch" = "Se reproduce cada vez que abres la app.";
+"settings.introVideo.onceOnly" = "Solo se reproduce una vez, al iniciar la app por primera vez.";
+
+
+// MARK: - Intro video welcome message
+"intro.welcome" = "Bienvenido a FaisTrack";
+
+
+// MARK: - Track search and sort
+"tracks.searchPrompt" = "Buscar circuitos o creadores";
+"tracks.noSearchResults" = "Ningún circuito coincide con tu búsqueda.";
+"tracks.sort.newest" = "Más recientes";
+"tracks.sort.shortest" = "Más cortos";
+"tracks.sort.longest" = "Más largos";
+"tracks.sort.bestTime" = "Mejor tiempo";
+"tracks.sort.nearest" = "Más cercanos";
+
+
+// MARK: - Pro gating: track cap, leaderboard depth, personal bests
+"pro.feature.tracks" = "Creación ilimitada de circuitos";
+"pro.feature.leaderboard" = "Clasificación completa, no solo el top 3";
+"pro.feature.stats" = "Todas las mejores marcas personales, desbloqueadas";
+"createTrack.limitReached.title" = "Límite de circuitos alcanzado";
+"createTrack.limitReached.subtitle" = "Las cuentas gratuitas pueden crear hasta %d circuitos. Actualiza a Pro para crear circuitos ilimitados.";
+"leaderboard.fullListLocked" = "Ve la posición de todos, no solo el top 3 — desbloquea la clasificación completa con Pro.";
+"stats.unlockAll" = "Desbloquear todas las estadísticas";
+
+
+// MARK: - Rival system
+"rival.title" = "RIVAL";
+"rival.distance" = "Distancia total";
+"rival.topSpeed" = "Velocidad máxima";
+"rival.trackRecords" = "Récords de circuitos";
+
+// MARK: - Achievements
+"achievements.title" = "Logros";
+"achievements.firstDrive" = "Primer recorrido";
+"achievements.firstDrive.desc" = "Completa tu primer recorrido";
+"achievements.club100" = "Club de los 100 km";
+"achievements.club100.desc" = "Recorre 100 km en total";
+"achievements.club500" = "Club de los 500 km";
+"achievements.club500.desc" = "Recorre 500 km en total";
+"achievements.nightOwl" = "Ave nocturna";
+"achievements.nightOwl.desc" = "Completa 10 recorridos nocturnos";
+"achievements.trackMaster" = "Maestro de circuitos";
+"achievements.trackMaster.desc" = "Crea 5 circuitos";
+"achievements.speedDemon" = "Demonio de la velocidad";
+"achievements.speedDemon.desc" = "Alcanza 200 km/h";
+"achievements.centurion" = "Centurión";
+"achievements.centurion.desc" = "Completa 100 recorridos";
+"achievements.recordHolder" = "Poseedor del récord";
+"achievements.recordHolder.desc" = "Mantén el récord en un circuito";
+"achievements.onFire" = "En racha";
+"achievements.onFire.desc" = "Conduce 7 días seguidos";
+"achievements.socialButterfly" = "Mariposa social";
+"achievements.socialButterfly.desc" = "Añade 5 amigos";
+
+// MARK: - Track medals
+"trackMedal.gold" = "Oro — ¡Tienes el récord!";
+"trackMedal.silver" = "Plata — Dentro del 10% del récord";
+"trackMedal.bronze" = "Bronce — Has completado este circuito";
+"trackMedal.none" = "";
+
+// MARK: - Driver rank
+"rank.rookie" = "Novato";
+"rank.streetRacer" = "Corredor de calle";
+"rank.pro" = "Conductor Pro";
+"rank.veteran" = "Veterano";
+"rank.legend" = "Leyenda";
+
+
+// MARK: - Live delta, ghost racing, Track Legend
+"compete.vsGhost" = "vs. ritmo del récord";
+"trackLegend.title" = "Leyenda del circuito";
+"trackLegend.subtitle" = "Has mantenido este récord por más de 30 días";
+
+
+// MARK: - Elevation profile
+"track.elevation" = "Altitud";
+
+
+// MARK: - Lap-time progression chart
+"track.progression" = "Tu progreso";
+"track.progression.attempts" = "%d intentos";
+
+
+// MARK: - Toast messages
+"toast.trackSaved" = "¡Circuito guardado!";
+"toast.newRecord" = "🏆 ¡Nuevo récord!";
+"toast.rivalSet" = "Rival establecido: @%@";
+"toast.rivalCleared" = "Rival eliminado";
+"toast.rivalFailed" = "No se pudo establecer el rival. Inténtalo de nuevo.";
+"toast.friendAdded" = "¡Tú y @%@ ya sois amigos!";
+"toast.friendAddFailed" = "No se pudo aceptar la solicitud. Inténtalo de nuevo.";
+"toast.usernameSaved" = "¡Nombre de usuario actualizado!";
+
+// MARK: - What's New sheet
+"whatsNew.title" = "Novedades";
+"whatsNew.gotIt" = "Entendido";
+"whatsNew.rival.title" = "Sistema de rivales";
+"whatsNew.rival.desc" = "Elige a un amigo como tu rival y ve una comparación en vivo, cara a cara.";
+"whatsNew.achievements.title" = "Logros";
+"whatsNew.achievements.desc" = "Desbloquea logros mientras conduces, creas circuitos y consigues récords.";
+"whatsNew.ghost.title" = "Carrera fantasma";
+"whatsNew.ghost.desc" = "Compite contra un fantasma en vivo del récord del circuito, no solo un tiempo final.";
+"whatsNew.heatmap.title" = "Mapas de calor de velocidad";
+"whatsNew.heatmap.desc" = "Ve exactamente dónde fuiste más rápido — y más lento — en cada circuito.";
+"whatsNew.legend.title" = "Leyenda del circuito";
+"whatsNew.legend.desc" = "Mantén un récord durante más de 30 días y gana reconocimiento permanente.";
