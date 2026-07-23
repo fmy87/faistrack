@@ -175,7 +175,7 @@ struct LiveDriveView: View {
     private var mapView: some View {
         Group {
             if driveDetection.liveRouteCoordinates.count > 1 || !friendPins.isEmpty {
-                RouteMapView(coordinates: driveDetection.liveRouteCoordinates, friendPins: friendPins)
+                RouteMapView(coordinates: driveDetection.liveRouteCoordinates, friendPins: friendPins, liveFollow: true)
                     .frame(height: 420)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .padding(.horizontal, 16)
@@ -270,6 +270,7 @@ struct LiveDriveView: View {
 /// centered digital readout — modeled on the reference screenshot. Shared
 /// with CreateTrackView (see SpeedGaugeView.swift) so live driving and live
 /// track recording use the same visual language.
+
 
 
 
