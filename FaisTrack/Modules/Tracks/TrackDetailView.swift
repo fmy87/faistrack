@@ -35,6 +35,17 @@ struct TrackDetailView: View {
         return results.first { $0.uid == uid } // already sorted ascending by duration
     }
 
+    /// Same `results` array already fetched for the leaderboard (see
+    /// loadLeaderboard's generous limit) — just re-filtered to this user
+    /// and re-sorted chronologically instead of by duration, so no second
+    /// query is needed to power the progression chart.
+    private var myAttemptsChronological: [TrackResult] {
+        guard let uid = AuthService.shared.currentUser?.uid else { return [] }
+        return results
+            .filter { $0.uid == uid }
+            .sorted { $0.completedAt.dateValue() < $1.completedAt.dateValue() }
+    }
+
     private var myMedal: TrackMedal {
         TrackMedal.evaluate(myBestDuration: myBestResult?.duration, trackBestDuration: track.bestTime)
     }
@@ -82,6 +93,12 @@ struct TrackDetailView: View {
 
                 if myMedal != .none {
                     myMedalCard
+                }
+
+                if myAttemptsChronological.count > 1 {
+                    FTCard {
+                        LapProgressionChartView(durations: myAttemptsChronological.map(\.duration))
+                    }
                 }
 
                 FTCard {
@@ -256,6 +273,7 @@ struct TrackDetailView: View {
         results = (try? await FirebaseService.shared.getTrackLeaderboard(trackId: id, limit: 500)) ?? []
     }
 }
+
 
 
 
