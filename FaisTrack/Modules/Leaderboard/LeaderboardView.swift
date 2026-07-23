@@ -151,39 +151,68 @@ struct LeaderboardView: View {
             return result
         }()
 
-        return HStack(alignment: .bottom, spacing: 12) {
-            ForEach(ordered, id: \.1.id) { place, entry in
-                VStack(spacing: 8) {
-                    if place == 1 {
-                        Image(systemName: "crown.fill").foregroundColor(.yellow).font(.system(size: 18))
-                    } else {
-                        Color.clear.frame(height: 18)
+        return VStack(spacing: 6) {
+            HStack(alignment: .bottom, spacing: 12) {
+                ForEach(ordered, id: \.1.id) { place, entry in
+                    VStack(spacing: 8) {
+                        if place == 1 {
+                            Image(systemName: "crown.fill").foregroundColor(.yellow).font(.system(size: 18))
+                        } else {
+                            Color.clear.frame(height: 18)
+                        }
+                        ZStack {
+                            Circle()
+                                .fill(Color.ftCard)
+                                .frame(width: place == 1 ? 84 : 64, height: place == 1 ? 84 : 64)
+                                .overlay(
+                                    Circle().stroke(placeColor(place), lineWidth: place == 1 ? 3 : 2)
+                                )
+                            Text(String(entry.username.prefix(1)).uppercased())
+                                .font(.system(size: place == 1 ? 28 : 20, weight: .bold))
+                        }
+                        Text(entry.username).font(.system(size: 13, weight: .semibold)).lineLimit(1)
+                        Text(formattedValue(entry.value, metric: metric))
+                            .font(.system(size: 13, weight: .bold)).foregroundColor(placeColor(place))
+
+                        // A real tiered starting-grid platform — P1's block
+                        // stands tallest in the center, matching an actual
+                        // motorsport podium, rather than three identical
+                        // pills that only differ by color.
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(LinearGradient(
+                                    colors: [placeColor(place).opacity(0.4), placeColor(place).opacity(0.12)],
+                                    startPoint: .top, endPoint: .bottom
+                                ))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                        .stroke(placeColor(place).opacity(0.55), lineWidth: 1)
+                                )
+                            Text("P\(place)")
+                                .font(.system(size: 20, weight: .black, design: .rounded))
+                                .foregroundColor(placeColor(place))
+                        }
+                        .frame(height: podiumBlockHeight(for: place))
                     }
-                    ZStack {
-                        Circle()
-                            .fill(Color.ftCard)
-                            .frame(width: place == 1 ? 84 : 64, height: place == 1 ? 84 : 64)
-                            .overlay(
-                                Circle().stroke(placeColor(place), lineWidth: place == 1 ? 3 : 2)
-                            )
-                        Text(String(entry.username.prefix(1)).uppercased())
-                            .font(.system(size: place == 1 ? 28 : 20, weight: .bold))
-                    }
-                    Text(entry.username).font(.system(size: 13, weight: .semibold)).lineLimit(1)
-                    Text(formattedValue(entry.value, metric: metric))
-                        .font(.system(size: 13, weight: .bold)).foregroundColor(placeColor(place))
-                    Text("\(place)")
-                        .font(.system(size: 16, weight: .bold))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 6)
-                        .background(placeColor(place).opacity(place == 1 ? 0.25 : 0.15))
-                        .foregroundColor(placeColor(place))
-                        .cornerRadius(10)
+                    .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
             }
+            .padding(.horizontal)
+
+            PodiumCheckeredStripe()
+                .frame(height: 7)
+                .padding(.horizontal, 24)
         }
-        .padding(.horizontal)
+    }
+
+    /// P1 tallest in the center, P2 medium, P3 shortest — an actual
+    /// podium silhouette rather than three same-height pills.
+    private func podiumBlockHeight(for place: Int) -> CGFloat {
+        switch place {
+        case 1: return 72
+        case 2: return 52
+        default: return 36
+        }
     }
 
     private func placeColor(_ place: Int) -> Color {
@@ -285,3 +314,21 @@ struct YourRankRow: View {
 
 
 
+
+
+/// A small checkered-flag accent beneath the podium — deliberately a
+/// self-contained copy rather than reusing F1StartingLightsView's private
+/// stripe, since that one is scoped to a different file and column count.
+private struct PodiumCheckeredStripe: View {
+    private let columns = 20
+    var body: some View {
+        GeometryReader { geo in
+            HStack(spacing: 0) {
+                ForEach(0..<columns, id: \.self) { i in
+                    Rectangle().fill(i.isMultiple(of: 2) ? Color.white.opacity(0.8) : Color.black.opacity(0.8))
+                }
+            }
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 3))
+    }
+}
