@@ -21,6 +21,7 @@ struct SettingsView: View {
                             )) {
                                 Text(NSLocalizedString("settings.language.english", comment: "")).tag("en")
                                 Text(NSLocalizedString("settings.language.arabic", comment: "")).tag("ar")
+                                Text(NSLocalizedString("settings.language.spanish", comment: "")).tag("es")
                             }
                             .pickerStyle(.segmented)
                         }
@@ -118,5 +119,6 @@ class SettingsViewModel: ObservableObject {
         }
     }
 }
+
 
 
