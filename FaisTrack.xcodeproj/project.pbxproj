@@ -56,6 +56,7 @@
 		98F546126BBA43D298391728 /* ChooseUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15600C92CCB54E9CBAAE4816 /* ChooseUsernameView.swift */; };
 		8AD94ACB99131DF46A78A926 /* PolylineCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537648BB94ADB4C179ECC0EA /* PolylineCodec.swift */; };
 		92764D9182A65359A47D21D8 /* TrackDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C294CE588E615E815964EF5 /* TrackDetailView.swift */; };
+		ED8F26C6B5714496A668707C /* ElevationProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0AB5DAE9454D1597867F8B /* ElevationProfileView.swift */; };
 		5FE6F0EAE3F34A85A029D754 /* RivalTotals.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABA7ACA0BB846C6B96FEDC9 /* RivalTotals.swift */; };
 		092855B034E54680B1613548 /* RivalCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7F340DB22E4074AB6262EF /* RivalCardView.swift */; };
 		74AEDF35235B49D183630DCD /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D44ADE5FA4BF5B85193A6 /* AchievementsView.swift */; };
@@ -124,6 +125,7 @@
 		678C2E972160475DA7598576 /* LeaderboardEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LeaderboardEntry.swift; path = LeaderboardEntry.swift; sourceTree = "<group>"; };
 		160D9EE901324E59A8C89DF0 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Friend.swift; path = Friend.swift; sourceTree = "<group>"; };
 		6C294CE588E615E815964EF5 /* TrackDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TrackDetailView.swift; path = FaisTrack/Modules/Tracks/TrackDetailView.swift; sourceTree = SOURCE_ROOT; };
+		AE0AB5DAE9454D1597867F8B /* ElevationProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ElevationProfileView.swift; path = "FaisTrack/Modules/Tracks/ElevationProfileView.swift"; sourceTree = SOURCE_ROOT; };
 		0EEB60D0B4004503A587410E /* AdminTrackMapPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AdminTrackMapPicker.swift; path = FaisTrack/Modules/Tracks/AdminTrackMapPicker.swift; sourceTree = SOURCE_ROOT; };
 		06FE29F3BA9A4DCFA88E20E1 /* AdminCreateTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AdminCreateTrackView.swift; path = FaisTrack/Modules/Tracks/AdminCreateTrackView.swift; sourceTree = SOURCE_ROOT; };
 		C56BF1D7208A4128B335D332 /* TrackShareCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TrackShareCardView.swift; path = FaisTrack/Modules/Tracks/TrackShareCardView.swift; sourceTree = SOURCE_ROOT; };
@@ -261,6 +263,7 @@
 				E11D4C36B493CB7EB8C915F8 /* TracksOverviewMapView.swift */,
 				D9994164A22A2BBB9852771E /* TracksView.swift */,
 				6C294CE588E615E815964EF5 /* TrackDetailView.swift */,
+				AE0AB5DAE9454D1597867F8B /* ElevationProfileView.swift */,
 				0EEB60D0B4004503A587410E /* AdminTrackMapPicker.swift */,
 				06FE29F3BA9A4DCFA88E20E1 /* AdminCreateTrackView.swift */,
 				C56BF1D7208A4128B335D332 /* TrackShareCardView.swift */,
@@ -605,6 +608,7 @@
 				A6B04BCEA198DE903E2CBB72 /* TracksOverviewMapView.swift in Sources */,
 				DC004B8896319E7E1AFC372F /* TracksView.swift in Sources */,
 				92764D9182A65359A47D21D8 /* TrackDetailView.swift in Sources */,
+				ED8F26C6B5714496A668707C /* ElevationProfileView.swift in Sources */,
 				5FE6F0EAE3F34A85A029D754 /* RivalTotals.swift in Sources */,
 				092855B034E54680B1613548 /* RivalCardView.swift in Sources */,
 				74AEDF35235B49D183630DCD /* AchievementsView.swift in Sources */,
@@ -745,6 +749,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
