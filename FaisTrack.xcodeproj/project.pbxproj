@@ -43,6 +43,7 @@
 		25C50220461F4263BA9378A2 /* DriftingCarEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774EEB5DC79347D99802D47B /* DriftingCarEffectView.swift */; };
 		9F8B8EBC643242AF9DBDFC7E /* SpeedActionLinesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253D971C921543258FC56184 /* SpeedActionLinesView.swift */; };
 		EA1BF75FD8BA4B758AC1E0C4 /* F1StartingLightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2908F1257694B9A940A321D /* F1StartingLightsView.swift */; };
+		D1EF67B98B534E34A3ED4336 /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FD56D0CAEE4A97921D3CD6 /* ToastManager.swift */; };
 		D93BC3D120AC40878FF1EA23 /* RouteTraceShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00FA0A553348F387F85125 /* RouteTraceShape.swift */; };
 		64B87DC332F441FEB203BC97 /* StaggeredAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6179ED6C7384416A39CCD36 /* StaggeredAppear.swift */; };
 		6E70056B17604A09A573478C /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3667A7FC0FE43538C7858D0 /* LeaderboardService.swift */; };
@@ -80,6 +81,7 @@
 		A6B04BCEA198DE903E2CBB72 /* TracksOverviewMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11D4C36B493CB7EB8C915F8 /* TracksOverviewMapView.swift */; };
 		A8B392A7762C48B88F881F41 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF705C9F040B459F894A64E8 /* LeaderboardView.swift */; };
 		B34E5C4A39074218A783CC37 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82E1472DA9B48B89905579F /* MainTabView.swift */; };
+		F762C672658141E99E9A873D /* WhatsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53FC8D37FD4C5D837C02FC /* WhatsNewView.swift */; };
 		B9E141268CB86CE45047A700 /* TrackResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD764AB886DC1805AD206266 /* TrackResult.swift */; };
 		C3052B926FA24C2B885B4624 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EEA8E815214FC7BF672B88 /* Colors.swift */; };
 		C82AF52043754C5AA74EE75F /* SafetyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237EEC5C298E4C49A064A9FF /* SafetyView.swift */; };
@@ -165,6 +167,7 @@
 		774EEB5DC79347D99802D47B /* DriftingCarEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DriftingCarEffectView.swift; path = Components/DriftingCarEffectView.swift; sourceTree = "<group>"; };
 		253D971C921543258FC56184 /* SpeedActionLinesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SpeedActionLinesView.swift; path = Components/SpeedActionLinesView.swift; sourceTree = "<group>"; };
 		A2908F1257694B9A940A321D /* F1StartingLightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = F1StartingLightsView.swift; path = Components/F1StartingLightsView.swift; sourceTree = "<group>"; };
+		46FD56D0CAEE4A97921D3CD6 /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ToastManager.swift; path = Components/ToastManager.swift; sourceTree = "<group>"; };
 		BB00FA0A553348F387F85125 /* RouteTraceShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RouteTraceShape.swift; path = Components/RouteTraceShape.swift; sourceTree = "<group>"; };
 		A6179ED6C7384416A39CCD36 /* StaggeredAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StaggeredAppear.swift; path = Components/StaggeredAppear.swift; sourceTree = "<group>"; };
 		C6BF4A5613304A679C499225 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FirebaseService.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
@@ -186,6 +189,7 @@
 		E08F88EEB0ED4666A8985FBB /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FriendsView.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		E11D4C36B493CB7EB8C915F8 /* TracksOverviewMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TracksOverviewMapView.swift; path = FaisTrack/Modules/Tracks/TracksOverviewMapView.swift; sourceTree = SOURCE_ROOT; };
 		E82E1472DA9B48B89905579F /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabView.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		3B53FC8D37FD4C5D837C02FC /* WhatsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WhatsNewView.swift; path = WhatsNewView.swift; sourceTree = "<group>"; };
 		E84F9BC4EF28468C80AD35BB /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationService.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E8F1286197734A37A2FD2FE4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E98D41A499B592656D29632C /* SpeedLinesBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SpeedLinesBackground.swift; path = FaisTrack/DesignSystem/Components/SpeedLinesBackground.swift; sourceTree = SOURCE_ROOT; };
@@ -404,6 +408,7 @@
 				F23F3C66B46D45C89DB80A52 /* AppState.swift */,
 				DBCC1483973240D69E85323F /* FaisTrackApp.swift */,
 				E82E1472DA9B48B89905579F /* MainTabView.swift */,
+				3B53FC8D37FD4C5D837C02FC /* WhatsNewView.swift */,
 				52888D24069445E6A16750A5 /* RootView.swift */,
 				AA0DCAF9AA86460C81479042 /* IntroVideoView.swift */,
 				50C8103342314EAE8C93B993 /* FlameWelcomeText.swift */,
@@ -450,6 +455,7 @@
 				774EEB5DC79347D99802D47B /* DriftingCarEffectView.swift */,
 				253D971C921543258FC56184 /* SpeedActionLinesView.swift */,
 				A2908F1257694B9A940A321D /* F1StartingLightsView.swift */,
+				46FD56D0CAEE4A97921D3CD6 /* ToastManager.swift */,
 				BB00FA0A553348F387F85125 /* RouteTraceShape.swift */,
 				A6179ED6C7384416A39CCD36 /* StaggeredAppear.swift */,
 				E98D41A499B592656D29632C /* SpeedLinesBackground.swift */,
@@ -550,6 +556,7 @@
 				CA72974A8FFF409491DA4BEF /* AppState.swift in Sources */,
 				A49AE6B22B144242A89CA19D /* FaisTrackApp.swift in Sources */,
 				B34E5C4A39074218A783CC37 /* MainTabView.swift in Sources */,
+				F762C672658141E99E9A873D /* WhatsNewView.swift in Sources */,
 				31DF0CF53A504CB0B7094EC8 /* RootView.swift in Sources */,
 				349435386BA54F5883C6DC7B /* IntroVideoView.swift in Sources */,
 				CCC33519367E4541BD9C6068 /* FlameWelcomeText.swift in Sources */,
@@ -561,6 +568,7 @@
 				25C50220461F4263BA9378A2 /* DriftingCarEffectView.swift in Sources */,
 				9F8B8EBC643242AF9DBDFC7E /* SpeedActionLinesView.swift in Sources */,
 				EA1BF75FD8BA4B758AC1E0C4 /* F1StartingLightsView.swift in Sources */,
+				D1EF67B98B534E34A3ED4336 /* ToastManager.swift in Sources */,
 				D93BC3D120AC40878FF1EA23 /* RouteTraceShape.swift in Sources */,
 				64B87DC332F441FEB203BC97 /* StaggeredAppear.swift in Sources */,
 				2942245D9C894AA887DB445C /* Car.swift in Sources */,
@@ -753,6 +761,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
