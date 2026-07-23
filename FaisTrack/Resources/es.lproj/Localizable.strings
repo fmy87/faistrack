@@ -494,3 +494,15 @@
 
 // MARK: - Achievement celebration
 "achievements.unlocked" = "¡Logro desbloqueado!";
+
+
+// MARK: - Subscription paywall
+"pro.unavailable" = "Las suscripciones no están disponibles en este momento. Inténtalo más tarde.";
+"pro.subscribe" = "Suscribirse";
+"pro.restore" = "Restaurar compras";
+"pro.terms" = "Términos de uso";
+"pro.privacy" = "Política de privacidad";
+"pro.trial.days" = "Prueba gratuita de %d días";
+"pro.trial.weeks" = "Prueba gratuita de %d semanas";
+"pro.trial.months" = "Prueba gratuita de %d meses";
+"pro.trial.years" = "Prueba gratuita de %d años";
