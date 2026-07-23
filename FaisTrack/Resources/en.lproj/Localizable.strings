@@ -487,3 +487,10 @@
 "whatsNew.legend.title" = "Track Legend";
 "whatsNew.legend.desc" = "Hold a record for 30+ days and earn permanent recognition.";
 
+
+
+// MARK: - Alternate app icons
+"settings.appIcon" = "App Icon";
+"settings.icon.classic" = "Classic";
+"settings.icon.midnight" = "Midnight";
+"settings.icon.checkered" = "Checkered";
