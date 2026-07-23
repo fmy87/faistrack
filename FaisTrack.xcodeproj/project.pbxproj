@@ -70,6 +70,11 @@
 		A1CCE70606074AD8BE3FC738 /* TrackShareCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56BF1D7208A4128B335D332 /* TrackShareCardView.swift */; };
 		958B4F73B01421F147B9A69A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77294006A9F95692DBAECD08 /* GoogleService-Info.plist */; };
 		3459A091DCDD4170A371A5FB /* GTR_Burnout.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1F1DFFD7EF9B474A81E67973 /* GTR_Burnout.mp4 */; };
+		7CD9D50C3B50444BA2E54E32 /* AppIconClassic-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C17E52DFD12494F95DCB4EB /* AppIconClassic-180.png */; };
+		B630878281514F2A80E87DCA /* AppIconMidnight-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 0952815FECED4AC6A240E099 /* AppIconMidnight-120.png */; };
+		03C6F3034E864F5299F85391 /* AppIconMidnight-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BB4D82D826B443B879E768D /* AppIconMidnight-180.png */; };
+		2F0CCBE9F68E4DA0A0D2FB4E /* AppIconCheckered-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 578BA24DA7594AC1971D638A /* AppIconCheckered-120.png */; };
+		810B2664F02F4464AD4CD0AA /* AppIconCheckered-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B4BA94360C0490F8BB13DF9 /* AppIconCheckered-180.png */; };
 		9859C4FE0C17401CBF4BF296 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC41065721DB4C75872B45D9 /* StatsView.swift */; };
 		08A1298908CF4296940C7A87 /* MonthlyRecapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4989DD8942D4F0692A782A3 /* MonthlyRecapView.swift */; };
 		F55CCB0D07E14545B9E9F4DE /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C337DB3C72CD454A8A80878F /* StatsViewModel.swift */; };
@@ -141,6 +146,11 @@
 		76C781CC8A1E416FB07FA782 /* StoreKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StoreKitService.swift; path = StoreKitService.swift; sourceTree = "<group>"; };
 		77294006A9F95692DBAECD08 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "FaisTrack/Supporting/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1F1DFFD7EF9B474A81E67973 /* GTR_Burnout.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "GTR_Burnout.mp4"; path = "FaisTrack/Supporting/GTR_Burnout.mp4"; sourceTree = SOURCE_ROOT; };
+		9C17E52DFD12494F95DCB4EB /* AppIconClassic-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIconClassic-180.png"; path = "FaisTrack/Supporting/AppIconClassic-180.png"; sourceTree = SOURCE_ROOT; };
+		0952815FECED4AC6A240E099 /* AppIconMidnight-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIconMidnight-120.png"; path = "FaisTrack/Supporting/AppIconMidnight-120.png"; sourceTree = SOURCE_ROOT; };
+		5BB4D82D826B443B879E768D /* AppIconMidnight-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIconMidnight-180.png"; path = "FaisTrack/Supporting/AppIconMidnight-180.png"; sourceTree = SOURCE_ROOT; };
+		578BA24DA7594AC1971D638A /* AppIconCheckered-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIconCheckered-120.png"; path = "FaisTrack/Supporting/AppIconCheckered-120.png"; sourceTree = SOURCE_ROOT; };
+		6B4BA94360C0490F8BB13DF9 /* AppIconCheckered-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIconCheckered-180.png"; path = "FaisTrack/Supporting/AppIconCheckered-180.png"; sourceTree = SOURCE_ROOT; };
 		78EEA8E815214FC7BF672B88 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Colors.swift; path = Colors.swift; sourceTree = "<group>"; };
 		7F05496C97F077B4C7CDD701 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileView.swift; path = FaisTrack/Modules/Profile/ProfileView.swift; sourceTree = SOURCE_ROOT; };
 		750D44ADE5FA4BF5B85193A6 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AchievementsView.swift; path = "FaisTrack/Modules/Profile/AchievementsView.swift"; sourceTree = SOURCE_ROOT; };
@@ -246,6 +256,11 @@
 			children = (
 				77294006A9F95692DBAECD08 /* GoogleService-Info.plist */,
 				1F1DFFD7EF9B474A81E67973 /* GTR_Burnout.mp4 */,
+				9C17E52DFD12494F95DCB4EB /* AppIconClassic-180.png */,
+				0952815FECED4AC6A240E099 /* AppIconMidnight-120.png */,
+				5BB4D82D826B443B879E768D /* AppIconMidnight-180.png */,
+				578BA24DA7594AC1971D638A /* AppIconCheckered-120.png */,
+				6B4BA94360C0490F8BB13DF9 /* AppIconCheckered-180.png */,
 			);
 			name = Supporting;
 			path = Supporting;
@@ -544,6 +559,11 @@
 				A41D0873F51A4FFA8B7E1D84 /* Localizable.strings in Resources */,
 				958B4F73B01421F147B9A69A /* GoogleService-Info.plist in Resources */,
 				3459A091DCDD4170A371A5FB /* GTR_Burnout.mp4 in Resources */,
+				7CD9D50C3B50444BA2E54E32 /* AppIconClassic-180.png in Resources */,
+				B630878281514F2A80E87DCA /* AppIconMidnight-120.png in Resources */,
+				03C6F3034E864F5299F85391 /* AppIconMidnight-180.png in Resources */,
+				2F0CCBE9F68E4DA0A0D2FB4E /* AppIconCheckered-120.png in Resources */,
+				810B2664F02F4464AD4CD0AA /* AppIconCheckered-180.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -764,6 +784,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
