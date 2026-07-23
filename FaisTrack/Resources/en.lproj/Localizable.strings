@@ -451,3 +451,7 @@
 "compete.vsGhost" = "vs. Record Pace";
 "trackLegend.title" = "Track Legend";
 "trackLegend.subtitle" = "You've held this record for 30+ days";
+
+
+// MARK: - Elevation profile
+"track.elevation" = "Elevation";
