@@ -17,7 +17,11 @@ struct RaceMapView: UIViewRepresentable {
         mapView.pointOfInterestFilter = .excludingAll
         mapView.isRotateEnabled = false
         mapView.showsUserLocation = true
-        mapView.userTrackingMode = .follow
+        // .followWithHeading rotates both the map and the user's location
+        // marker to face the direction of travel — the same behavior
+        // Waze/Google Maps use in driving mode, rather than a static dot
+        // that doesn't communicate which way you're actually pointed.
+        mapView.userTrackingMode = .followWithHeading
         return mapView
     }
 
@@ -67,3 +71,4 @@ struct RaceMapView: UIViewRepresentable {
         }
     }
 }
+
