@@ -164,8 +164,14 @@ class FriendsViewModel: ObservableObject {
         rivalUID = newRival
         do {
             try await FirebaseService.shared.setRival(uid: uid, rivalUID: newRival)
+            if newRival != nil {
+                ToastManager.shared.showSuccess(String(format: NSLocalizedString("toast.rivalSet", comment: ""), friend.username))
+            } else {
+                ToastManager.shared.showInfo(NSLocalizedString("toast.rivalCleared", comment: ""))
+            }
         } catch {
             rivalUID = previous
+            ToastManager.shared.showError(NSLocalizedString("toast.rivalFailed", comment: ""))
         }
     }
 
@@ -202,9 +208,11 @@ class FriendsViewModel: ObservableObject {
         requests.removeAll { $0.id == request.id }
         do {
             try await FirebaseService.shared.acceptFriendRequest(uid: uid, myUsername: me.username, myPhotoURL: me.photoURL, request: request)
+            ToastManager.shared.showSuccess(String(format: NSLocalizedString("toast.friendAdded", comment: ""), request.fromUsername))
             await load()
         } catch {
             requests.append(request) // put it back if the accept failed
+            ToastManager.shared.showError(NSLocalizedString("toast.friendAddFailed", comment: ""))
         }
     }
 
@@ -223,5 +231,6 @@ class FriendsViewModel: ObservableObject {
         }
     }
 }
+
 
 
