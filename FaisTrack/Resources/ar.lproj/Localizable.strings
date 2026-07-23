@@ -487,3 +487,10 @@
 "whatsNew.legend.title" = "أسطورة المضمار";
 "whatsNew.legend.desc" = "احتفظ برقم قياسي لأكثر من 30 يومًا واكسب تقديرًا دائمًا.";
 
+
+
+// MARK: - Alternate app icons
+"settings.appIcon" = "أيقونة التطبيق";
+"settings.icon.classic" = "كلاسيكي";
+"settings.icon.midnight" = "منتصف الليل";
+"settings.icon.checkered" = "علم متقاطع";
