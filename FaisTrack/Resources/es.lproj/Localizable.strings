@@ -490,3 +490,7 @@
 "settings.icon.classic" = "Clásico";
 "settings.icon.midnight" = "Medianoche";
 "settings.icon.checkered" = "A cuadros";
+
+
+// MARK: - Achievement celebration
+"achievements.unlocked" = "¡Logro desbloqueado!";
