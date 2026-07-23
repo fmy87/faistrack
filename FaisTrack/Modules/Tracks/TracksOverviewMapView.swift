@@ -88,11 +88,21 @@ struct TracksOverviewMapView: UIViewRepresentable {
         }
 
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-            guard annotation is TrackAnnotation else { return nil }
+            guard let trackAnnotation = annotation as? TrackAnnotation else { return nil }
             let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "track")
-            view.markerTintColor = UIColor(red: 1.0, green: 0.176, blue: 0.176, alpha: 1.0)
-            view.glyphImage = UIImage(systemName: "flag.checkered")
+            // Gold marks a track this account currently holds the record
+            // on — Strava-segment-style recognition right on the overview
+            // map, not just buried on the track's own detail page.
+            let iHoldRecord = trackAnnotation.track.bestTimeUid == AuthService.shared.currentUser?.uid
+            view.markerTintColor = iHoldRecord
+                ? UIColor.systemYellow
+                : UIColor(red: 1.0, green: 0.176, blue: 0.176, alpha: 1.0)
+            view.glyphImage = UIImage(systemName: iHoldRecord ? "crown.fill" : "flag.checkered")
             view.canShowCallout = true
+            // Lets MapKit automatically collapse overlapping markers into a
+            // count bubble as tracks accumulate close together, rather
+            // than a cluttered pile of unreadable pins at low zoom levels.
+            view.clusteringIdentifier = "track"
             return view
         }
 
@@ -105,5 +115,6 @@ struct TracksOverviewMapView: UIViewRepresentable {
         }
     }
 }
+
 
 
