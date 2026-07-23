@@ -1,0 +1,142 @@
+{
+  "identifier" : "5387F5A6-E247-464E-BB6A-E3B2C8FC8E71",
+  "nonRenewingSubscriptions" : [],
+  "products" : [],
+  "settings" : {
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "B7E39F67-13F3-44C3-8247-2558E4A7C83B",
+      "localizations" : [
+        {
+          "description" : "Unlock unlimited tracks, the full leaderboard, and every personal best.",
+          "displayName" : "FaisTrack Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "name" : "FaisTrack Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "1.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "0405998B-E325-4A71-9979-6B539CF47414",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Weekly access to all Pro features.",
+              "displayName" : "Pro Weekly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.faistrack.app.pro.weekly",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Pro Weekly",
+          "subscriptionGroupID" : "B7E39F67-13F3-44C3-8247-2558E4A7C83B",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "E8BD53A3-EBBC-450D-AFE3-10018B226FEB",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Monthly access to all Pro features.",
+              "displayName" : "Pro Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.faistrack.app.pro.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Pro Monthly",
+          "subscriptionGroupID" : "B7E39F67-13F3-44C3-8247-2558E4A7C83B",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "39.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "9896B57C-14DF-461D-946F-B10CCCE2D44F",
+          "introductoryOffer" : {
+            "internalID" : "2CBD76D6-8F99-43DC-809D-5F85D0C04DA8",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Yearly access to all Pro features — includes a 7-day free trial.",
+              "displayName" : "Pro Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.faistrack.app.pro.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Pro Yearly",
+          "subscriptionGroupID" : "B7E39F67-13F3-44C3-8247-2558E4A7C83B",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
