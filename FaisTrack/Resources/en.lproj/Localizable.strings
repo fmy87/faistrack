@@ -460,3 +460,28 @@
 // MARK: - Lap-time progression chart
 "track.progression" = "Your Progression";
 "track.progression.attempts" = "%d attempts";
+
+
+// MARK: - Toast messages
+"toast.trackSaved" = "Track saved!";
+"toast.newRecord" = "🏆 New Record!";
+"toast.rivalSet" = "Rival set to @%@";
+"toast.rivalCleared" = "Rival cleared";
+"toast.rivalFailed" = "Couldn't set rival. Try again.";
+"toast.friendAdded" = "You and @%@ are now friends!";
+"toast.friendAddFailed" = "Couldn't accept request. Try again.";
+"toast.usernameSaved" = "Username updated!";
+
+// MARK: - What's New sheet
+"whatsNew.title" = "What's New";
+"whatsNew.gotIt" = "Got It";
+"whatsNew.rival.title" = "Rival System";
+"whatsNew.rival.desc" = "Pick a friend as your rival and see a live head-to-head comparison.";
+"whatsNew.achievements.title" = "Achievements";
+"whatsNew.achievements.desc" = "Unlock milestones as you drive, create tracks, and build your record.";
+"whatsNew.ghost.title" = "Ghost Racing";
+"whatsNew.ghost.desc" = "Race against a live ghost of the track record, not just a final time.";
+"whatsNew.heatmap.title" = "Speed Heatmaps";
+"whatsNew.heatmap.desc" = "See exactly where you were fastest — and slowest — on every track.";
+"whatsNew.legend.title" = "Track Legend";
+"whatsNew.legend.desc" = "Hold a record for 30+ days and earn permanent recognition.";
