@@ -494,3 +494,7 @@
 "settings.icon.classic" = "Classic";
 "settings.icon.midnight" = "Midnight";
 "settings.icon.checkered" = "Checkered";
+
+
+// MARK: - Achievement celebration
+"achievements.unlocked" = "Achievement Unlocked!";
