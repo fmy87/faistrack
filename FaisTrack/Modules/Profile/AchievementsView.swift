@@ -139,6 +139,47 @@ class AchievementsViewModel: ObservableObject {
                         description: NSLocalizedString("achievements.socialButterfly.desc", comment: ""),
                         isUnlocked: friendsCount >= 5)
         ]
+        detectNewUnlocks()
         isLoading = false
     }
+
+    /// Achievements are computed fresh every load rather than persisted as
+    /// "unlocked" flags — so the only way to know something was *just*
+    /// unlocked (worth celebrating) rather than unlocked ages ago (not
+    /// worth celebrating again) is to remember which IDs were already seen
+    /// unlocked, and compare against that on each load.
+    private static let seenUnlockedKey = "achievementsSeenUnlocked"
+
+    private func detectNewUnlocks() {
+        let seenArray = UserDefaults.standard.stringArray(forKey: Self.seenUnlockedKey)
+        // No baseline recorded yet — this is the very first time this
+        // screen has ever loaded for this account. Every already-earned
+        // achievement would otherwise look "new," which would incorrectly
+        // celebrate things done ages ago. Just establish the baseline
+        // silently instead.
+        guard let seenArray else {
+            let allCurrentlyUnlocked = achievements.filter(\.isUnlocked).map(\.id)
+            UserDefaults.standard.set(allCurrentlyUnlocked, forKey: Self.seenUnlockedKey)
+            return
+        }
+
+        var seen = Set(seenArray)
+        let newlyUnlocked = achievements.filter { $0.isUnlocked && !seen.contains($0.id) }
+        for achievement in newlyUnlocked {
+            seen.insert(achievement.id)
+        }
+        guard !newlyUnlocked.isEmpty else { return }
+        UserDefaults.standard.set(Array(seen), forKey: Self.seenUnlockedKey)
+        // Only celebrate the first one found in a batch — if several were
+        // met at once, showing multiple consecutive full-screen
+        // celebrations would be more overwhelming than exciting.
+        if let first = newlyUnlocked.first {
+            CelebrationManager.shared.celebrate(
+                icon: first.icon,
+                title: NSLocalizedString("achievements.unlocked", comment: ""),
+                subtitle: first.title
+            )
+        }
+    }
 }
+
