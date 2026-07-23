@@ -223,6 +223,7 @@
 "settings.language" = "اللغة";
 "settings.language.english" = "English";
 "settings.language.arabic" = "العربية";
+"settings.language.spanish" = "الإسبانية";
 "settings.units" = "وحدات القياس";
 "settings.units.km" = "كيلومتر";
 "settings.units.mi" = "ميل";
@@ -485,3 +486,4 @@
 "whatsNew.heatmap.desc" = "شاهد بالضبط أين كنت الأسرع — والأبطأ — في كل مضمار.";
 "whatsNew.legend.title" = "أسطورة المضمار";
 "whatsNew.legend.desc" = "احتفظ برقم قياسي لأكثر من 30 يومًا واكسب تقديرًا دائمًا.";
+
