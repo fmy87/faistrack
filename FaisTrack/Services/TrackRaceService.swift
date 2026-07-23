@@ -173,6 +173,14 @@ class TrackRaceService: NSObject, ObservableObject {
         raceTimer?.invalidate()
         state = .finished(duration: duration)
 
+        // `track.bestTime` reflects whatever it was when this race began
+        // (see beginApproaching) — comparing against it here, before the
+        // save even completes, is what lets the celebration fire the
+        // instant the race ends rather than waiting on a round trip.
+        if duration < (track.bestTime ?? .infinity) {
+            ToastManager.shared.showAchievement(NSLocalizedString("toast.newRecord", comment: ""))
+        }
+
         Task {
             let username = (try? await FirebaseService.shared.getUser(uid: uid))?.username
                 ?? NSLocalizedString("general.defaultUsername", comment: "")
@@ -211,6 +219,7 @@ class TrackRaceService: NSObject, ObservableObject {
         lastTelemetrySampleTime = nil
     }
 }
+
 
 
 
