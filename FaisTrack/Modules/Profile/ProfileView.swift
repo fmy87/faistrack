@@ -329,8 +329,10 @@ class ProfileViewModel: ObservableObject {
             user?.username = candidate
             usernameInput = candidate
             usernameAvailable = nil
+            ToastManager.shared.showSuccess(NSLocalizedString("toast.usernameSaved", comment: ""))
         } catch {
             errorMessage = error.localizedDescription
+            ToastManager.shared.showError(error.localizedDescription)
         }
         isSavingUsername = false
     }
@@ -358,6 +360,7 @@ class ProfileViewModel: ObservableObject {
         }
     }
 }
+
 
 
 
