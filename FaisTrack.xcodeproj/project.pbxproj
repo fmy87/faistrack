@@ -159,6 +159,7 @@
 		4B830D61F8F74B9FA92BF458 /* DriverRank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DriverRank.swift; path = "FaisTrack/Models/DriverRank.swift"; sourceTree = SOURCE_ROOT; };
 		04907BF937DB4250A0861B49 /* TelemetryPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TelemetryPoint.swift; path = "FaisTrack/Models/TelemetryPoint.swift"; sourceTree = SOURCE_ROOT; };
 		BCCCC5CB092D4EE3B84BC93B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7BFE47220D714378951EF1E1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C091A9B7C6214939AE4B3F51 /* Drive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Drive.swift; path = Drive.swift; sourceTree = "<group>"; };
 		C35A73C6543E41E29E0BEA20 /* CarPlaySceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CarPlaySceneDelegate.swift; path = CarPlaySceneDelegate.swift; sourceTree = "<group>"; };
 		C487198D8A01473183A748C3 /* DriveDetectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DriveDetectionService.swift; path = DriveDetectionService.swift; sourceTree = "<group>"; };
@@ -521,6 +522,7 @@
 				Base,
 				en,
 				ar,
+				es,
 			);
 			mainGroup = 87C6D23543A64F1F88100913 /*  */;
 			productRefGroup = C4CCD5F0977F44F6B41D14BB /* Products */;
@@ -650,6 +652,7 @@
 			children = (
 				E8F1286197734A37A2FD2FE4 /* en */,
 				BCCCC5CB092D4EE3B84BC93B /* ar */,
+				7BFE47220D714378951EF1E1 /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -761,6 +764,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
