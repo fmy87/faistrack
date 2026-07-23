@@ -201,10 +201,18 @@ private struct AppIconOptionButton: View {
     private func select() {
         guard !isCurrent else { return }
         UIApplication.shared.setAlternateIconName(option.iconName) { error in
-            if let error {
-                ToastManager.shared.showError(error.localizedDescription)
-            } else {
-                currentIcon = option.iconName
+            // setAlternateIconName's completion handler runs on an
+            // unspecified thread per Apple's docs — not guaranteed to be
+            // the main thread. Both the ToastManager call (which is
+            // @MainActor) and mutating currentIcon (SwiftUI state) need to
+            // happen on the main actor, so this hops there explicitly
+            // rather than assuming the callback already is.
+            Task { @MainActor in
+                if let error {
+                    ToastManager.shared.showError(error.localizedDescription)
+                } else {
+                    currentIcon = option.iconName
+                }
             }
         }
     }
