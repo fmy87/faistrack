@@ -44,6 +44,7 @@
 		9F8B8EBC643242AF9DBDFC7E /* SpeedActionLinesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253D971C921543258FC56184 /* SpeedActionLinesView.swift */; };
 		EA1BF75FD8BA4B758AC1E0C4 /* F1StartingLightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2908F1257694B9A940A321D /* F1StartingLightsView.swift */; };
 		D1EF67B98B534E34A3ED4336 /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FD56D0CAEE4A97921D3CD6 /* ToastManager.swift */; };
+		46502BCA3ED644C9B5F0D251 /* CelebrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A642AA36F0A0488981CBAD58 /* CelebrationManager.swift */; };
 		D93BC3D120AC40878FF1EA23 /* RouteTraceShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00FA0A553348F387F85125 /* RouteTraceShape.swift */; };
 		64B87DC332F441FEB203BC97 /* StaggeredAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6179ED6C7384416A39CCD36 /* StaggeredAppear.swift */; };
 		6E70056B17604A09A573478C /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3667A7FC0FE43538C7858D0 /* LeaderboardService.swift */; };
@@ -179,6 +180,7 @@
 		253D971C921543258FC56184 /* SpeedActionLinesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SpeedActionLinesView.swift; path = Components/SpeedActionLinesView.swift; sourceTree = "<group>"; };
 		A2908F1257694B9A940A321D /* F1StartingLightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = F1StartingLightsView.swift; path = Components/F1StartingLightsView.swift; sourceTree = "<group>"; };
 		46FD56D0CAEE4A97921D3CD6 /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ToastManager.swift; path = Components/ToastManager.swift; sourceTree = "<group>"; };
+		A642AA36F0A0488981CBAD58 /* CelebrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CelebrationManager.swift; path = Components/CelebrationManager.swift; sourceTree = "<group>"; };
 		BB00FA0A553348F387F85125 /* RouteTraceShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RouteTraceShape.swift; path = Components/RouteTraceShape.swift; sourceTree = "<group>"; };
 		A6179ED6C7384416A39CCD36 /* StaggeredAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StaggeredAppear.swift; path = Components/StaggeredAppear.swift; sourceTree = "<group>"; };
 		C6BF4A5613304A679C499225 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FirebaseService.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
@@ -472,6 +474,7 @@
 				253D971C921543258FC56184 /* SpeedActionLinesView.swift */,
 				A2908F1257694B9A940A321D /* F1StartingLightsView.swift */,
 				46FD56D0CAEE4A97921D3CD6 /* ToastManager.swift */,
+				A642AA36F0A0488981CBAD58 /* CelebrationManager.swift */,
 				BB00FA0A553348F387F85125 /* RouteTraceShape.swift */,
 				A6179ED6C7384416A39CCD36 /* StaggeredAppear.swift */,
 				E98D41A499B592656D29632C /* SpeedLinesBackground.swift */,
@@ -591,6 +594,7 @@
 				9F8B8EBC643242AF9DBDFC7E /* SpeedActionLinesView.swift in Sources */,
 				EA1BF75FD8BA4B758AC1E0C4 /* F1StartingLightsView.swift in Sources */,
 				D1EF67B98B534E34A3ED4336 /* ToastManager.swift in Sources */,
+				46502BCA3ED644C9B5F0D251 /* CelebrationManager.swift in Sources */,
 				D93BC3D120AC40878FF1EA23 /* RouteTraceShape.swift in Sources */,
 				64B87DC332F441FEB203BC97 /* StaggeredAppear.swift in Sources */,
 				2942245D9C894AA887DB445C /* Car.swift in Sources */,
@@ -784,6 +788,7 @@
 	};
 	rootObject = 8C0791BDDBFD41E1ADD42669 /* Project object */;
 }
+
 
 
 
