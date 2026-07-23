@@ -223,6 +223,7 @@
 "settings.language" = "Language";
 "settings.language.english" = "English";
 "settings.language.arabic" = "العربية";
+"settings.language.spanish" = "Español";
 "settings.units" = "Units";
 "settings.units.km" = "Kilometers";
 "settings.units.mi" = "Miles";
@@ -485,3 +486,4 @@
 "whatsNew.heatmap.desc" = "See exactly where you were fastest — and slowest — on every track.";
 "whatsNew.legend.title" = "Track Legend";
 "whatsNew.legend.desc" = "Hold a record for 30+ days and earn permanent recognition.";
+
