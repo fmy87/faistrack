@@ -38,6 +38,11 @@ struct MainTabView: View {
             // toast can appear over any tab or screen — not just wherever
             // it happened to be triggered from.
             ToastOverlayView()
+
+            // Mounted once here too, same reasoning as the toast overlay —
+            // a celebration needs to be able to appear over any screen,
+            // regardless of where the record/achievement happened.
+            CelebrationOverlayView()
         }
         .onAppear {
             // Returning users who are already logged in skip straight to
@@ -70,6 +75,7 @@ struct MainTabView: View {
         }
     }
 }
+
 
 
 
