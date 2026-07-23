@@ -21,4 +21,12 @@ struct TelemetryPoint: Codable {
     let lng: Double
     /// km/h at this sample.
     let s: Double
+    /// Meters above sea level, for the elevation profile chart. Optional
+    /// (not just given a default) because telemetry saved before this
+    /// field existed has no value for it at all — a plain default doesn't
+    /// help a synthesized Decodable when the key is genuinely missing,
+    /// only Optional does. Old records simply won't have an elevation
+    /// chart; nothing breaks decoding the rest of the point.
+    let alt: Double?
 }
+
