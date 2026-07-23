@@ -9,7 +9,10 @@ struct CreateTrackView: View {
     @State private var isSaving = false
     @State private var ownedTrackCount: Int?
     @State private var showPaywall = false
+    @State private var displayMode: DisplayMode = .speed
     var onCreated: (() -> Void)?
+
+    private enum DisplayMode { case speed, map }
 
     /// Free accounts can create a small number of tracks total; Pro and the
     /// admin account are unlimited. Checked before the countdown even
@@ -162,6 +165,21 @@ struct CreateTrackView: View {
 
     private func recordingView(elapsed: TimeInterval, distance: Double) -> some View {
         VStack(spacing: 28) {
+            HStack {
+                // Lets the creator watch the shape of the track they're
+                // carving out live, not just their speed — LiveDriveView
+                // already has this exact toggle for regular drives, so
+                // creating a track was the one live-tracking screen
+                // missing a map at all.
+                Picker("", selection: $displayMode) {
+                    Label(NSLocalizedString("liveDrive.speedTab", comment: ""), systemImage: "speedometer").tag(DisplayMode.speed)
+                    Label(NSLocalizedString("liveDrive.mapTab", comment: ""), systemImage: "map").tag(DisplayMode.map)
+                }
+                .pickerStyle(.segmented)
+                .frame(maxWidth: 220)
+                Spacer()
+            }
+
             // Small pill mirroring LiveDriveView's top "End Drive" pill —
             // this was missing before, which is why the two screens still
             // looked subtly different even after sharing the same gauge.
@@ -174,13 +192,19 @@ struct CreateTrackView: View {
                     .cornerRadius(14)
             }
 
-            ZStack {
-                SpeedActionLinesView(speedKmh: service.currentSpeedKmh, color: gaugeColor)
-                SpeedGaugeView(
-                    value: speedValue(service.currentSpeedKmh),
-                    unit: speedUnit,
-                    color: gaugeColor
-                )
+            if displayMode == .speed {
+                ZStack {
+                    SpeedActionLinesView(speedKmh: service.currentSpeedKmh, color: gaugeColor)
+                    SpeedGaugeView(
+                        value: speedValue(service.currentSpeedKmh),
+                        unit: speedUnit,
+                        color: gaugeColor
+                    )
+                }
+            } else {
+                RouteMapView(coordinates: service.routeCoordinates, liveFollow: true)
+                    .frame(height: 320)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
             }
 
             VStack(spacing: 4) {
@@ -238,6 +262,7 @@ struct CreateTrackView: View {
         }
     }
 }
+
 
 
 
