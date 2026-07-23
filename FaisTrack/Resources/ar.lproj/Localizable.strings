@@ -494,3 +494,7 @@
 "settings.icon.classic" = "كلاسيكي";
 "settings.icon.midnight" = "منتصف الليل";
 "settings.icon.checkered" = "علم متقاطع";
+
+
+// MARK: - Achievement celebration
+"achievements.unlocked" = "تم فتح إنجاز!";
