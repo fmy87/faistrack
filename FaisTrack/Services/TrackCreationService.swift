@@ -111,7 +111,7 @@ class TrackCreationService: NSObject, ObservableObject {
             telemetrySamples.append(TelemetryPoint(
                 d: distance, t: elapsed,
                 lat: location.coordinate.latitude, lng: location.coordinate.longitude,
-                s: currentSpeedKmh
+                s: currentSpeedKmh, alt: location.altitude
             ))
         }
 
@@ -212,6 +212,7 @@ class TrackCreationService: NSObject, ObservableObject {
         state = .idle
     }
 }
+
 
 
 
