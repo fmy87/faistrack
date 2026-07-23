@@ -56,6 +56,14 @@ struct TrackDetailView: View {
                     RouteMapView(coordinates: routeCoordinates, speedSegmentsKmh: speedSegmentsKmh)
                         .frame(height: 220)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                    if speedSegmentsKmh != nil {
+                        heatmapLegend
+                    }
+                }
+
+                if !telemetry.isEmpty {
+                    ElevationProfileView(points: telemetry)
                 }
 
                 // Makes it explicit this track (and every other one in the
@@ -124,6 +132,25 @@ struct TrackDetailView: View {
         .task { await loadLeaderboard() }
         .sheet(isPresented: $showShareCard) {
             TrackShareCardView(track: track)
+        }
+    }
+
+    /// Explains the heatmap's color scale with the actual speed thresholds
+    /// it uses — without this, a green-to-red route is just decoration with
+    /// no way to know what any given color actually means.
+    private var heatmapLegend: some View {
+        HStack(spacing: 16) {
+            legendSwatch(color: .speedGreen, label: "< 60 km/h")
+            legendSwatch(color: .yellow, label: "60-100 km/h")
+            legendSwatch(color: .speedRed, label: "100+ km/h")
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func legendSwatch(color: Color, label: String) -> some View {
+        HStack(spacing: 5) {
+            Circle().fill(color).frame(width: 8, height: 8)
+            Text(label).font(.system(size: 11)).foregroundColor(.ftTextSecondary)
         }
     }
 
@@ -229,6 +256,7 @@ struct TrackDetailView: View {
         results = (try? await FirebaseService.shared.getTrackLeaderboard(trackId: id, limit: 500)) ?? []
     }
 }
+
 
 
 
