@@ -115,7 +115,7 @@ class TrackRaceService: NSObject, ObservableObject {
                 telemetrySamples.append(TelemetryPoint(
                     d: distanceCoveredMeters, t: elapsed,
                     lat: location.coordinate.latitude, lng: location.coordinate.longitude,
-                    s: max(0, location.speed * 3.6)
+                    s: max(0, location.speed * 3.6), alt: location.altitude
                 ))
             }
 
@@ -211,6 +211,7 @@ class TrackRaceService: NSObject, ObservableObject {
         lastTelemetrySampleTime = nil
     }
 }
+
 
 
 
