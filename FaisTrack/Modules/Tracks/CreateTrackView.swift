@@ -253,8 +253,15 @@ struct CreateTrackView: View {
                     let success = await service.saveTrack(name: trackName)
                     isSaving = false
                     if success {
+                        ToastManager.shared.showSuccess(NSLocalizedString("toast.trackSaved", comment: ""))
                         onCreated?()
                         dismiss()
+                    } else if let error = service.errorMessage {
+                        // The inline error text right above already shows
+                        // this, but the toast makes it register even if
+                        // someone's attention wasn't on that exact line —
+                        // e.g. glancing at the timer/distance instead.
+                        ToastManager.shared.showError(error)
                     }
                 }
             }
@@ -262,6 +269,7 @@ struct CreateTrackView: View {
         }
     }
 }
+
 
 
 
