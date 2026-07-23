@@ -483,3 +483,10 @@
 "whatsNew.heatmap.desc" = "Ve exactamente dónde fuiste más rápido — y más lento — en cada circuito.";
 "whatsNew.legend.title" = "Leyenda del circuito";
 "whatsNew.legend.desc" = "Mantén un récord durante más de 30 días y gana reconocimiento permanente.";
+
+
+// MARK: - Alternate app icons
+"settings.appIcon" = "Icono de la app";
+"settings.icon.classic" = "Clásico";
+"settings.icon.midnight" = "Medianoche";
+"settings.icon.checkered" = "A cuadros";
