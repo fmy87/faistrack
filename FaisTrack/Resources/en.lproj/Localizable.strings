@@ -455,3 +455,8 @@
 
 // MARK: - Elevation profile
 "track.elevation" = "Elevation";
+
+
+// MARK: - Lap-time progression chart
+"track.progression" = "Your Progression";
+"track.progression.attempts" = "%d attempts";
