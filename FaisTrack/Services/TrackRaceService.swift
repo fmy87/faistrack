@@ -178,11 +178,16 @@ class TrackRaceService: NSObject, ObservableObject {
         // save even completes, is what lets the celebration fire the
         // instant the race ends rather than waiting on a round trip.
         if duration < (track.bestTime ?? .infinity) {
-            CelebrationManager.shared.celebrate(
-                icon: "🏆",
-                title: NSLocalizedString("toast.newRecord", comment: ""),
-                subtitle: String(format: "%.2fs", duration)
-            )
+            // CelebrationManager is @MainActor; finishRace() itself isn't,
+            // so this call needs an explicit hop rather than calling it
+            // directly from this synchronous context.
+            Task { @MainActor in
+                CelebrationManager.shared.celebrate(
+                    icon: "🏆",
+                    title: NSLocalizedString("toast.newRecord", comment: ""),
+                    subtitle: String(format: "%.2fs", duration)
+                )
+            }
         }
 
         Task {
@@ -223,6 +228,7 @@ class TrackRaceService: NSObject, ObservableObject {
         lastTelemetrySampleTime = nil
     }
 }
+
 
 
 
