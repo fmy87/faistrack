@@ -498,3 +498,15 @@
 
 // MARK: - Achievement celebration
 "achievements.unlocked" = "تم فتح إنجاز!";
+
+
+// MARK: - Subscription paywall
+"pro.unavailable" = "الاشتراكات غير متوفرة حاليًا. حاول مرة أخرى لاحقًا.";
+"pro.subscribe" = "اشترك";
+"pro.restore" = "استعادة المشتريات";
+"pro.terms" = "شروط الاستخدام";
+"pro.privacy" = "سياسة الخصوصية";
+"pro.trial.days" = "تجربة مجانية لمدة %d يومًا";
+"pro.trial.weeks" = "تجربة مجانية لمدة %d أسبوعًا";
+"pro.trial.months" = "تجربة مجانية لمدة %d شهرًا";
+"pro.trial.years" = "تجربة مجانية لمدة %d سنة";
