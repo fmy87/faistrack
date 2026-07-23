@@ -25,13 +25,24 @@ struct RouteMapView: UIViewRepresentable {
     /// leaves this nil and keeps the plain single-color route exactly as
     /// it was.
     var speedSegmentsKmh: [Double]? = nil
+    /// When true, shows the user's live location with a heading-rotating
+    /// arrow (Waze/Google Maps driving-mode style) and lets the camera
+    /// follow it, instead of repeatedly re-fitting the camera to the whole
+    /// route's bounding box — which is what LiveDriveView's map mode wants
+    /// (a live, moving view) versus every other call site (a fixed
+    /// after-the-fact route to look at in full).
+    var liveFollow: Bool = false
 
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         mapView.pointOfInterestFilter = .excludingAll
-        mapView.isRotateEnabled = false
+        mapView.isRotateEnabled = liveFollow
         mapView.isPitchEnabled = false
+        if liveFollow {
+            mapView.showsUserLocation = true
+            mapView.userTrackingMode = .followWithHeading
+        }
         return mapView
     }
 
@@ -54,17 +65,22 @@ struct RouteMapView: UIViewRepresentable {
             }
             boundingPoints.append(contentsOf: coordinates.map { MKMapPoint($0) })
 
-            if let start = coordinates.first {
-                let startPin = LabeledAnnotation()
-                startPin.coordinate = start
-                startPin.kind = .start
-                mapView.addAnnotation(startPin)
-            }
-            if let end = coordinates.last {
-                let endPin = LabeledAnnotation()
-                endPin.coordinate = end
-                endPin.kind = .end
-                mapView.addAnnotation(endPin)
+            // In live-follow mode the start/end pins would just clutter a
+            // camera that's tracking the user's current position, not
+            // looking at the route as a whole — skip them there.
+            if !liveFollow {
+                if let start = coordinates.first {
+                    let startPin = LabeledAnnotation()
+                    startPin.coordinate = start
+                    startPin.kind = .start
+                    mapView.addAnnotation(startPin)
+                }
+                if let end = coordinates.last {
+                    let endPin = LabeledAnnotation()
+                    endPin.coordinate = end
+                    endPin.kind = .end
+                    mapView.addAnnotation(endPin)
+                }
             }
         }
 
@@ -77,7 +93,10 @@ struct RouteMapView: UIViewRepresentable {
             boundingPoints.append(MKMapPoint(pin.coordinate))
         }
 
-        guard !boundingPoints.isEmpty else { return }
+        // Live-follow mode manages its own camera via userTrackingMode —
+        // repeatedly re-fitting bounds here would fight that and make the
+        // map jitter between "look at the route" and "follow the user."
+        guard !liveFollow, !boundingPoints.isEmpty else { return }
         let rect = boundingPoints.reduce(MKMapRect.null) { partial, point in
             partial.union(MKMapRect(x: point.x, y: point.y, width: 0, height: 0))
         }
@@ -139,4 +158,5 @@ struct RouteMapView: UIViewRepresentable {
         }
     }
 }
+
 
