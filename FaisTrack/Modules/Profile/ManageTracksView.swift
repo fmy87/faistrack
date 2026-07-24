@@ -1,11 +1,14 @@
 import SwiftUI
 
-/// Lets the user review tracks they've published. Deleting a published
-/// track is intentionally restricted to the admin account (see
-/// AdminConfig) — once a track is out in the world and other people may
-/// have raced it, its creator shouldn't be able to erase it and their
-/// results out from under them. The matching Firestore rule enforces this
-/// server-side too, not just here in the UI.
+/// Lets the user review tracks they've published — or, for the admin
+/// account, every track anyone has published, since that's the actual
+/// moderation surface for cleaning up duplicate/mislabeled/messy tracks
+/// cluttering the map. Deleting a published track is intentionally
+/// restricted to the admin account (see AdminConfig) — once a track is
+/// out in the world and other people may have raced it, its creator
+/// shouldn't be able to erase it and their results out from under them.
+/// The matching Firestore rule enforces this server-side too, not just
+/// here in the UI.
 struct ManageTracksView: View {
     @State private var tracks: [Track] = []
     @State private var isLoading = true
@@ -60,9 +63,18 @@ struct ManageTracksView: View {
     }
 
     private func load() async {
-        guard let uid = AuthService.shared.currentUser?.uid else { isLoading = false; return }
+        guard AuthService.shared.currentUser?.uid != nil else { isLoading = false; return }
         let all = (try? await FirebaseService.shared.getTracks(limit: 200)) ?? []
-        tracks = all.filter { $0.ownerUID == uid }
+        if canDelete {
+            // Admin sees every published track, not just their own — this
+            // is the actual cleanup surface for tracks other users made
+            // that are cluttering the map (duplicates, mislabeled, bad
+            // GPS, etc). Regular accounts still only see what they own.
+            tracks = all
+        } else {
+            let uid = AuthService.shared.currentUser?.uid
+            tracks = all.filter { $0.ownerUID == uid }
+        }
         isLoading = false
     }
 

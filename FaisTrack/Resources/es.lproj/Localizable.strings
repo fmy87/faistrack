@@ -394,6 +394,9 @@
 "tracks.sort.longest" = "Más largos";
 "tracks.sort.bestTime" = "Mejor tiempo";
 "tracks.sort.nearest" = "Más cercanos";
+"tracks.deleteConfirm" = "¿Eliminar este circuito? Esto lo borra junto con todos sus resultados de forma permanente.";
+"tracks.deleted" = "Circuito eliminado";
+"general.delete" = "Eliminar";
 
 
 // MARK: - Pro gating: track cap, leaderboard depth, personal bests

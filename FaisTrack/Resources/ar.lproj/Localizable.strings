@@ -397,6 +397,9 @@
 "tracks.sort.longest" = "الأطول";
 "tracks.sort.bestTime" = "أفضل وقت";
 "tracks.sort.nearest" = "الأقرب";
+"tracks.deleteConfirm" = "حذف هذا المسار؟ سيتم حذفه وجميع نتائجه بشكل نهائي.";
+"tracks.deleted" = "تم حذف المسار";
+"general.delete" = "حذف";
 
 
 // MARK: - Pro gating: track cap, leaderboard depth, personal bests

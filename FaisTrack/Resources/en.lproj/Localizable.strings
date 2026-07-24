@@ -397,6 +397,9 @@
 "tracks.sort.longest" = "Longest";
 "tracks.sort.bestTime" = "Best Time";
 "tracks.sort.nearest" = "Nearest";
+"tracks.deleteConfirm" = "Delete this track? This removes it and all its results permanently.";
+"tracks.deleted" = "Track deleted";
+"general.delete" = "Delete";
 
 
 // MARK: - Pro gating: track cap, leaderboard depth, personal bests

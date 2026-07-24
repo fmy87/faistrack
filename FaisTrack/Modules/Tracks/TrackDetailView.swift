@@ -5,6 +5,12 @@ struct TrackDetailView: View {
     let track: Track
     @State private var results: [TrackResult] = []
     @State private var showShareCard = false
+    @State private var showDeleteConfirm = false
+    @State private var isDeleting = false
+    @State private var deleteError: String?
+    @Environment(\.dismiss) private var dismiss
+
+    private var canDelete: Bool { AdminConfig.isCurrentUserAdmin }
 
     /// The record holder's telemetry decoded once — powers the speed
     /// heatmap below. Empty for tracks where nobody's set a record with
@@ -146,10 +152,63 @@ struct TrackDetailView: View {
         }
         .background(Color.ftBackground.ignoresSafeArea())
         .navigationTitle(track.name)
+        .toolbar {
+            // Admin-only — this is the moderation tool for clearing out
+            // duplicate, mislabeled, or otherwise messy tracks other users
+            // published, right from the same map/detail screen where
+            // they'd be spotted in the first place. The Firestore rule
+            // enforces the same admin-only restriction server-side, so
+            // this button is a convenience, not the actual security
+            // boundary.
+            if canDelete {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(role: .destructive) {
+                        showDeleteConfirm = true
+                    } label: {
+                        if isDeleting {
+                            ProgressView()
+                        } else {
+                            Image(systemName: "trash")
+                        }
+                    }
+                    .disabled(isDeleting)
+                }
+            }
+        }
         .task { await loadLeaderboard() }
         .sheet(isPresented: $showShareCard) {
             TrackShareCardView(track: track)
         }
+        .confirmationDialog(
+            NSLocalizedString("tracks.deleteConfirm", comment: ""),
+            isPresented: $showDeleteConfirm,
+            titleVisibility: .visible
+        ) {
+            Button(NSLocalizedString("general.delete", comment: ""), role: .destructive) {
+                Task { await deleteTrack() }
+            }
+            Button(NSLocalizedString("general.cancel", comment: ""), role: .cancel) {}
+        }
+        .alert(NSLocalizedString("general.error", comment: ""), isPresented: Binding(
+            get: { deleteError != nil }, set: { if !$0 { deleteError = nil } }
+        )) {
+            Button(NSLocalizedString("general.ok", comment: ""), role: .cancel) {}
+        } message: {
+            Text(deleteError ?? "")
+        }
+    }
+
+    private func deleteTrack() async {
+        guard let id = track.id else { return }
+        isDeleting = true
+        do {
+            try await FirebaseService.shared.deleteTrack(trackId: id)
+            ToastManager.shared.showSuccess(NSLocalizedString("tracks.deleted", comment: ""))
+            dismiss()
+        } catch {
+            deleteError = error.localizedDescription
+        }
+        isDeleting = false
     }
 
     /// Explains the heatmap's color scale with the actual speed thresholds
