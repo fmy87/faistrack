@@ -4,13 +4,12 @@ import Foundation
 /// physically driving it, and (via the matching Firestore rule) being the
 /// only account that can still delete a published track.
 ///
-/// ⚠️ The UID below was inferred from a Firestore error message you shared
-/// earlier in this project, not confirmed directly — verify it matches your
-/// actual signed-in account before relying on this. You can find your real
-/// UID in Firebase Console → Authentication → Users, next to your account's
-/// email. If it doesn't match, update the constant below.
+/// The UID below is confirmed directly from Firebase Console →
+/// Authentication → Users, and corresponds to fmy87@hotmail.com — the one
+/// account intended to have admin access. If admin access ever needs to
+/// move to a different account, update the constant below and nowhere else.
 enum AdminConfig {
-    static let adminUID = "PA5laQnmppRClBv0A1EXPiULfdy2"
+    static let adminUID = "PA5laQnmppRCIBv0A1EXPiULfdy2"
 
     static var isCurrentUserAdmin: Bool {
         AuthService.shared.currentUser?.uid == adminUID
