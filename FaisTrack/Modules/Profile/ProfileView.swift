@@ -91,6 +91,35 @@ struct ProfileView: View {
                     }
 
                     FTCard {
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text(NSLocalizedString("profile.instagram", comment: ""))
+                                .font(.system(size: 14, weight: .medium)).foregroundColor(.ftTextSecondary)
+                            HStack {
+                                Text("@").foregroundColor(.ftTextSecondary)
+                                TextField(NSLocalizedString("profile.instagramPlaceholder", comment: ""), text: $viewModel.instagramHandle)
+                                    .autocapitalization(.none)
+                                    .disableAutocorrection(true)
+                                    .foregroundColor(.ftTextPrimary)
+                            }
+                            .padding(12).background(Color.ftBackground).cornerRadius(10)
+
+                            Button(action: { Task { await viewModel.saveInstagram() } }) {
+                                HStack {
+                                    if viewModel.isSavingInstagram { ProgressView().tint(.white) }
+                                    Text(NSLocalizedString("general.save", comment: ""))
+                                        .font(.system(size: 15, weight: .bold))
+                                }
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(Color.ftGradient)
+                                .cornerRadius(12)
+                            }
+                            .disabled(viewModel.isSavingInstagram)
+                        }
+                    }
+
+                    FTCard {
                         VStack(alignment: .leading, spacing: 12) {
                             Toggle(isOn: Binding(
                                 get: { viewModel.isPrivateProfile },
@@ -220,6 +249,8 @@ struct ProfileRow: View {
 @MainActor
 class ProfileViewModel: ObservableObject {
     @Published var user: FTUser?
+    @Published var instagramHandle: String = ""
+    @Published var isSavingInstagram = false
     @Published var isPrivateProfile: Bool = false
     @Published var errorMessage: String?
     @Published var driverXP: Double = 0
@@ -264,6 +295,7 @@ class ProfileViewModel: ObservableObject {
             }
             isPrivateProfile = user?.isPrivateProfile ?? false
             usernameInput = user?.username ?? ""
+            instagramHandle = user?.instagramHandle ?? ""
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -335,6 +367,39 @@ class ProfileViewModel: ObservableObject {
             ToastManager.shared.showError(error.localizedDescription)
         }
         isSavingUsername = false
+    }
+
+    /// Same race-condition guard as saveUsername/setPrivateProfile: .task {
+    /// load() } runs asynchronously, so a person who types and taps Save
+    /// before it resolves would otherwise hit a false "no profile" error
+    /// even though the profile does exist (or is about to).
+    func saveInstagram() async {
+        isSavingInstagram = true
+        errorMessage = nil
+        if user == nil {
+            await load()
+        }
+        guard var user = user else {
+            errorMessage = NSLocalizedString("profile.noProfile", comment: "")
+            isSavingInstagram = false
+            return
+        }
+        // Stored without a leading "@" — the "@" is UI chrome shown next to
+        // the field, not part of the value, so strip one off if someone
+        // pastes a handle that includes it.
+        let handle = instagramHandle.trimmingCharacters(in: .whitespaces)
+            .trimmingCharacters(in: CharacterSet(charactersIn: "@"))
+        user.instagramHandle = handle.isEmpty ? nil : handle
+        do {
+            try await FirebaseService.shared.saveUser(user)
+            self.user = user
+            instagramHandle = handle
+            ToastManager.shared.showSuccess(NSLocalizedString("profile.saved", comment: ""))
+        } catch {
+            errorMessage = error.localizedDescription
+            ToastManager.shared.showError(error.localizedDescription)
+        }
+        isSavingInstagram = false
     }
 
     func setPrivateProfile(_ value: Bool) async {
