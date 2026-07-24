@@ -11,8 +11,28 @@ struct AuthView: View {
     var body: some View {
         ZStack {
             Color.ftBackground.ignoresSafeArea()
-            SpeedLinesBackground()
-            DriftingCarEffectView()
+            // Real footage instead of the old SF Symbol car silhouette —
+            // muted and looping so it reads as ambient atmosphere behind
+            // the screen, not something demanding attention on its own.
+            SignupCarLoopView()
+                .ignoresSafeArea()
+
+            // Scrims top and bottom so the title and sign-in buttons stay
+            // legible over live footage instead of whatever's happening in
+            // the frame at that moment — same reasoning as the intro
+            // video's top scrim.
+            VStack(spacing: 0) {
+                LinearGradient(colors: [Color.ftBackground.opacity(0.85), .clear],
+                               startPoint: .top, endPoint: .bottom)
+                    .frame(height: 220)
+                Spacer()
+                LinearGradient(colors: [.clear, Color.ftBackground.opacity(0.92)],
+                               startPoint: .top, endPoint: .bottom)
+                    .frame(height: 260)
+            }
+            .ignoresSafeArea()
+            .allowsHitTesting(false)
+
             VStack(spacing: 20) {
                 Spacer()
                 Text("FaisTrack").font(.system(size: 42, weight: .black))
