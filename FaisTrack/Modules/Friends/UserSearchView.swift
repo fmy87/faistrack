@@ -47,7 +47,7 @@ struct UserSearchView: View {
 }
 
 private struct UserSearchRow: View {
-    let user: FTUser
+    let user: PublicProfile
     let status: FriendshipStatus
     let onAdd: () -> Void
 
@@ -92,7 +92,7 @@ private struct UserSearchRow: View {
 @MainActor
 class UserSearchViewModel: ObservableObject {
     @Published var query = ""
-    @Published var results: [FTUser] = []
+    @Published var results: [PublicProfile] = []
     @Published var isSearching = false
     @Published private var statuses: [String: FriendshipStatus] = [:]
 
@@ -131,7 +131,7 @@ class UserSearchViewModel: ObservableObject {
         }
     }
 
-    func sendRequest(to user: FTUser) async {
+    func sendRequest(to user: PublicProfile) async {
         guard let myUid = AuthService.shared.currentUser?.uid,
               let me = try? await FirebaseService.shared.getUser(uid: myUid) else { return }
         do {

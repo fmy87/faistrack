@@ -8,7 +8,10 @@ class FirebaseService {
 
     // MARK: - User
     func saveUser(_ user: FTUser) async throws {
-        try await db.collection("users").document(user.uid).setData(from: user)
+        let batch = db.batch()
+        try batch.setData(from: user, forDocument: db.collection("users").document(user.uid))
+        try batch.setData(from: publicProfile(from: user), forDocument: db.collection("publicProfiles").document(user.uid), merge: true)
+        try await batch.commit()
     }
 
     func getUser(uid: String) async throws -> FTUser? {
@@ -26,6 +29,22 @@ class FirebaseService {
         // saving ("No document to update").
         guard doc.exists else { return nil }
         return try doc.data(as: FTUser.self)
+    }
+
+    /// `users/{uid}` reads are restricted to the account's own owner (see
+    /// the Firestore rules) — this is the only way to look up *another*
+    /// user's basic info (search results, a rival's display name, a
+    /// friend's name on the live map), reading the public subset mirror
+    /// instead of the private document.
+    func getPublicProfile(uid: String) async throws -> PublicProfile? {
+        let doc = try await db.collection("publicProfiles").document(uid).getDocument()
+        guard doc.exists else { return nil }
+        return try doc.data(as: PublicProfile.self)
+    }
+
+    private func publicProfile(from user: FTUser) -> PublicProfile {
+        PublicProfile(uid: user.uid, username: user.username, name: user.name,
+                       photoURL: user.photoURL, isPrivateProfile: user.isPrivateProfile)
     }
 
     /// Creates a Firestore profile document for this uid if one doesn't
@@ -51,13 +70,35 @@ class FirebaseService {
         return newUser
     }
 
+    /// Backfills the public profile mirror for accounts created before
+    /// publicProfiles existed. saveUser/updateUsername mirror going
+    /// forward, but an account that signed in once, has a persisted
+    /// session, and never touches either of those again would otherwise
+    /// have no public mirror at all forever — invisible to search, rival
+    /// lookups, and friend map pins — since it never re-runs the sign-in
+    /// path that would trigger ensureUserProfile. Called once per launch
+    /// (see MainTabView.onAppear); after the first successful backfill
+    /// this is just one cheap existence check, not a real write, every
+    /// time after.
+    func backfillPublicProfileIfNeeded(uid: String) async {
+        guard let mirrorDoc = try? await db.collection("publicProfiles").document(uid).getDocument(),
+              mirrorDoc.exists == false,
+              let user = try? await getUser(uid: uid) else { return }
+        try? await db.collection("publicProfiles").document(uid).setData(from: publicProfile(from: user), merge: true)
+    }
+
     /// Checks whether a username is free to use. Usernames are stored
     /// lowercased (see generateUsername/updateUsername), so comparisons are
     /// case-insensitive — "Jake" and "jake" are treated as the same name,
     /// which is what people expect from a username system.
+    ///
+    /// Queries `publicProfiles` rather than `users` — this needs to check
+    /// *other* people's usernames, and `users/{uid}` reads are restricted
+    /// to each account's own owner now (see Firestore rules), so the
+    /// private collection isn't readable here at all anymore.
     func isUsernameAvailable(_ username: String, excludingUid: String? = nil) async throws -> Bool {
         let lowered = username.lowercased()
-        let snapshot = try await db.collection("users")
+        let snapshot = try await db.collection("publicProfiles")
             .whereField("username", isEqualTo: lowered)
             .limit(to: 5)
             .getDocuments()
@@ -80,7 +121,14 @@ class FirebaseService {
         // the actual root cause). merge:true is safe here regardless: it
         // updates just the username field on an existing doc, or creates a
         // new doc with just that field set if one doesn't exist at all.
-        try await db.collection("users").document(uid).setData(["username": lowered], merge: true)
+        // Both the private doc and its public mirror need the new
+        // username, in the same batch, or a search/rival lookup could
+        // briefly (or permanently, if the second write fails) show a
+        // stale username after a rename.
+        let batch = db.batch()
+        batch.setData(["username": lowered], forDocument: db.collection("users").document(uid), merge: true)
+        batch.setData(["uid": uid, "username": lowered], forDocument: db.collection("publicProfiles").document(uid), merge: true)
+        try await batch.commit()
     }
 
     /// Sets or clears (pass nil) the user's Rival for head-to-head
@@ -330,17 +378,23 @@ class FirebaseService {
     /// this relies on lexicographic range querying, which only matches from
     /// the start of the username (not the middle) — acceptable for a
     /// "search by username" field rather than a fuzzy people-search.
-    func searchUsers(query: String, excludingUid: String, limit: Int = 20) async throws -> [FTUser] {
+    ///
+    /// Queries `publicProfiles`, not `users` — `users/{uid}` reads are
+    /// restricted to each account's own owner (see Firestore rules), so a
+    /// query across other people's documents there would return nothing
+    /// (and Firestore would reject the query outright once any matched
+    /// document fails the rule check).
+    func searchUsers(query: String, excludingUid: String, limit: Int = 20) async throws -> [PublicProfile] {
         let lowered = query.lowercased().trimmingCharacters(in: .whitespaces)
         guard !lowered.isEmpty else { return [] }
-        let snapshot = try await db.collection("users")
+        let snapshot = try await db.collection("publicProfiles")
             .order(by: "username")
             .start(at: [lowered])
             .end(at: [lowered + "\u{f8ff}"])
             .limit(to: limit)
             .getDocuments()
         return snapshot.documents
-            .compactMap { try? $0.data(as: FTUser.self) }
+            .compactMap { try? $0.data(as: PublicProfile.self) }
             .filter { $0.uid != excludingUid }
             // The "Private Profile" toggle in Settings previously did
             // nothing at all — it was never actually checked anywhere in
@@ -393,6 +447,14 @@ class FirebaseService {
         // declined, just a permanently stuck pending request even after
         // we're already friends. Clearing it here, not just the direction
         // being accepted, is what keeps both sides consistent.
+        //
+        // This delete is into *their* friendRequests subcollection, keyed
+        // by *my* uid — deleting it requires the Firestore rule for
+        // users/{userId}/friendRequests/{requestId} to allow
+        // request.auth.uid == requestId, not just == userId. Without that,
+        // this whole batch (including the two legitimate Friend writes
+        // above) fails with permission-denied on every single accept, not
+        // just this edge case, since a batch is all-or-nothing.
         let reverseRequestRef = db.collection("users").document(request.fromUid).collection("friendRequests").document(uid)
 
         try batch.setData(from: Friend(uid: request.fromUid, username: request.fromUsername, photoURL: request.fromPhotoURL), forDocument: myFriendRef)
@@ -529,7 +591,10 @@ class FirebaseService {
             guard data["isDriving"] as? Bool == true,
                   let lat = data["latitude"] as? Double,
                   let lng = data["longitude"] as? Double else { continue }
-            let username = (try? await getUser(uid: doc.documentID))?.username ?? "?"
+            // A friend's own uid, not self — getUser() would fail now that
+            // users/{uid} reads are self-only (see Firestore rules); the
+            // public mirror is what this kind of cross-user lookup exists for.
+            let username = (try? await getPublicProfile(uid: doc.documentID))?.username ?? "?"
             pins.append(FriendMapPin(id: doc.documentID, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng), username: username))
         }
         return pins

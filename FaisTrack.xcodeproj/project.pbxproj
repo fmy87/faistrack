@@ -17,6 +17,7 @@
 		18384C3692DF442E8077C7DF /* GarageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0BE6CDB875486D8BC71F4D /* GarageViewModel.swift */; };
 		244D3361B8BA432B870138D9 /* LeaderboardEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678C2E972160475DA7598576 /* LeaderboardEntry.swift */; };
 		66D38D3553EE40BF9A1FEAE3 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160D9EE901324E59A8C89DF0 /* Friend.swift */; };
+		E42EDE51AEF647F893D52EE4 /* PublicProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E7CBAC694B4F35B58D3602 /* PublicProfile.swift */; };
 		265EE5D2C5794DDBAB79CD6D /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C56A16F233487CA066F40C /* AuthService.swift */; };
 		4F4B0219D06545ECAA67CC75 /* TelemetryCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9443BF5BC934F71A99F6CC9 /* TelemetryCodec.swift */; };
 		781BAEBCE7214B82983C8D35 /* AdminConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C10A11087E4E3BBF42B884 /* AdminConfig.swift */; };
@@ -136,6 +137,7 @@
 		613D43A5900955C6EC194D09 /* ManageDrivesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ManageDrivesView.swift; path = FaisTrack/Modules/Profile/ManageDrivesView.swift; sourceTree = SOURCE_ROOT; };
 		678C2E972160475DA7598576 /* LeaderboardEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LeaderboardEntry.swift; path = LeaderboardEntry.swift; sourceTree = "<group>"; };
 		160D9EE901324E59A8C89DF0 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Friend.swift; path = Friend.swift; sourceTree = "<group>"; };
+		73E7CBAC694B4F35B58D3602 /* PublicProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PublicProfile.swift; path = PublicProfile.swift; sourceTree = "<group>"; };
 		6C294CE588E615E815964EF5 /* TrackDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TrackDetailView.swift; path = FaisTrack/Modules/Tracks/TrackDetailView.swift; sourceTree = SOURCE_ROOT; };
 		AE0AB5DAE9454D1597867F8B /* ElevationProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ElevationProfileView.swift; path = "FaisTrack/Modules/Tracks/ElevationProfileView.swift"; sourceTree = SOURCE_ROOT; };
 		06F4B76D3DB44AFEB211DF9A /* LapProgressionChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LapProgressionChartView.swift; path = "FaisTrack/Modules/Tracks/LapProgressionChartView.swift"; sourceTree = SOURCE_ROOT; };
@@ -337,6 +339,7 @@
 				C091A9B7C6214939AE4B3F51 /* Drive.swift */,
 				678C2E972160475DA7598576 /* LeaderboardEntry.swift */,
 				160D9EE901324E59A8C89DF0 /* Friend.swift */,
+				73E7CBAC694B4F35B58D3602 /* PublicProfile.swift */,
 				B87F416F0F2046A88D8E2C58 /* User.swift */,
 				AABA7ACA0BB846C6B96FEDC9 /* RivalTotals.swift */,
 				D5A79C81E3EF417B9F0156BE /* TrackMedal.swift */,
@@ -609,6 +612,7 @@
 				A5FB71D579214E9193FC2028 /* Drive.swift in Sources */,
 				244D3361B8BA432B870138D9 /* LeaderboardEntry.swift in Sources */,
 				66D38D3553EE40BF9A1FEAE3 /* Friend.swift in Sources */,
+				E42EDE51AEF647F893D52EE4 /* PublicProfile.swift in Sources */,
 				E9F3E58453404FACA8D15E7A /* User.swift in Sources */,
 				84F99B46066F4E17BB23CAE3 /* AuthView.swift in Sources */,
 				98F546126BBA43D298391728 /* ChooseUsernameView.swift in Sources */,

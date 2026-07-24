@@ -95,7 +95,10 @@ private class RivalViewModel: ObservableObject {
         guard let uid = AuthService.shared.currentUser?.uid,
               let me = try? await FirebaseService.shared.getUser(uid: uid),
               let rivalUID = me.rivalUID,
-              let rival = try? await FirebaseService.shared.getUser(uid: rivalUID) else {
+              // The rival is another user, not self — users/{uid} reads are
+              // self-only now (see Firestore rules), so this has to go
+              // through the public profile mirror instead of getUser().
+              let rival = try? await FirebaseService.shared.getPublicProfile(uid: rivalUID) else {
             return
         }
         rivalUsername = rival.username

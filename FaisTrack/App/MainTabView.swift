@@ -56,6 +56,16 @@ struct MainTabView: View {
             DriveDetectionService.shared.startMonitoring()
             Task { await DriveDetectionService.shared.retryPendingDrives() }
 
+            // Backfills the public profile mirror for accounts that
+            // predate its existence — see FirebaseService.
+            // backfillPublicProfileIfNeeded's docs. Runs here specifically
+            // because this fires on every launch for an already-signed-in
+            // session, unlike the sign-in flow which a returning user with
+            // a persisted session never re-runs.
+            if let uid = AuthService.shared.currentUser?.uid {
+                Task { await FirebaseService.shared.backfillPublicProfileIfNeeded(uid: uid) }
+            }
+
             // Shown once per app version's feature set — gated by its own
             // key (see WhatsNewView) so bumping whatsNewVersion later shows
             // a fresh one to everyone, including people who saw an older one.
