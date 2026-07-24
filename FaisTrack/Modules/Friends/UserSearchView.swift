@@ -139,7 +139,9 @@ class UserSearchViewModel: ObservableObject {
             statuses[user.uid] = .requestSent
         } catch {
             // Leave status unchanged so the Add button still shows and the
-            // person can retry rather than silently believing it worked.
+            // person can retry — but they need to actually see why it
+            // failed, not just have the tap silently do nothing.
+            ToastManager.shared.showError(error.localizedDescription)
         }
     }
 }

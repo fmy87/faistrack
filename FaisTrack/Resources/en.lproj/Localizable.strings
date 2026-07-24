@@ -316,6 +316,8 @@
 "friends.requestSent" = "Requested";
 "friends.requestReceived" = "Respond in Friends";
 "friends.alreadyFriends" = "Friends";
+"friends.error.self" = "You can't send a friend request to yourself.";
+"friends.error.alreadyFriends" = "You're already friends with this person.";
 "friends.search.noResults" = "No users found";
 "store.proSyncError" = "Your purchase was successful, but we couldn't sync your Pro status yet. It'll sync automatically next time you're online.";
 "stats.safetyScore" = "Safety Score";

@@ -316,6 +316,8 @@
 "friends.requestSent" = "Solicitado";
 "friends.requestReceived" = "Responder en Amigos";
 "friends.alreadyFriends" = "Amigos";
+"friends.error.self" = "No puedes enviarte una solicitud de amistad a ti mismo.";
+"friends.error.alreadyFriends" = "Ya son amigos.";
 "friends.search.noResults" = "No se encontraron usuarios";
 "store.proSyncError" = "Tu compra se realizó correctamente, pero aún no pudimos sincronizar tu estado Pro. Se sincronizará automáticamente la próxima vez que estés en línea.";
 "stats.safetyScore" = "Puntuación de seguridad";

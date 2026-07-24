@@ -316,6 +316,8 @@
 "friends.requestSent" = "تم الإرسال";
 "friends.requestReceived" = "الرد في الأصدقاء";
 "friends.alreadyFriends" = "أصدقاء";
+"friends.error.self" = "لا يمكنك إرسال طلب صداقة لنفسك.";
+"friends.error.alreadyFriends" = "أنتما صديقان بالفعل.";
 "friends.search.noResults" = "لم يتم العثور على مستخدمين";
 "store.proSyncError" = "تمت عملية الشراء بنجاح، لكن لم نتمكن من مزامنة حالة اشتراكك بعد. ستتم المزامنة تلقائيًا عند الاتصال بالإنترنت.";
 "stats.safetyScore" = "درجة الأمان";

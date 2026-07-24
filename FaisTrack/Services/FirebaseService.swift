@@ -351,6 +351,19 @@ class FirebaseService {
     }
 
     func sendFriendRequest(from: FTUser, toUid: String) async throws {
+        // The UI already keeps this from happening in the normal flow
+        // (search excludes your own account, and the Add button hides
+        // once you're already friends) — but this is the actual
+        // enforcement point, not just a UI nicety, in case anything else
+        // ever calls this directly.
+        guard from.uid != toUid else {
+            throw FirebaseServiceError.invalidRequest(NSLocalizedString("friends.error.self", comment: ""))
+        }
+        let alreadyFriends = try await db.collection("users").document(from.uid)
+            .collection("friends").document(toUid).getDocument().exists
+        guard !alreadyFriends else {
+            throw FirebaseServiceError.invalidRequest(NSLocalizedString("friends.error.alreadyFriends", comment: ""))
+        }
         let ref = db.collection("users").document(toUid)
             .collection("friendRequests").document(from.uid)
         let request = FriendRequest(fromUid: from.uid, fromUsername: from.username, fromPhotoURL: from.photoURL)
@@ -373,10 +386,19 @@ class FirebaseService {
         let myFriendRef = db.collection("users").document(uid).collection("friends").document(request.fromUid)
         let theirFriendRef = db.collection("users").document(request.fromUid).collection("friends").document(uid)
         let requestRef = db.collection("users").document(uid).collection("friendRequests").document(request.fromUid)
+        // If the other person also sent *me* a request around the same
+        // time (both searched and tapped Add before either request was
+        // visible to the other), that reverse request would otherwise sit
+        // in their friendRequests forever — never accepted, never
+        // declined, just a permanently stuck pending request even after
+        // we're already friends. Clearing it here, not just the direction
+        // being accepted, is what keeps both sides consistent.
+        let reverseRequestRef = db.collection("users").document(request.fromUid).collection("friendRequests").document(uid)
 
         try batch.setData(from: Friend(uid: request.fromUid, username: request.fromUsername, photoURL: request.fromPhotoURL), forDocument: myFriendRef)
         try batch.setData(from: Friend(uid: uid, username: myUsername, photoURL: myPhotoURL), forDocument: theirFriendRef)
         batch.deleteDocument(requestRef)
+        batch.deleteDocument(reverseRequestRef)
         try await batch.commit()
     }
 
@@ -525,6 +547,7 @@ enum FirebaseServiceError: LocalizedError {
     case storageNotEnabled
     case invalidTrack
     case usernameTaken
+    case invalidRequest(String)
     var errorDescription: String? {
         switch self {
         case .storageNotEnabled:
@@ -533,6 +556,8 @@ enum FirebaseServiceError: LocalizedError {
             return NSLocalizedString("firebase.error.invalidTrack", comment: "")
         case .usernameTaken:
             return NSLocalizedString("firebase.error.usernameTaken", comment: "")
+        case .invalidRequest(let message):
+            return message
         }
     }
 }
