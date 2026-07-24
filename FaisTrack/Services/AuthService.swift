@@ -93,22 +93,47 @@ class AuthService: NSObject, ObservableObject {
         try Auth.auth().signOut()
     }
 
-    /// Fully deletes the account: Firestore data first (still has a valid
-    /// session to do this), then the Firebase Auth user itself. Previously
-    /// there was no equivalent of this at all — only a "delete data" idea in
-    /// the project notes, with no way to remove the Auth account.
+    /// Fully deletes the account: Firestore data first (deleting a user's
+    /// own subcollections requires an authenticated session, so this has
+    /// to happen before the Auth user is gone), then the Firebase Auth
+    /// user itself.
     ///
-    /// Firebase requires a *recent* sign-in to delete the Auth user; if the
-    /// session is old, this throws `.requiresRecentLogin` and the caller
-    /// should ask the person to sign out and back in, then retry — this
-    /// doesn't attempt a full re-authentication flow itself.
+    /// This used to delete Firestore data unconditionally, then attempt
+    /// the Auth deletion and only find out *afterward* whether it needed
+    /// a recent sign-in. Firebase requires a recent sign-in to delete the
+    /// Auth user; that's an undocumented, opaque check, not one that can be
+    /// asked in advance — so a stale session used to leave the account in
+    /// the worst possible state: Firestore already permanently wiped, but
+    /// the Auth account very much still alive and signable-into, now with
+    /// no data behind it and no way to get it back. Reordering to delete
+    /// Auth first doesn't fix this — it just breaks Firestore cleanup
+    /// instead, since Firestore's security rules need `request.auth` to
+    /// still be valid to authorize the delete, and it stops being valid the
+    /// instant the Auth user is gone. Reauthenticating properly needs a
+    /// fresh Apple/Google credential, which lives in the UI layer, not
+    /// here — so a real fix belongs in ProfileView's delete flow (redo the
+    /// sign-in provider flow right before calling this). Until that lands,
+    /// this at least fails *before* touching anything when the session
+    /// looks stale, using lastSignInDate as an approximation of Firebase's
+    /// actual (undocumented) recent-login window, rather than only
+    /// discovering the problem after Firestore data is already gone.
     func deleteAccount() async throws {
         guard let user = Auth.auth().currentUser else { throw AuthError.userNotFound }
+        if let lastSignIn = user.metadata.lastSignInDate,
+           Date().timeIntervalSince(lastSignIn) > 4 * 60 {
+            throw AuthError.requiresRecentLogin
+        }
         let uid = user.uid
         try await FirebaseService.shared.deleteAllUserData(uid: uid)
         do {
             try await user.delete()
         } catch let error as NSError where error.code == AuthErrorCode.requiresRecentLogin.rawValue {
+            // The heuristic above missed this case — the session was
+            // "fresh enough" by our estimate but Firebase's real check
+            // still rejected it. Firestore data is already gone at this
+            // point, which is exactly the state this function is meant to
+            // avoid; there isn't a way to fully close that gap without a
+            // reauthentication flow in the UI layer calling this.
             throw AuthError.requiresRecentLogin
         }
     }
