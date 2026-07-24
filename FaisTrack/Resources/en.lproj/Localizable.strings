@@ -309,6 +309,8 @@
 "profile.deleteAccount" = "Delete Account";
 "profile.deleteAccountConfirm" = "This permanently deletes your account and all your data — drives, cars, tracks, and friends. This can't be undone.";
 "auth.error.requiresRecentLogin" = "For security, please sign out and sign back in, then try deleting your account again.";
+"reauth.title" = "Confirm it's you";
+"reauth.subtitle" = "For your security, please sign in again before we delete your account.";
 "general.error" = "Error";
 "general.ok" = "OK";
 "friends.requests" = "Friend Requests";

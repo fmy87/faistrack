@@ -92,6 +92,7 @@
 		B9E141268CB86CE45047A700 /* TrackResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD764AB886DC1805AD206266 /* TrackResult.swift */; };
 		C3052B926FA24C2B885B4624 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EEA8E815214FC7BF672B88 /* Colors.swift */; };
 		C82AF52043754C5AA74EE75F /* SafetyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237EEC5C298E4C49A064A9FF /* SafetyView.swift */; };
+		A9459D64C7D54E8ABE7FA3F1 /* ReauthenticateToDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62504243F19A46398C616050 /* ReauthenticateToDeleteView.swift */; };
 		C96AB37D2D174332BDC9F976 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 966408711FA246DC8FFA930B /* Assets.xcassets */; };
 		CA59764083054FA79E41A9B2 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A617F905340959D3DBEB3 /* LocationService.swift */; };
 		CA72974A8FFF409491DA4BEF /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23F3C66B46D45C89DB80A52 /* AppState.swift */; };
@@ -120,6 +121,7 @@
 		1E3F63FFCD9D487990F74088 /* PermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PermissionsView.swift; path = PermissionsView.swift; sourceTree = "<group>"; };
 		20BD9D0E781E49EEBB4D8E77 /* Car.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Car.swift; path = Car.swift; sourceTree = "<group>"; };
 		237EEC5C298E4C49A064A9FF /* SafetyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SafetyView.swift; path = SafetyView.swift; sourceTree = "<group>"; };
+		62504243F19A46398C616050 /* ReauthenticateToDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReauthenticateToDeleteView.swift; path = ReauthenticateToDeleteView.swift; sourceTree = "<group>"; };
 		2A869DF880134EA6972B3B5E /* CarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CarCardView.swift; path = CarCardView.swift; sourceTree = "<group>"; };
 		2E6AE73EF21D4DABB620D573 /* ReferralService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReferralService.swift; path = ReferralService.swift; sourceTree = "<group>"; };
 		4E7CF4BEB818490998830CD0 /* ShareCarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ShareCarCardView.swift; path = ShareCarCardView.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				1E3F63FFCD9D487990F74088 /* PermissionsView.swift */,
 				953C603DF4FC422991B10BAA /* ProPaywallView.swift */,
 				237EEC5C298E4C49A064A9FF /* SafetyView.swift */,
+				62504243F19A46398C616050 /* ReauthenticateToDeleteView.swift */,
 			);
 			name = Auth;
 			path = Auth;
@@ -613,6 +616,7 @@
 				10D4D19C641F4AA9A1465663 /* PermissionsView.swift in Sources */,
 				08D16BAE46B544F697FCECB1 /* ProPaywallView.swift in Sources */,
 				C82AF52043754C5AA74EE75F /* SafetyView.swift in Sources */,
+				A9459D64C7D54E8ABE7FA3F1 /* ReauthenticateToDeleteView.swift in Sources */,
 				73F0D40EAC514034A3B8BD03 /* CarPlaySceneDelegate.swift in Sources */,
 				26AB79374F0144D884F5BEAC /* DriveDetailView.swift in Sources */,
 				71648FA86C1F4B5AA0E2EEAD /* DrivesView.swift in Sources */,

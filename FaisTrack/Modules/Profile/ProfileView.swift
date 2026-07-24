@@ -7,6 +7,7 @@ struct ProfileView: View {
     @State private var showDeleteConfirm = false
     @State private var isDeletingAccount = false
     @State private var deleteError: String?
+    @State private var showReauthToDelete = false
 
     var body: some View {
         ZStack {
@@ -206,6 +207,12 @@ struct ProfileView: View {
             }
             Button(NSLocalizedString("general.cancel", comment: ""), role: .cancel) {}
         }
+        .sheet(isPresented: $showReauthToDelete) {
+            ReauthenticateToDeleteView {
+                showReauthToDelete = false
+                Task { await deleteAccount() }
+            }
+        }
     }
 
     private func signOut() {
@@ -219,11 +226,13 @@ struct ProfileView: View {
         do {
             try await AuthService.shared.deleteAccount()
             appState.currentScreen = .auth
+        } catch AuthError.requiresRecentLogin {
+            // Nothing has been deleted at this point (see AuthService.
+            // deleteAccount's docs) — this is the recovery path, not a
+            // dead end: get a fresh credential, then retry the whole
+            // deletion automatically once that succeeds.
+            showReauthToDelete = true
         } catch {
-            // Firebase requires a recent sign-in to delete the Auth account.
-            // Note the data is already gone at this point (deleteAllUserData
-            // runs first) even if this step fails — surfacing that clearly
-            // rather than implying nothing happened.
             deleteError = error.localizedDescription
         }
         isDeletingAccount = false

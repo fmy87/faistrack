@@ -309,6 +309,8 @@
 "profile.deleteAccount" = "Eliminar cuenta";
 "profile.deleteAccountConfirm" = "Esto elimina permanentemente tu cuenta y todos tus datos: recorridos, coches, circuitos y amigos. No se puede deshacer.";
 "auth.error.requiresRecentLogin" = "Por seguridad, cierra sesión y vuelve a iniciarla, luego intenta eliminar tu cuenta de nuevo.";
+"reauth.title" = "Confirma que eres tú";
+"reauth.subtitle" = "Por tu seguridad, inicia sesión de nuevo antes de eliminar tu cuenta.";
 "general.error" = "Error";
 "general.ok" = "Aceptar";
 "friends.requests" = "Solicitudes de amistad";
