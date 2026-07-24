@@ -90,6 +90,10 @@
 "drives.empty.subtitle" = "ابدأ القيادة وسيسجل فيس تراك رحلاتك تلقائياً.";
 "drives.tracking" = "جارٍ التسجيل";
 "drives.unknownLocation" = "موقع غير معروف";
+"drives.dashboard.drives" = "الرحلات";
+"drives.dashboard.distance" = "المسافة";
+"drives.dashboard.best" = "الأعلى";
+"drives.personalBest" = "الأفضل";
 "drive.topSpeed" = "أعلى سرعة";
 "drive.avgSpeed" = "متوسط السرعة";
 "drive.distance" = "المسافة";

@@ -90,6 +90,10 @@
 "drives.empty.subtitle" = "Empieza a conducir y FaisTrack registrará tus recorridos automáticamente.";
 "drives.tracking" = "Registrando";
 "drives.unknownLocation" = "Ubicación desconocida";
+"drives.dashboard.drives" = "Recorridos";
+"drives.dashboard.distance" = "Distancia";
+"drives.dashboard.best" = "Máx";
+"drives.personalBest" = "PB";
 "drive.topSpeed" = "Velocidad máxima";
 "drive.avgSpeed" = "Velocidad media";
 "drive.distance" = "Distancia";

@@ -90,6 +90,10 @@
 "drives.empty.subtitle" = "Start driving and FaisTrack will automatically record your drives.";
 "drives.tracking" = "Tracking";
 "drives.unknownLocation" = "Unknown Location";
+"drives.dashboard.drives" = "Drives";
+"drives.dashboard.distance" = "Distance";
+"drives.dashboard.best" = "Best";
+"drives.personalBest" = "PB";
 "drive.topSpeed" = "Top Speed";
 "drive.avgSpeed" = "Avg Speed";
 "drive.distance" = "Distance";
