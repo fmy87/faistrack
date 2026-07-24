@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Houses everything that isn't one of the four primary tabs (Drives,
-/// Tracks, Garage, Friends). Deliberately the only "extra" tab — adding a
+/// Tracks, Leaderboard, Friends). Deliberately the only "extra" tab — adding a
 /// second one would push the tab bar past 5 items and trigger iOS's own
 /// automatic "More" collapse, burying this screen inside a system-generated
 /// one instead of showing it directly.
@@ -25,8 +25,8 @@ struct MoreView: View {
                         NavigationLink(destination: StatsView()) {
                             ProfileRow(icon: "chart.bar.fill", title: NSLocalizedString("tab.stats", comment: ""))
                         }
-                        NavigationLink(destination: LeaderboardView()) {
-                            ProfileRow(icon: "trophy.fill", title: NSLocalizedString("tab.leaderboard", comment: ""))
+                        NavigationLink(destination: GarageView()) {
+                            ProfileRow(icon: "wrench.and.screwdriver.fill", title: NSLocalizedString("tab.garage", comment: ""))
                         }
                         NavigationLink(destination: AchievementsView()) {
                             ProfileRow(icon: "rosette", title: NSLocalizedString("achievements.title", comment: ""))

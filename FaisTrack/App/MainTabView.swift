@@ -19,10 +19,12 @@ struct MainTabView: View {
                     .tabItem {
                         Label(NSLocalizedString("tab.tracks", comment: ""), systemImage: "map.fill")
                     }
-                GarageView()
-                    .tabItem {
-                        Label(NSLocalizedString("tab.garage", comment: ""), systemImage: "wrench.and.screwdriver.fill")
-                    }
+                NavigationView {
+                    LeaderboardView()
+                }
+                .tabItem {
+                    Label(NSLocalizedString("tab.leaderboard", comment: ""), systemImage: "trophy.fill")
+                }
                 FriendsView()
                     .tabItem {
                         Label(NSLocalizedString("tab.friends", comment: ""), systemImage: "person.2.fill")

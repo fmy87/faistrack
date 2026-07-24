@@ -30,14 +30,29 @@ struct IntroVideoView: View {
                 // A dark scrim behind just the top portion (not the whole
                 // video) — keeps the welcome text readable regardless of
                 // what's happening in the footage there, without dimming
-                // the car itself lower in frame.
-                LinearGradient(colors: [Color.black.opacity(0.55), .clear],
-                               startPoint: .top, endPoint: .bottom)
-                    .frame(height: 260)
-                    .allowsHitTesting(false)
+                // the car itself lower in frame. Multiple stops (rather
+                // than a single opacity-to-clear pair) give a genuinely
+                // smooth taper instead of a visible fade line, and
+                // ignoresSafeArea keeps it flush with the full-bleed video
+                // behind it — without that, this VStack stopped at the
+                // safe-area inset while the video continued behind the
+                // notch, and the gap between the two showed up as a hard
+                // dark band right at the safe-area boundary.
+                LinearGradient(
+                    stops: [
+                        .init(color: Color.black.opacity(0.55), location: 0),
+                        .init(color: Color.black.opacity(0.35), location: 0.4),
+                        .init(color: Color.black.opacity(0.12), location: 0.75),
+                        .init(color: .clear, location: 1)
+                    ],
+                    startPoint: .top, endPoint: .bottom
+                )
+                .frame(height: 260)
+                .allowsHitTesting(false)
 
                 Spacer()
             }
+            .ignoresSafeArea()
 
             VStack {
                 HStack {

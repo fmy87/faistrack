@@ -7,39 +7,41 @@ struct GarageView: View {
     @State private var showProPaywall = false
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.ftBackground.ignoresSafeArea()
-                if viewModel.cars.isEmpty {
-                    GarageEmptyState { showAddCar = true }
-                } else {
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            ForEach(Array(viewModel.cars.enumerated()), id: \.1.id) { index, car in
-                                StaggeredAppear(index: index) {
-                                    NavigationLink(destination: CarDetailView(car: car, viewModel: viewModel)) {
-                                        CarCardView(car: car, isActive: car.isActive)
-                                            .contextMenu {
-                                                Button { viewModel.setActive(car) } label: {
-                                                    Label(NSLocalizedString("garage.setActive", comment: ""), systemImage: "checkmark.circle")
-                                                }
-                                                Button(role: .destructive) { viewModel.delete(car) } label: {
-                                                    Label(NSLocalizedString("garage.delete", comment: ""), systemImage: "trash")
-                                                }
+        // No own NavigationView here — this view is now reached via a
+        // NavigationLink from MoreView, which already provides the nav
+        // stack. Wrapping it again would produce a nested NavigationView
+        // and a double nav bar.
+        ZStack {
+            Color.ftBackground.ignoresSafeArea()
+            if viewModel.cars.isEmpty {
+                GarageEmptyState { showAddCar = true }
+            } else {
+                ScrollView {
+                    VStack(spacing: 16) {
+                        ForEach(Array(viewModel.cars.enumerated()), id: \.1.id) { index, car in
+                            StaggeredAppear(index: index) {
+                                NavigationLink(destination: CarDetailView(car: car, viewModel: viewModel)) {
+                                    CarCardView(car: car, isActive: car.isActive)
+                                        .contextMenu {
+                                            Button { viewModel.setActive(car) } label: {
+                                                Label(NSLocalizedString("garage.setActive", comment: ""), systemImage: "checkmark.circle")
                                             }
-                                    }
+                                            Button(role: .destructive) { viewModel.delete(car) } label: {
+                                                Label(NSLocalizedString("garage.delete", comment: ""), systemImage: "trash")
+                                            }
+                                        }
                                 }
                             }
-                        }.padding(16)
-                    }
+                        }
+                    }.padding(16)
                 }
             }
-            .navigationTitle(NSLocalizedString("garage.title", comment: ""))
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button { handleAddCar() } label: {
-                        Image(systemName: "plus").foregroundColor(.ftAccent)
-                    }
+        }
+        .navigationTitle(NSLocalizedString("garage.title", comment: ""))
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button { handleAddCar() } label: {
+                    Image(systemName: "plus").foregroundColor(.ftAccent)
                 }
             }
         }
