@@ -10,7 +10,7 @@
 /* Onboarding */
 "onboarding.continue" = "متابعة";
 "onboarding.page1.title" = "تتبع رحلاتك تلقائياً";
-"onboarding.page1.subtitle" = "فيس تراك يكتشف عندما تبدأ القيادة ويسجل كل التفاصيل تلقائياً.";
+"onboarding.page1.subtitle" = "افتح فيس تراك قبل القيادة — سيكتشف عندما تبدأ التحرك ويسجل كل التفاصيل تلقائياً.";
 "onboarding.page2.title" = "تنافس مع الأصدقاء";
 "onboarding.page2.subtitle" = "أضف أصدقاءك لمقارنة الإحصائيات والتنافس في قوائم المتصدرين.";
 "onboarding.page3.title" = "شاهد إحصائياتك";
@@ -40,8 +40,8 @@
 /* Permissions */
 "permissions.title" = "تفعيل الصلاحيات";
 "permissions.subtitle" = "فعّل الصلاحيات لكي يعمل تتبع الرحلات تلقائياً.";
-"permissions.location" = "السماح دائماً بالموقع";
-"permissions.location.desc" = "مطلوب لتتبع الرحلات في الخلفية.";
+"permissions.location" = "تفعيل الوصول إلى الموقع";
+"permissions.location.desc" = "مطلوب لتتبع رحلاتك أثناء استخدام التطبيق.";
 "permissions.motion" = "تفعيل الحركة";
 "permissions.motion.desc" = "يساعد في التأكد من أنك تقود سيارة.";
 "permissions.notifications" = "تفعيل الإشعارات";
@@ -87,7 +87,7 @@
 
 /* Drives */
 "drives.empty.title" = "لا توجد رحلات بعد";
-"drives.empty.subtitle" = "ابدأ القيادة وسيسجل فيس تراك رحلاتك تلقائياً.";
+"drives.empty.subtitle" = "افتح فيس تراك قبل القيادة — سيكتشف رحلاتك ويسجلها تلقائياً.";
 "drives.tracking" = "جارٍ التسجيل";
 "drives.unknownLocation" = "موقع غير معروف";
 "drives.dashboard.drives" = "الرحلات";

@@ -10,7 +10,7 @@
 /* Onboarding */
 "onboarding.continue" = "Continuar";
 "onboarding.page1.title" = "Registra tus recorridos automáticamente";
-"onboarding.page1.subtitle" = "FaisTrack detecta cuando empiezas a conducir y registra cada detalle automáticamente.";
+"onboarding.page1.subtitle" = "Abre FaisTrack antes de conducir — detecta cuando empiezas a moverte y registra cada detalle automáticamente.";
 "onboarding.page2.title" = "Compite con amigos";
 "onboarding.page2.subtitle" = "Añade amigos para comparar estadísticas y competir en las clasificaciones.";
 "onboarding.page3.title" = "Ve tus estadísticas";
@@ -40,8 +40,8 @@
 /* Permissions */
 "permissions.title" = "Activar permisos";
 "permissions.subtitle" = "Activa estos permisos para que el registro automático de recorridos funcione correctamente.";
-"permissions.location" = "Activar \"Permitir siempre\"";
-"permissions.location.desc" = "Necesario para el seguimiento en segundo plano.";
+"permissions.location" = "Activar acceso a la ubicación";
+"permissions.location.desc" = "Necesario para seguir tus recorridos mientras usas la app.";
 "permissions.motion" = "Activar acceso al movimiento";
 "permissions.motion.desc" = "Ayuda a confirmar que estás en un vehículo en movimiento.";
 "permissions.notifications" = "Activar notificaciones";
@@ -87,7 +87,7 @@
 
 /* Drives */
 "drives.empty.title" = "Aún no hay recorridos";
-"drives.empty.subtitle" = "Empieza a conducir y FaisTrack registrará tus recorridos automáticamente.";
+"drives.empty.subtitle" = "Abre FaisTrack antes de conducir — detectará y registrará tu recorrido automáticamente.";
 "drives.tracking" = "Registrando";
 "drives.unknownLocation" = "Ubicación desconocida";
 "drives.dashboard.drives" = "Recorridos";

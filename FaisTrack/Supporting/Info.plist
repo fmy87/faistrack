@@ -92,12 +92,14 @@
     </dict>
 
     <!-- Location Permissions -->
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>FaisTrack needs your location to automatically track your drives in the background.</string>
+    <!-- Foreground-only by design now — see LocationService's docs.
+         Always/background usage-description strings were removed since
+         the app no longer requests that authorization level at all;
+         leaving unused capability strings in place is itself a minor App
+         Review flag ("why does this app say it needs background location
+         if it never asks for it"), not just dead weight. -->
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>FaisTrack needs your location to track your drives.</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>FaisTrack needs your location to automatically track your drives in the background.</string>
+    <string>FaisTrack needs your location to track your drives while the app is open.</string>
 
     <!-- Motion Permission -->
     <key>NSMotionUsageDescription</key>
@@ -112,9 +114,12 @@
     <string>FaisTrack needs camera access to take a photo of your car.</string>
 
     <!-- Background Modes -->
+    <!-- "location" removed — the app no longer runs location updates in
+         the background at all (see LocationService), so declaring the
+         capability without using it was both dead weight and a mismatch
+         between what's declared and what the app actually does. -->
     <key>UIBackgroundModes</key>
     <array>
-        <string>location</string>
         <string>fetch</string>
         <string>remote-notification</string>
     </array>

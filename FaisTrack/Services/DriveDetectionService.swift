@@ -121,6 +121,25 @@ class DriveDetectionService: ObservableObject {
         }
     }
 
+    /// Pairs with startMonitoring() — called when the app backgrounds (see
+    /// MainTabView's scenePhase handling). Motion-activity updates
+    /// themselves are cheap (hardware-assisted, not GPS), but with location
+    /// now foreground-only, leaving this running in the background would
+    /// mean CoreMotion could flag "driving" and call
+    /// beginPendingAutomotiveConfirmation(), which tries to start GPS — a
+    /// call that will just be silently ignored by iOS while backgrounded
+    /// under When-In-Use authorization. That's a confusing half-working
+    /// state (a local notification could fire promising drive tracking
+    /// that was never actually recording anything), not a graceful
+    /// degradation, so detection is paused as a whole rather than leaving
+    /// half of it running uselessly.
+    func stopMonitoring() {
+        motionManager.stopActivityUpdates()
+        if pendingAutomotiveConfirmation {
+            cancelPendingAutomotiveConfirmation()
+        }
+    }
+
     private func beginPendingAutomotiveConfirmation() {
         pendingAutomotiveConfirmation = true
         LocationService.shared.startUpdating()

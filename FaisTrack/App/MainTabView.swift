@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @ObservedObject private var driveDetection = DriveDetectionService.shared
+    @Environment(\.scenePhase) private var scenePhase
     // Lets a minimize tap hide the live HUD without touching the actual
     // isDriving state that drives real tracking — the HUD reappears
     // automatically the next time a drive starts.
@@ -81,6 +82,29 @@ struct MainTabView: View {
         }
         .onChange(of: driveDetection.isDriving) { isDriving in
             if isDriving { showLiveDriveOverride = true }
+        }
+        .onChange(of: scenePhase) { newPhase in
+            // Location is deliberately foreground-only now (see
+            // LocationService's docs) — this is the actual mechanism that
+            // enforces that, pausing both GPS and motion-activity
+            // monitoring the moment the app leaves the foreground, and
+            // resuming them when it returns. An in-progress drive isn't
+            // force-ended by this: isDriving stays true, its route just
+            // stops gaining new points until the app is foregrounded
+            // again, picking back up with a gap rather than losing the
+            // drive outright.
+            switch newPhase {
+            case .active:
+                LocationService.shared.startUpdating()
+                DriveDetectionService.shared.startMonitoring()
+            case .background:
+                LocationService.shared.stopUpdating()
+                DriveDetectionService.shared.stopMonitoring()
+            case .inactive:
+                break
+            @unknown default:
+                break
+            }
         }
         .sheet(isPresented: $showWhatsNew, onDismiss: { WhatsNewView.markSeen() }) {
             WhatsNewView()

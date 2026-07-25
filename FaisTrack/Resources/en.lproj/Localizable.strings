@@ -10,7 +10,7 @@
 /* Onboarding */
 "onboarding.continue" = "Continue";
 "onboarding.page1.title" = "Automatically Track Your Drives";
-"onboarding.page1.subtitle" = "FaisTrack detects when you start driving and records every detail automatically.";
+"onboarding.page1.subtitle" = "Open FaisTrack before you drive — it detects when you start moving and records every detail automatically.";
 "onboarding.page2.title" = "Compete with Friends";
 "onboarding.page2.subtitle" = "Add friends to compare stats and compete on leaderboards.";
 "onboarding.page3.title" = "See Your Stats";
@@ -40,8 +40,8 @@
 /* Permissions */
 "permissions.title" = "Enable Permissions";
 "permissions.subtitle" = "Turn on permissions for automatic drive tracking to work properly.";
-"permissions.location" = "Enable Always Allow";
-"permissions.location.desc" = "Required for background drive tracking.";
+"permissions.location" = "Enable Location Access";
+"permissions.location.desc" = "Required to track your drives while the app is open.";
 "permissions.motion" = "Enable Motion Access";
 "permissions.motion.desc" = "Helps confirm you are in a moving car.";
 "permissions.notifications" = "Enable Notifications";
@@ -87,7 +87,7 @@
 
 /* Drives */
 "drives.empty.title" = "No Drives Yet";
-"drives.empty.subtitle" = "Start driving and FaisTrack will automatically record your drives.";
+"drives.empty.subtitle" = "Open FaisTrack before you drive — it'll detect and record automatically from there.";
 "drives.tracking" = "Tracking";
 "drives.unknownLocation" = "Unknown Location";
 "drives.dashboard.drives" = "Drives";
