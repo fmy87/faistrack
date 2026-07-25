@@ -9,8 +9,8 @@
 
 /* Onboarding */
 "onboarding.continue" = "Continuar";
-"onboarding.page1.title" = "Registra tus recorridos automáticamente";
-"onboarding.page1.subtitle" = "Abre FaisTrack antes de conducir — detecta cuando empiezas a moverte y registra cada detalle automáticamente.";
+"onboarding.page1.title" = "Compite en tus propias calles";
+"onboarding.page1.subtitle" = "Grava un circuito en cualquier calle que conduzcas y compite por el mejor tiempo contra tus amigos y en la clasificación.";
 "onboarding.page2.title" = "Compite con amigos";
 "onboarding.page2.subtitle" = "Añade amigos para comparar estadísticas y competir en las clasificaciones.";
 "onboarding.page3.title" = "Ve tus estadísticas";

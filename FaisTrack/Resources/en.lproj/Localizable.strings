@@ -9,8 +9,8 @@
 
 /* Onboarding */
 "onboarding.continue" = "Continue";
-"onboarding.page1.title" = "Automatically Track Your Drives";
-"onboarding.page1.subtitle" = "Open FaisTrack before you drive — it detects when you start moving and records every detail automatically.";
+"onboarding.page1.title" = "Race Your Own Streets";
+"onboarding.page1.subtitle" = "Record a track on any road you drive, then compete for the fastest time against friends and the leaderboard.";
 "onboarding.page2.title" = "Compete with Friends";
 "onboarding.page2.subtitle" = "Add friends to compare stats and compete on leaderboards.";
 "onboarding.page3.title" = "See Your Stats";

@@ -9,8 +9,8 @@
 
 /* Onboarding */
 "onboarding.continue" = "متابعة";
-"onboarding.page1.title" = "تتبع رحلاتك تلقائياً";
-"onboarding.page1.subtitle" = "افتح فيس تراك قبل القيادة — سيكتشف عندما تبدأ التحرك ويسجل كل التفاصيل تلقائياً.";
+"onboarding.page1.title" = "تسابق في شوارعك";
+"onboarding.page1.subtitle" = "سجّل مساراً على أي طريق تقوده، ثم تنافس على أسرع وقت مع أصدقائك وفي لوحة المتصدرين.";
 "onboarding.page2.title" = "تنافس مع الأصدقاء";
 "onboarding.page2.subtitle" = "أضف أصدقاءك لمقارنة الإحصائيات والتنافس في قوائم المتصدرين.";
 "onboarding.page3.title" = "شاهد إحصائياتك";
