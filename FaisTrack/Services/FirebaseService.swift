@@ -370,6 +370,69 @@ class FirebaseService {
         try await trackRef.setData(updates, merge: true)
     }
 
+    /// Admin-only removal of a single cheating/bogus attempt, without
+    /// wiping the whole track (see deleteTrack for that). Since
+    /// saveTrackResult caches the *current* record directly on the Track
+    /// document (bestTime/bestTimeUsername/etc.) rather than always
+    /// deriving it live from the results subcollection, deleting a result
+    /// that happens to be the cached record leaves stale data behind
+    /// unless something recomputes it — that's what this does, by
+    /// re-querying whatever the next-fastest remaining result is (or
+    /// clearing the record fields entirely if none are left) rather than
+    /// just deleting and hoping nobody notices the leftover record.
+    ///
+    /// bestTimeTelemetry deliberately cannot be restored for the
+    /// newly-promoted record even if that attempt included telemetry when
+    /// it was originally set — TrackResult itself never stores telemetry
+    /// (only the Track's cached bestTimeTelemetry does, at the moment a
+    /// record is set), so once a later result overwrote it, the earlier
+    /// attempt's telemetry is gone for good. The heatmap just won't have
+    /// one until someone sets a new record going forward.
+    func deleteTrackResult(trackId: String, resultId: String) async throws {
+        try await db.collection("tracks").document(trackId)
+            .collection("results").document(resultId).delete()
+
+        let trackRef = db.collection("tracks").document(trackId)
+        let remaining = try await db.collection("tracks").document(trackId)
+            .collection("results")
+            .order(by: "duration", descending: false)
+            .limit(to: 1)
+            .getDocuments()
+
+        var updates: [String: Any] = ["attemptCount": FieldValue.increment(Int64(-1))]
+        if let newBest = remaining.documents.first.flatMap({ try? $0.data(as: TrackResult.self) }) {
+            updates["bestTime"] = newBest.duration
+            updates["bestTimeUsername"] = newBest.username
+            updates["bestTimeUid"] = newBest.uid
+            updates["bestTimeTopSpeed"] = newBest.topSpeed
+            if let carName = newBest.carName {
+                updates["bestTimeCarName"] = carName
+            } else {
+                updates["bestTimeCarName"] = FieldValue.delete()
+            }
+            updates["recordSetAt"] = Timestamp()
+            updates["bestTimeTelemetry"] = FieldValue.delete()
+        } else {
+            // No attempts left at all — clear every record field rather
+            // than leaving the deleted cheater's numbers displayed as if
+            // they still stood.
+            updates["bestTime"] = FieldValue.delete()
+            updates["bestTimeUsername"] = FieldValue.delete()
+            updates["bestTimeUid"] = FieldValue.delete()
+            updates["bestTimeTopSpeed"] = FieldValue.delete()
+            updates["bestTimeCarName"] = FieldValue.delete()
+            updates["recordSetAt"] = FieldValue.delete()
+            updates["bestTimeTelemetry"] = FieldValue.delete()
+        }
+        try await trackRef.setData(updates, merge: true)
+    }
+
+    func getTrack(trackId: String) async throws -> Track? {
+        let doc = try await db.collection("tracks").document(trackId).getDocument()
+        guard doc.exists else { return nil }
+        return try doc.data(as: Track.self)
+    }
+
     func getTrackLeaderboard(trackId: String, limit: Int = 20) async throws -> [TrackResult] {
         let snapshot = try await db.collection("tracks").document(trackId)
             .collection("results")

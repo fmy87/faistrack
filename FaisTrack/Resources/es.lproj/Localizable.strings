@@ -401,6 +401,8 @@
 "tracks.sort.nearest" = "Más cercanos";
 "tracks.deleteConfirm" = "¿Eliminar este circuito? Esto lo borra junto con todos sus resultados de forma permanente.";
 "tracks.deleted" = "Circuito eliminado";
+"tracks.deleteResultConfirm" = "¿Quitar este intento de la clasificación? El récord del circuito se recalculará si era este.";
+"tracks.resultDeleted" = "Intento eliminado";
 "general.delete" = "Eliminar";
 
 

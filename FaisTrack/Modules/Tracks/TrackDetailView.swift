@@ -3,6 +3,15 @@ import CoreLocation
 
 struct TrackDetailView: View {
     let track: Track
+    /// Overrides `track` once a result deletion has recomputed the record
+    /// server-side (see FirebaseService.deleteTrackResult) — `track` itself
+    /// is a `let`, passed in from whoever navigated here, so it has no way
+    /// to reflect a change made after this view already appeared. Every
+    /// place below that shows the cached record (recordHolderCard,
+    /// isTrackLegend, myMedal, the attempts count) reads through
+    /// `effectiveTrack` rather than `track` directly for exactly this reason.
+    @State private var refreshedTrack: Track?
+    private var effectiveTrack: Track { refreshedTrack ?? track }
     @State private var results: [TrackResult] = []
 
     /// Explicitly typed on purpose — see the ForEach below for why.
@@ -11,6 +20,13 @@ struct TrackDetailView: View {
     @State private var showDeleteConfirm = false
     @State private var isDeleting = false
     @State private var deleteError: String?
+    /// A specific cheating attempt the admin has tapped delete on — separate
+    /// from showDeleteConfirm/isDeleting/deleteError above, which are for
+    /// deleting the *whole track*. Reusing those for a single result would
+    /// make it ambiguous which confirmation dialog is showing when.
+    @State private var resultPendingDeletion: TrackResult?
+    @State private var isDeletingResult = false
+    @State private var deleteResultError: String?
     @Environment(\.dismiss) private var dismiss
 
     private var canDelete: Bool { AdminConfig.isCurrentUserAdmin }
@@ -19,7 +35,7 @@ struct TrackDetailView: View {
     /// heatmap below. Empty for tracks where nobody's set a record with
     /// telemetry yet (e.g. tracks created before this existed).
     private var telemetry: [TelemetryPoint] {
-        TelemetryCodec.decode(track.bestTimeTelemetry)
+        TelemetryCodec.decode(effectiveTrack.bestTimeTelemetry)
     }
 
     /// Falls back to the plain route (from polylineEncoded) when there's
@@ -56,7 +72,7 @@ struct TrackDetailView: View {
     }
 
     private var myMedal: TrackMedal {
-        TrackMedal.evaluate(myBestDuration: myBestResult?.duration, trackBestDuration: track.bestTime)
+        TrackMedal.evaluate(myBestDuration: myBestResult?.duration, trackBestDuration: effectiveTrack.bestTime)
     }
 
     /// Held for 30+ consecutive days — Strava-KOM style recognition for
@@ -64,8 +80,8 @@ struct TrackDetailView: View {
     /// is too recent, or if recordSetAt is missing (records set before
     /// this field existed).
     private var isTrackLegend: Bool {
-        guard let uid = AuthService.shared.currentUser?.uid, track.bestTimeUid == uid,
-              let recordSetAt = track.recordSetAt else { return false }
+        guard let uid = AuthService.shared.currentUser?.uid, effectiveTrack.bestTimeUid == uid,
+              let recordSetAt = effectiveTrack.recordSetAt else { return false }
         return Date().timeIntervalSince(recordSetAt.dateValue()) >= 30 * 24 * 60 * 60
     }
 
@@ -114,7 +130,7 @@ struct TrackDetailView: View {
                     HStack {
                         FTStatBadge(value: track.distanceFormatted, label: NSLocalizedString("tracks.distance", comment: ""))
                         Divider()
-                        FTStatBadge(value: "\(track.attemptCount)", label: NSLocalizedString("tracks.attempts", comment: ""))
+                        FTStatBadge(value: "\(effectiveTrack.attemptCount)", label: NSLocalizedString("tracks.attempts", comment: ""))
                     }
                 }
 
@@ -148,7 +164,9 @@ struct TrackDetailView: View {
                         // explicitly-typed view removes the ambiguity that
                         // was making the type checker work so hard.
                         ForEach(Array(topResults.enumerated()), id: \.offset) { index, result in
-                            TrackResultRow(rank: index + 1, result: result)
+                            TrackResultRow(rank: index + 1, result: result, canDelete: canDelete) {
+                                resultPendingDeletion = result
+                            }
                         }
                     }
                     .padding(16)
@@ -211,6 +229,26 @@ struct TrackDetailView: View {
         } message: {
             Text(deleteError ?? "")
         }
+        .confirmationDialog(
+            NSLocalizedString("tracks.deleteResultConfirm", comment: ""),
+            isPresented: Binding(
+                get: { resultPendingDeletion != nil },
+                set: { if !$0 { resultPendingDeletion = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button(NSLocalizedString("general.delete", comment: ""), role: .destructive) {
+                Task { await deleteResult() }
+            }
+            Button(NSLocalizedString("general.cancel", comment: ""), role: .cancel) { resultPendingDeletion = nil }
+        }
+        .alert(NSLocalizedString("general.error", comment: ""), isPresented: Binding(
+            get: { deleteResultError != nil }, set: { if !$0 { deleteResultError = nil } }
+        )) {
+            Button(NSLocalizedString("general.ok", comment: ""), role: .cancel) {}
+        } message: {
+            Text(deleteResultError ?? "")
+        }
     }
 
     private func deleteTrack() async {
@@ -224,6 +262,30 @@ struct TrackDetailView: View {
             deleteError = error.localizedDescription
         }
         isDeleting = false
+    }
+
+    /// Removes a single cheated/bogus attempt — the track itself and every
+    /// other legitimate result stay untouched. Reloads the leaderboard
+    /// afterward rather than just removing the row locally, since the
+    /// track's cached bestTime fields may have just been recomputed
+    /// server-side (see FirebaseService.deleteTrackResult) and the
+    /// recordHolderCard above needs to reflect that.
+    private func deleteResult() async {
+        guard let id = track.id, let resultId = resultPendingDeletion?.id else {
+            resultPendingDeletion = nil
+            return
+        }
+        isDeletingResult = true
+        do {
+            try await FirebaseService.shared.deleteTrackResult(trackId: id, resultId: resultId)
+            ToastManager.shared.showSuccess(NSLocalizedString("tracks.resultDeleted", comment: ""))
+            refreshedTrack = try? await FirebaseService.shared.getTrack(trackId: id)
+            await loadLeaderboard()
+        } catch {
+            deleteResultError = error.localizedDescription
+        }
+        resultPendingDeletion = nil
+        isDeletingResult = false
     }
 
     /// Explains the heatmap's color scale with the actual speed thresholds
@@ -253,7 +315,7 @@ struct TrackDetailView: View {
     /// the record holder's speed and car with no extra lookup.
     private var recordHolderCard: some View {
         Group {
-            if let bestTime = track.bestTime, let holder = track.bestTimeUsername {
+            if let bestTime = effectiveTrack.bestTime, let holder = effectiveTrack.bestTimeUsername {
                 ZStack {
                     LinearGradient(colors: [.black, Color(hex: "#1A0000")],
                                    startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -271,10 +333,10 @@ struct TrackDetailView: View {
                             .font(.system(size: 44, weight: .black))
                             .foregroundColor(.ftAccent)
                         HStack(spacing: 16) {
-                            if let topSpeed = track.bestTimeTopSpeed, topSpeed > 0 {
+                            if let topSpeed = effectiveTrack.bestTimeTopSpeed, topSpeed > 0 {
                                 Label(String(format: "%.0f km/h", topSpeed), systemImage: "gauge.with.dots.needle.67percent")
                             }
-                            if let carName = track.bestTimeCarName {
+                            if let carName = effectiveTrack.bestTimeCarName {
                                 Label(carName, systemImage: "car.fill")
                             }
                         }
@@ -354,6 +416,8 @@ struct TrackDetailView: View {
 private struct TrackResultRow: View {
     let rank: Int
     let result: TrackResult
+    var canDelete: Bool = false
+    var onDelete: (() -> Void)? = nil
 
     var body: some View {
         HStack {
@@ -366,6 +430,20 @@ private struct TrackResultRow: View {
             Spacer()
             Text(result.durationFormatted)
                 .font(.system(size: 14, weight: .semibold))
+            // Admin-only — this is the actual cheating-cleanup tool: spot a
+            // suspicious time on the leaderboard, remove just that attempt,
+            // and the track's record recalculates automatically from
+            // whatever's left (see FirebaseService.deleteTrackResult).
+            // Everyone else's rows look identical; only admin sees this.
+            if canDelete {
+                Button(action: { onDelete?() }) {
+                    Image(systemName: "trash")
+                        .font(.system(size: 13))
+                        .foregroundColor(.speedRed)
+                        .padding(.leading, 10)
+                }
+                .buttonStyle(.plain)
+            }
         }
     }
 }

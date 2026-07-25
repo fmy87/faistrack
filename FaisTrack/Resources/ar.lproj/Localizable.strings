@@ -404,6 +404,8 @@
 "tracks.sort.nearest" = "الأقرب";
 "tracks.deleteConfirm" = "حذف هذا المسار؟ سيتم حذفه وجميع نتائجه بشكل نهائي.";
 "tracks.deleted" = "تم حذف المسار";
+"tracks.deleteResultConfirm" = "إزالة هذه المحاولة من لوحة المتصدرين؟ سيُعاد حساب رقم المسار القياسي إذا كانت هذه هي المحاولة الأفضل.";
+"tracks.resultDeleted" = "تمت إزالة المحاولة";
 "general.delete" = "حذف";
 
 

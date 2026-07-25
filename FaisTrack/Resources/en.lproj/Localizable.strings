@@ -404,6 +404,8 @@
 "tracks.sort.nearest" = "Nearest";
 "tracks.deleteConfirm" = "Delete this track? This removes it and all its results permanently.";
 "tracks.deleted" = "Track deleted";
+"tracks.deleteResultConfirm" = "Remove this attempt from the leaderboard? The track's record will be recalculated if this was it.";
+"tracks.resultDeleted" = "Attempt removed";
 "general.delete" = "Delete";
 
 
