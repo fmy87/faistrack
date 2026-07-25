@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreLocation
+import MapKit
 
 /// Lets the admin create a track by naming it and tapping two points on a
 /// map — no driving required. Answers "how do I add tracks remotely
@@ -81,17 +82,21 @@ struct AdminCreateTrackView: View {
     private func save() async {
         guard let start = startCoordinate, let end = endCoordinate,
               let uid = AuthService.shared.currentUser?.uid,
-              let distanceMeters else { return }
+              let straightLineDistance = distanceMeters else { return }
         isSaving = true
         errorMessage = nil
         do {
             let username = (try? await FirebaseService.shared.getUser(uid: uid))?.username
                 ?? NSLocalizedString("general.defaultUsername", comment: "")
-            // No real drive happened, so the "route" is just a straight
-            // line between the two tapped points — enough to satisfy the
-            // Track model's non-optional polylineEncoded field and to draw
-            // something sensible on the map, even though it isn't a traced
-            // real-world path the way a driven track's is.
+            // Ask Apple Maps for an actual driving route between the two
+            // tapped points instead of just connecting them with a straight
+            // line — previously every admin-created track showed as a
+            // ruler-straight red line cutting across fields and buildings
+            // on the detail map, regardless of what roads were actually
+            // there. Falls back to the straight line only if routing
+            // genuinely fails (offline, no road route found, etc.) — a
+            // straight-line track is still usable, just not accurate.
+            let (routeCoordinates, routeDistance) = await fetchRoadRoute(from: start, to: end) ?? ([start, end], straightLineDistance)
             let track = Track(
                 ownerUID: uid,
                 ownerUsername: username,
@@ -100,8 +105,8 @@ struct AdminCreateTrackView: View {
                 startLongitude: start.longitude,
                 endLatitude: end.latitude,
                 endLongitude: end.longitude,
-                distance: distanceMeters,
-                polylineEncoded: PolylineCodec.encode([start, end])
+                distance: routeDistance,
+                polylineEncoded: PolylineCodec.encode(routeCoordinates)
             )
             _ = try await FirebaseService.shared.createTrack(track)
             onCreated?()
@@ -110,5 +115,25 @@ struct AdminCreateTrackView: View {
             errorMessage = error.localizedDescription
         }
         isSaving = false
+    }
+
+    /// Returns the actual road-following route (coordinates + real driving
+    /// distance) between two points, or nil if Apple's routing couldn't
+    /// find one (e.g. offline, or the points aren't reachable by road).
+    private func fetchRoadRoute(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) async -> ([CLLocationCoordinate2D], Double)? {
+        let request = MKDirections.Request()
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: start))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: end))
+        request.transportType = .automobile
+        do {
+            let response = try await MKDirections(request: request).calculate()
+            guard let route = response.routes.first else { return nil }
+            let polyline = route.polyline
+            var coordinates = [CLLocationCoordinate2D](repeating: kCLLocationCoordinate2DInvalid, count: polyline.pointCount)
+            polyline.getCoordinates(&coordinates, range: NSRange(location: 0, length: polyline.pointCount))
+            return (coordinates, route.distance)
+        } catch {
+            return nil
+        }
     }
 }
