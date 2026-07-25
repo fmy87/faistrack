@@ -4,6 +4,9 @@ import CoreLocation
 struct TrackDetailView: View {
     let track: Track
     @State private var results: [TrackResult] = []
+
+    /// Explicitly typed on purpose — see the ForEach below for why.
+    private var topResults: [TrackResult] { Array(results.prefix(20)) }
     @State private var showShareCard = false
     @State private var showDeleteConfirm = false
     @State private var isDeleting = false
@@ -133,15 +136,19 @@ struct TrackDetailView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         Text(NSLocalizedString("tracks.leaderboard", comment: ""))
                             .font(.system(size: 16, weight: .bold))
-                        ForEach(Array(results.prefix(20).enumerated()), id: \.1.id) { index, result in
-                            HStack {
-                                Text("#\(index + 1)").font(.system(size: 14, weight: .bold))
-                                    .foregroundColor(index == 0 ? .ftAccent : .ftTextSecondary)
-                                    .frame(width: 32)
-                                Text(result.username).font(.system(size: 14))
-                                Spacer()
-                                Text(result.durationFormatted).font(.system(size: 14, weight: .semibold))
-                            }
+                        // Previously this ForEach built the whole row inline
+                        // (rank text with a ternary color, username, time,
+                        // several chained modifiers) as one expression the
+                        // compiler had to type-check together with the
+                        // Array(...).enumerated() call and its keypath id —
+                        // that combination was slow enough to occasionally
+                        // blow past the compiler's time budget entirely and
+                        // fail the archive build outright, not just run
+                        // slowly. Splitting the row into its own small
+                        // explicitly-typed view removes the ambiguity that
+                        // was making the type checker work so hard.
+                        ForEach(Array(topResults.enumerated()), id: \.offset) { index, result in
+                            TrackResultRow(rank: index + 1, result: result)
                         }
                     }
                     .padding(16)
@@ -330,6 +337,28 @@ struct TrackDetailView: View {
         // needing a second query (and the composite index that would
         // require) just to look up one person's own result.
         results = (try? await FirebaseService.shared.getTrackLeaderboard(trackId: id, limit: 500)) ?? []
+    }
+}
+
+/// Split out of TrackDetailView's leaderboard list — see the ForEach there
+/// for why. Nothing behavioral changed, just given explicit types the
+/// compiler doesn't have to infer inline.
+private struct TrackResultRow: View {
+    let rank: Int
+    let result: TrackResult
+
+    var body: some View {
+        HStack {
+            Text("#\(rank)")
+                .font(.system(size: 14, weight: .bold))
+                .foregroundColor(rank == 1 ? Color.ftAccent : Color.ftTextSecondary)
+                .frame(width: 32)
+            Text(result.username)
+                .font(.system(size: 14))
+            Spacer()
+            Text(result.durationFormatted)
+                .font(.system(size: 14, weight: .semibold))
+        }
     }
 }
 
