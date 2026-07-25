@@ -7,14 +7,17 @@ struct AuthView: View {
     @State private var showChooseUsername = false
     @State private var showSafety = false
     @State private var errorMessage: String?
+    @State private var isVideoMuted = false
 
     var body: some View {
         ZStack {
             Color.ftBackground.ignoresSafeArea()
-            // Real footage instead of the old SF Symbol car silhouette —
-            // muted and looping so it reads as ambient atmosphere behind
-            // the screen, not something demanding attention on its own.
-            SignupCarLoopView()
+            // Real footage instead of the old SF Symbol car silhouette,
+            // looping so it reads as ambient atmosphere behind the screen.
+            // Plays with sound (toggle below) rather than muted outright —
+            // see SignupCarLoopView's own docs for why muting alone wasn't
+            // actually the fix people would expect here.
+            SignupCarLoopView(isMuted: $isVideoMuted)
                 .ignoresSafeArea()
 
             // Scrims top and bottom so the title and sign-in buttons stay
@@ -32,6 +35,22 @@ struct AuthView: View {
             }
             .ignoresSafeArea()
             .allowsHitTesting(false)
+
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: { isVideoMuted.toggle() }) {
+                        Image(systemName: isVideoMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
+                            .font(.system(size: 14))
+                            .foregroundColor(.white)
+                            .padding(10)
+                            .background(Color.black.opacity(0.45))
+                            .clipShape(Circle())
+                    }
+                }
+                .padding()
+                Spacer()
+            }
 
             VStack(spacing: 20) {
                 Spacer()
