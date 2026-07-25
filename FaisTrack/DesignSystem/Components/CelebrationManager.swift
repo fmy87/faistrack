@@ -114,7 +114,7 @@ private struct CelebrationContent: View {
                         .font(.system(size: 15, weight: .bold))
                         .foregroundColor(.white)
                         .padding(.horizontal, 36).padding(.vertical, 12)
-                        .background(celebration.isRacingRecord ? Color.black : Color.ftGradient)
+                        .background(celebration.isRacingRecord ? AnyShapeStyle(Color.black) : AnyShapeStyle(Color.ftGradient))
                         .overlay(
                             Capsule().stroke(Color.white.opacity(celebration.isRacingRecord ? 0.6 : 0), lineWidth: 1.5)
                         )
