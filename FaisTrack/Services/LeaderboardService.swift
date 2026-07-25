@@ -5,6 +5,56 @@ class LeaderboardService {
     static let shared = LeaderboardService()
     private let db = Firestore.firestore()
 
+    /// Rebuilds this user's leaderboard entry directly from their actual
+    /// drive history, rather than relying on updateLeaderboard's
+    /// incremental per-drive writes having landed correctly every time.
+    ///
+    /// This exists because a real account was found with legitimate,
+    /// years-old completed drives but a completely empty leaderboard
+    /// entry — updateLeaderboard() never successfully wrote anything for
+    /// them, likely because those specific drives predate it being
+    /// reliably wired into the drive-completion flow (this app has had a
+    /// lot of iteration). Rather than keep chasing the exact historical
+    /// cause, this recomputes the correct totals from source data whenever
+    /// no entry exists yet — the same "self-heal from the real data on
+    /// next load" approach already used for the public-profile mirror.
+    /// Safe to call on every launch: it's a no-op after the entry exists,
+    /// same as that mirror's own backfill.
+    func backfillIfNeeded(uid: String) async {
+        let allTimeRef = db.collection("leaderboard").document("allTime_\(uid)")
+        guard let existing = try? await allTimeRef.getDocument(), existing.exists == false else { return }
+        guard let user = try? await FirebaseService.shared.getUser(uid: uid),
+              let allDrives = try? await FirebaseService.shared.getDrives(uid: uid, limit: 2000) else { return }
+        let realDrives = allDrives.filter { !$0.isPassenger }
+        guard !realDrives.isEmpty else { return }
+
+        let totalDistance = realDrives.reduce(0) { $0 + $1.distance }
+        let totalHours = realDrives.reduce(0) { $0 + Double($1.duration) / 3600 }
+        let topSpeed = realDrives.map(\.topSpeed).max() ?? 0
+        let longest = realDrives.map(\.distance).max() ?? 0
+
+        let data: [String: Any] = [
+            "uid": uid,
+            "username": user.username,
+            "photoURL": user.photoURL as Any,
+            "distance": totalDistance,
+            "drives": realDrives.count,
+            "hours": totalHours,
+            "topSpeed": topSpeed,
+            "longest": longest,
+            "updatedAt": Timestamp()
+        ]
+        // Same running-cumulative-bucket behavior as updateLeaderboard
+        // itself (see its docs on weekly/monthly not resetting per
+        // calendar period) — a backfill shouldn't introduce different
+        // semantics from the code path it's standing in for.
+        for period in LeaderboardPeriod.allCases {
+            var periodData = data
+            periodData["period"] = period.rawValue
+            try? await db.collection("leaderboard").document("\(period.rawValue)_\(uid)").setData(periodData, merge: true)
+        }
+    }
+
     func updateLeaderboard(drive: Drive, uid: String) async {
         guard let user = try? await FirebaseService.shared.getUser(uid: uid) else { return }
         let periods: [LeaderboardPeriod] = [.weekly, .monthly, .allTime]

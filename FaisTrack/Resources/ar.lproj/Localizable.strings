@@ -481,6 +481,7 @@
 "toast.rivalSet" = "تم تعيين @%@ كمنافس";
 "toast.rivalCleared" = "تم إلغاء المنافس";
 "toast.rivalFailed" = "تعذّر تعيين المنافس. حاول مرة أخرى.";
+"toast.rivalChallenged" = "%@ عيّنك كمنافس له! 🏁";
 "toast.friendAdded" = "أنت و @%@ أصبحتما أصدقاء الآن!";
 "toast.friendAddFailed" = "تعذّر قبول الطلب. حاول مرة أخرى.";
 "toast.usernameSaved" = "تم تحديث اسم المستخدم!";

@@ -192,6 +192,14 @@ class FriendsViewModel: ObservableObject {
             try await FirebaseService.shared.setRival(uid: uid, rivalUID: newRival)
             if newRival != nil {
                 ToastManager.shared.showSuccess(String(format: NSLocalizedString("toast.rivalSet", comment: ""), friend.username))
+                // Let the other person actually know — previously nothing
+                // told them at all; setting someone as your rival was
+                // completely invisible on their end.
+                if let me = try? await FirebaseService.shared.getUser(uid: uid) {
+                    await FirebaseService.shared.sendRivalChallengeNotification(
+                        fromUid: uid, fromUsername: me.username, toUid: friend.uid
+                    )
+                }
             } else {
                 ToastManager.shared.showInfo(NSLocalizedString("toast.rivalCleared", comment: ""))
             }

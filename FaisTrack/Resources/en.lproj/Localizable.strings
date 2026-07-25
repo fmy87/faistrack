@@ -481,6 +481,7 @@
 "toast.rivalSet" = "Rival set to @%@";
 "toast.rivalCleared" = "Rival cleared";
 "toast.rivalFailed" = "Couldn't set rival. Try again.";
+"toast.rivalChallenged" = "%@ set you as their rival! 🏁";
 "toast.friendAdded" = "You and @%@ are now friends!";
 "toast.friendAddFailed" = "Couldn't accept request. Try again.";
 "toast.usernameSaved" = "Username updated!";

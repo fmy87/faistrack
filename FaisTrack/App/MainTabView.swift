@@ -65,6 +65,13 @@ struct MainTabView: View {
             // a persisted session never re-runs.
             if let uid = AuthService.shared.currentUser?.uid {
                 Task { await FirebaseService.shared.backfillPublicProfileIfNeeded(uid: uid) }
+                Task { await LeaderboardService.shared.backfillIfNeeded(uid: uid) }
+                Task {
+                    if let challenge = await FirebaseService.shared.checkPendingRivalChallenge(uid: uid) {
+                        ToastManager.shared.showInfo(String(format: NSLocalizedString("toast.rivalChallenged", comment: ""), challenge.fromUsername))
+                        await FirebaseService.shared.clearRivalChallenge(uid: uid, docId: challenge.docId)
+                    }
+                }
             }
 
             // Shown once per app version's feature set — gated by its own

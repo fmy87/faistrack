@@ -136,6 +136,42 @@ class FirebaseService {
     /// missing-document safety as updateUsername above; FieldValue.delete()
     /// actually removes the field rather than leaving a stale value when
     /// clearing.
+    /// Notifies the other person they've been set as someone's rival —
+    /// there's no push/server infrastructure in this app (no Cloud
+    /// Functions), so this can't be a real system notification while
+    /// their phone is locked or the app is closed. Instead it writes into
+    /// the *target's own* space, keyed by challenger so re-setting the
+    /// same rival is just an idempotent overwrite, and the next time they
+    /// open the app (see checkPendingRivalChallenge, called from
+    /// MainTabView) they see an in-app toast. That's the honest ceiling of
+    /// what's achievable without adding real push infrastructure.
+    func sendRivalChallengeNotification(fromUid: String, fromUsername: String, toUid: String) async {
+        let data: [String: Any] = [
+            "fromUid": fromUid,
+            "fromUsername": fromUsername,
+            "createdAt": Timestamp()
+        ]
+        try? await db.collection("users").document(toUid)
+            .collection("rivalChallenges").document(fromUid).setData(data)
+    }
+
+    /// Checked once per launch (see MainTabView) — returns at most one
+    /// pending challenge (the most recent) rather than all of them, since
+    /// only one rival can be active on the OTHER side's account at a time
+    /// anyway; older ones are just cleared without individually surfacing
+    /// each, to avoid stacking toasts for something that's already stale.
+    func checkPendingRivalChallenge(uid: String) async -> (fromUsername: String, docId: String)? {
+        guard let snapshot = try? await db.collection("users").document(uid)
+            .collection("rivalChallenges").order(by: "createdAt", descending: true).limit(to: 1)
+            .getDocuments(), let doc = snapshot.documents.first else { return nil }
+        guard let fromUsername = doc.data()["fromUsername"] as? String else { return nil }
+        return (fromUsername, doc.documentID)
+    }
+
+    func clearRivalChallenge(uid: String, docId: String) async {
+        try? await db.collection("users").document(uid).collection("rivalChallenges").document(docId).delete()
+    }
+
     func setRival(uid: String, rivalUID: String?) async throws {
         let value: Any = rivalUID ?? FieldValue.delete()
         try await db.collection("users").document(uid).setData(["rivalUID": value], merge: true)
@@ -530,6 +566,17 @@ class FirebaseService {
                 try? await deleteTrack(trackId: doc.documentID)
             }
         }
+
+        // These two were never being deleted at all — the practical
+        // consequence being that a deleted account's username stayed
+        // permanently unavailable. isUsernameAvailable() checks
+        // `publicProfiles`, not `users`, since that's the collection
+        // other people's searches/lookups actually read (see the
+        // publicProfiles docs) — so leaving this doc behind meant the
+        // username looked "taken" forever to everyone else, even though
+        // the account that took it no longer existed.
+        try? await db.collection("publicProfiles").document(uid).delete()
+        try? await db.collection("liveStatus").document(uid).delete()
 
         try await userRef.delete()
     }
