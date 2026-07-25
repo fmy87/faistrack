@@ -29,7 +29,6 @@
 		31DF0CF53A504CB0B7094EC8 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52888D24069445E6A16750A5 /* RootView.swift */; };
 		349435386BA54F5883C6DC7B /* IntroVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DCAF9AA86460C81479042 /* IntroVideoView.swift */; };
 		CCC33519367E4541BD9C6068 /* FlameWelcomeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C8103342314EAE8C93B993 /* FlameWelcomeText.swift */; };
-		346059DD29E6447686DDE7C9 /* None in Resources */ = {isa = PBXBuildFile; fileRef = 1260ED1DF6E848A797444369; };
 		36C24728A3709ACDEE565ABD /* SpeedLinesBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D41A499B592656D29632C /* SpeedLinesBackground.swift */; };
 		EFFCCEF22F294D53A77F02FF /* SignupCarLoopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D403E1654A4C5D87EAA860 /* SignupCarLoopView.swift */; };
 		3C5375B644F84030A48AA605 /* GarageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE0E2847F7444B1A098C551 /* GarageView.swift */; };
@@ -572,7 +571,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C96AB37D2D174332BDC9F976 /* Assets.xcassets in Resources */,
-				346059DD29E6447686DDE7C9 /* None in Resources */,
 				A41D0873F51A4FFA8B7E1D84 /* Localizable.strings in Resources */,
 				958B4F73B01421F147B9A69A /* GoogleService-Info.plist in Resources */,
 				3459A091DCDD4170A371A5FB /* GTR_Burnout.mp4 in Resources */,
