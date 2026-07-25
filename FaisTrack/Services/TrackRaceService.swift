@@ -185,7 +185,8 @@ class TrackRaceService: NSObject, ObservableObject {
                 CelebrationManager.shared.celebrate(
                     icon: "🏆",
                     title: NSLocalizedString("toast.newRecord", comment: ""),
-                    subtitle: String(format: "%.2fs", duration)
+                    subtitle: String(format: "%.2fs", duration),
+                    isRacingRecord: true
                 )
             }
         }

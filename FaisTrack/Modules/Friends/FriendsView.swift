@@ -37,12 +37,18 @@ struct FriendsView: View {
                         if !viewModel.friends.isEmpty {
                             Section(NSLocalizedString("friends.myFriends", comment: "")) {
                                 ForEach(viewModel.friends) { friend in
-                                    FriendRow(
-                                        friend: friend,
-                                        isDriving: viewModel.liveStatuses[friend.uid] == true,
-                                        isRival: viewModel.rivalUID == friend.uid,
-                                        onToggleRival: { Task { await viewModel.toggleRival(friend) } }
-                                    )
+                                    // The row itself now opens the friend's
+                                    // profile — previously tapping a friend
+                                    // did nothing at all except the small
+                                    // rival-flag button being interactive.
+                                    NavigationLink(destination: FriendProfileView(friend: friend)) {
+                                        FriendRow(
+                                            friend: friend,
+                                            isDriving: viewModel.liveStatuses[friend.uid] == true,
+                                            isRival: viewModel.rivalUID == friend.uid,
+                                            onToggleRival: { Task { await viewModel.toggleRival(friend) } }
+                                        )
+                                    }
                                     .listRowBackground(Color.ftCard)
                                 }
                                 .onDelete { offsets in
@@ -122,11 +128,31 @@ private struct FriendRequestRow: View {
                 .overlay(Text(String(request.fromUsername.prefix(1)).uppercased()).font(.system(size: 14, weight: .bold)))
             Text(request.fromUsername).font(.system(size: 15, weight: .semibold))
             Spacer()
-            Button(action: onAccept) {
-                Image(systemName: "checkmark.circle.fill").foregroundColor(.speedGreen).font(.system(size: 22))
-            }
-            Button(action: onDecline) {
-                Image(systemName: "xmark.circle.fill").foregroundColor(.speedRed).font(.system(size: 22))
+            // Two adjacent Buttons inside a List row is a known SwiftUI
+            // trap: without an explicit .buttonStyle, List's own row-level
+            // tap handling can take over and route a tap to the wrong
+            // button (or effectively "the first one it finds") instead of
+            // whichever one was actually pressed — which is exactly what
+            // "no matter which one I tap it accepts" looks like. .plain
+            // keeps each button's own tap target authoritative. The larger
+            // frame (not just a bigger icon) is what actually grows the
+            // tappable area — a bigger icon alone doesn't.
+            HStack(spacing: 20) {
+                Button(action: onDecline) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.speedRed)
+                        .font(.system(size: 28))
+                        .frame(width: 44, height: 44)
+                }
+                .buttonStyle(.plain)
+
+                Button(action: onAccept) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(.speedGreen)
+                        .font(.system(size: 28))
+                        .frame(width: 44, height: 44)
+                }
+                .buttonStyle(.plain)
             }
         }.padding(.vertical, 4)
     }

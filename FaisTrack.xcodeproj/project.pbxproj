@@ -24,6 +24,7 @@
 		26AB79374F0144D884F5BEAC /* DriveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18CCDB9EE8A43D58B325344 /* DriveDetailView.swift */; };
 		2942245D9C894AA887DB445C /* Car.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BD9D0E781E49EEBB4D8E77 /* Car.swift */; };
 		2A9C12210C194E3A8161B6A7 /* UserSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962C04FF8E5D4263B8252ABA /* UserSearchView.swift */; };
+		110746A2F2B74F1589708C63 /* FriendProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB593CBE91B46B7A818C272 /* FriendProfileView.swift */; };
 		2BD649AF917D9956478F2835 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB408BA9F25A61225D8955 /* SettingsView.swift */; };
 		31DF0CF53A504CB0B7094EC8 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52888D24069445E6A16750A5 /* RootView.swift */; };
 		349435386BA54F5883C6DC7B /* IntroVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DCAF9AA86460C81479042 /* IntroVideoView.swift */; };
@@ -166,6 +167,7 @@
 		8EE0E2847F7444B1A098C551 /* GarageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GarageView.swift; path = GarageView.swift; sourceTree = "<group>"; };
 		953C603DF4FC422991B10BAA /* ProPaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProPaywallView.swift; path = ProPaywallView.swift; sourceTree = "<group>"; };
 		962C04FF8E5D4263B8252ABA /* UserSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserSearchView.swift; path = UserSearchView.swift; sourceTree = "<group>"; };
+		FEB593CBE91B46B7A818C272 /* FriendProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FriendProfileView.swift; path = FriendProfileView.swift; sourceTree = "<group>"; };
 		966408711FA246DC8FFA930B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Assets.xcassets; sourceTree = "<group>"; };
 		A178CC86E20D41F88A28F19F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OnboardingView.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		A185405498BBC8FE281BF201 /* ManageTracksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ManageTracksView.swift; path = FaisTrack/Modules/Profile/ManageTracksView.swift; sourceTree = SOURCE_ROOT; };
@@ -460,6 +462,7 @@
 			children = (
 				E08F88EEB0ED4666A8985FBB /* FriendsView.swift */,
 				962C04FF8E5D4263B8252ABA /* UserSearchView.swift */,
+				FEB593CBE91B46B7A818C272 /* FriendProfileView.swift */,
 			);
 			name = Friends;
 			path = Friends;
@@ -627,6 +630,7 @@
 				6D4D11D1F0F44102A6A3F366 /* LiveDriveView.swift in Sources */,
 				4761F46C34864392A3F4C0DC /* FriendsView.swift in Sources */,
 				2A9C12210C194E3A8161B6A7 /* UserSearchView.swift in Sources */,
+				110746A2F2B74F1589708C63 /* FriendProfileView.swift in Sources */,
 				98CE9D54356A45DC94BE0F0D /* AddCarView.swift in Sources */,
 				43B34C49FBA540278D019D0D /* CarCardView.swift in Sources */,
 				134BB3B04098438BB86CC736 /* CarDetailView.swift in Sources */,

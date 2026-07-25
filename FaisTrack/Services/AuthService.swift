@@ -21,7 +21,14 @@ class AuthService: NSObject, ObservableObject {
     }
 
     // MARK: - Apple Sign In
-    func signInWithApple(credential: ASAuthorizationAppleIDCredential) async throws {
+    /// Returns whether this was a brand-new account (no existing Firestore
+    /// profile) — the caller uses this to decide whether to show the
+    /// username-selection sheet. Previously that sheet showed after *every*
+    /// successful sign-in, including a returning user just logging back in
+    /// on a new device or after signing out — forcing them through
+    /// "choose a username" again even though they already had one.
+    @discardableResult
+    func signInWithApple(credential: ASAuthorizationAppleIDCredential) async throws -> Bool {
         let firebaseCredential = try appleFirebaseCredential(from: credential)
         try await Auth.auth().signIn(with: firebaseCredential)
 
@@ -30,7 +37,7 @@ class AuthService: NSObject, ObservableObject {
         let name = [credential.fullName?.givenName, credential.fullName?.familyName]
             .compactMap { $0 }
             .joined(separator: " ")
-        await createProfileIfNeeded(fallbackName: name)
+        return await createProfileIfNeeded(fallbackName: name)
     }
 
     /// Re-proves identity with a *fresh* Apple credential right before a
@@ -66,10 +73,11 @@ class AuthService: NSObject, ObservableObject {
 
     // MARK: - Google Sign In
     // Uses CLIENT_ID from GoogleService-Info.plist automatically via FirebaseApp
-    func signInWithGoogle(presenting viewController: UIViewController) async throws {
+    @discardableResult
+    func signInWithGoogle(presenting viewController: UIViewController) async throws -> Bool {
         let credential = try await googleFirebaseCredential(presenting: viewController)
         try await Auth.auth().signIn(with: credential)
-        await createProfileIfNeeded(fallbackName: Auth.auth().currentUser?.displayName ?? "")
+        return await createProfileIfNeeded(fallbackName: Auth.auth().currentUser?.displayName ?? "")
     }
 
     /// Same reasoning as reauthenticateWithApple above, for the Google
@@ -111,14 +119,23 @@ class AuthService: NSObject, ObservableObject {
     /// This used to never happen at all — see FirebaseService.ensureUserProfile.
     /// Failure here doesn't block sign-in (the user is still authenticated);
     /// ProfileView also self-heals this on next load as a safety net.
-    private func createProfileIfNeeded(fallbackName: String) async {
-        guard let firebaseUser = Auth.auth().currentUser else { return }
+    /// Returns true if this created a brand-new profile (no existing
+    /// Firestore document for this uid), false if the account already
+    /// existed. Checked explicitly here — rather than having
+    /// ensureUserProfile itself report it — so ensureUserProfile's
+    /// existing callers (ProfileView, SettingsView's self-healing paths)
+    /// don't need to change at all.
+    @discardableResult
+    private func createProfileIfNeeded(fallbackName: String) async -> Bool {
+        guard let firebaseUser = Auth.auth().currentUser else { return false }
+        let isNewAccount = (try? await FirebaseService.shared.getUser(uid: firebaseUser.uid)) == nil
         let name = firebaseUser.displayName?.isEmpty == false ? firebaseUser.displayName! : fallbackName
         _ = try? await FirebaseService.shared.ensureUserProfile(
             uid: firebaseUser.uid,
             name: name,
             email: firebaseUser.email
         )
+        return isNewAccount
     }
 
     // MARK: - Handle Google Sign-In URL redirect

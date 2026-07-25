@@ -318,6 +318,7 @@
 "friends.requestSent" = "Requested";
 "friends.requestReceived" = "Respond in Friends";
 "friends.alreadyFriends" = "Friends";
+"friendProfile.tracksCreated" = "%d tracks created";
 "friends.error.self" = "You can't send a friend request to yourself.";
 "friends.error.alreadyFriends" = "You're already friends with this person.";
 "friends.search.noResults" = "No users found";

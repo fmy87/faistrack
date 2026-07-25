@@ -40,7 +40,7 @@ struct AchievementsView: View {
     }
 }
 
-private struct AchievementCard: View {
+struct AchievementCard: View {
     let achievement: Achievement
 
     var body: some View {

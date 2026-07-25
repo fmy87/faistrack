@@ -5,6 +5,13 @@ struct CelebrationMessage: Identifiable {
     let icon: String
     let title: String
     let subtitle: String
+    /// True only for "you just set a new track record" — gets the
+    /// checkered-flag, black-and-white racing treatment instead of the
+    /// generic colorful confetti used for achievement unlocks. Not every
+    /// celebration should look like a race finish (an achievement like
+    /// "night owl" 🌙 doesn't want a checkered flag slapped on it), so this
+    /// is opt-in per message rather than a blanket redesign.
+    var isRacingRecord: Bool = false
 }
 
 /// A full-screen celebration for moments that took real effort — a new
@@ -18,8 +25,8 @@ class CelebrationManager: ObservableObject {
     static let shared = CelebrationManager()
     @Published private(set) var current: CelebrationMessage?
 
-    func celebrate(icon: String, title: String, subtitle: String) {
-        current = CelebrationMessage(icon: icon, title: title, subtitle: subtitle)
+    func celebrate(icon: String, title: String, subtitle: String, isRacingRecord: Bool = false) {
+        current = CelebrationMessage(icon: icon, title: title, subtitle: subtitle, isRacingRecord: isRacingRecord)
         UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
     }
 
@@ -51,33 +58,66 @@ private struct CelebrationContent: View {
     let onDismiss: () -> Void
     @State private var badgeScale: CGFloat = 0.3
     @State private var badgeOpacity: Double = 0
+    @State private var flagWave: CGFloat = 0
 
     var body: some View {
         ZStack {
             Color.black.opacity(0.75).ignoresSafeArea()
                 .onTapGesture(perform: onDismiss)
 
-            ConfettiBurstView()
+            if celebration.isRacingRecord {
+                // A checkered band flashing behind everything else — the
+                // same black-and-white racing motif used on the finish
+                // line/countdown lights elsewhere in the app, rather than
+                // the same colorful confetti used for every other
+                // celebration. A new track record is the single most
+                // "racing" moment in the app; it should look like one.
+                CheckeredFlashView()
+                    .ignoresSafeArea()
+                    .opacity(0.35)
+            }
+
+            ConfettiBurstView(monochrome: celebration.isRacingRecord)
 
             VStack(spacing: 16) {
-                Text(celebration.icon)
-                    .font(.system(size: 88))
-                    .scaleEffect(badgeScale)
-                    .opacity(badgeOpacity)
+                if celebration.isRacingRecord {
+                    // A large waving checkered flag instead of the small
+                    // trophy emoji every other celebration uses — this is
+                    // the moment the whole app is themed around, so it
+                    // gets the biggest, most literal racing symbol there
+                    // is rather than sharing the generic emoji-icon
+                    // treatment.
+                    Image(systemName: "flag.checkered.2.crossed")
+                        .font(.system(size: 96, weight: .black))
+                        .foregroundStyle(.white)
+                        .rotationEffect(.degrees(flagWave))
+                        .scaleEffect(badgeScale)
+                        .opacity(badgeOpacity)
+                        .shadow(color: .black.opacity(0.5), radius: 12)
+                } else {
+                    Text(celebration.icon)
+                        .font(.system(size: 88))
+                        .scaleEffect(badgeScale)
+                        .opacity(badgeOpacity)
+                }
                 Text(celebration.title)
-                    .font(.system(size: 26, weight: .black, design: .rounded))
+                    .font(.system(size: celebration.isRacingRecord ? 32 : 26, weight: .black, design: .rounded))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
+                    .textCase(celebration.isRacingRecord ? .uppercase : nil)
                 Text(celebration.subtitle)
-                    .font(.system(size: 15))
-                    .foregroundColor(.white.opacity(0.75))
+                    .font(.system(size: celebration.isRacingRecord ? 20 : 15, weight: celebration.isRacingRecord ? .bold : .regular))
+                    .foregroundColor(.white.opacity(celebration.isRacingRecord ? 0.9 : 0.75))
                     .multilineTextAlignment(.center)
                 Button(action: onDismiss) {
                     Text(NSLocalizedString("general.ok", comment: ""))
                         .font(.system(size: 15, weight: .bold))
                         .foregroundColor(.white)
                         .padding(.horizontal, 36).padding(.vertical, 12)
-                        .background(Color.ftGradient)
+                        .background(celebration.isRacingRecord ? Color.black : Color.ftGradient)
+                        .overlay(
+                            Capsule().stroke(Color.white.opacity(celebration.isRacingRecord ? 0.6 : 0), lineWidth: 1.5)
+                        )
                         .cornerRadius(20)
                 }
                 .padding(.top, 8)
@@ -89,9 +129,39 @@ private struct CelebrationContent: View {
                 badgeScale = 1.0
                 badgeOpacity = 1.0
             }
+            if celebration.isRacingRecord {
+                withAnimation(.easeInOut(duration: 0.35).repeatCount(5, autoreverses: true)) {
+                    flagWave = 12
+                }
+            }
             Task {
                 try? await Task.sleep(nanoseconds: 4_500_000_000)
                 onDismiss()
+            }
+        }
+    }
+}
+
+/// Alternating black/white diagonal bands sweeping across the screen once —
+/// the same checkered-flag language as the flag icon itself, just large
+/// enough to read as a background flash rather than a literal flag.
+private struct CheckeredFlashView: View {
+    @State private var sweep: CGFloat = -1
+
+    var body: some View {
+        GeometryReader { geo in
+            HStack(spacing: 0) {
+                ForEach(0..<10, id: \.self) { i in
+                    Rectangle().fill(i % 2 == 0 ? Color.white : Color.black)
+                }
+            }
+            .frame(width: geo.size.width * 2)
+            .rotationEffect(.degrees(-20))
+            .offset(x: sweep * geo.size.width)
+        }
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.6)) {
+                sweep = 0.1
             }
         }
     }
@@ -102,6 +172,7 @@ private struct CelebrationContent: View {
 /// lines elsewhere in the app, applied here as a celebratory confetti burst
 /// rather than a rising or radiating effect.
 private struct ConfettiBurstView: View {
+    var monochrome: Bool = false
     private let particleCount = 40
     private let cycleDuration: Double = 3.0
 
@@ -123,7 +194,9 @@ private struct ConfettiBurstView: View {
                     let fade = 1 - progress
                     guard fade > 0.03 else { continue }
 
-                    let colors: [Color] = [.ftAccent, .ftAccentOrange, .yellow, .speedGreen]
+                    let colors: [Color] = monochrome
+                        ? [.white, .white.opacity(0.7), Color(white: 0.15), .ftAccent]
+                        : [.ftAccent, .ftAccentOrange, .yellow, .speedGreen]
                     let color = colors[i % colors.count]
                     let particleSize: CGFloat = 5 + CGFloat(seed) * 4
                     context.opacity = fade

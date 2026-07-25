@@ -318,6 +318,7 @@
 "friends.requestSent" = "تم الإرسال";
 "friends.requestReceived" = "الرد في الأصدقاء";
 "friends.alreadyFriends" = "أصدقاء";
+"friendProfile.tracksCreated" = "%d مسارات تم إنشاؤها";
 "friends.error.self" = "لا يمكنك إرسال طلب صداقة لنفسك.";
 "friends.error.alreadyFriends" = "أنتما صديقان بالفعل.";
 "friends.search.noResults" = "لم يتم العثور على مستخدمين";

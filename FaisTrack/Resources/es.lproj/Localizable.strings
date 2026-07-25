@@ -318,6 +318,7 @@
 "friends.requestSent" = "Solicitado";
 "friends.requestReceived" = "Responder en Amigos";
 "friends.alreadyFriends" = "Amigos";
+"friendProfile.tracksCreated" = "%d circuitos creados";
 "friends.error.self" = "No puedes enviarte una solicitud de amistad a ti mismo.";
 "friends.error.alreadyFriends" = "Ya son amigos.";
 "friends.search.noResults" = "No se encontraron usuarios";

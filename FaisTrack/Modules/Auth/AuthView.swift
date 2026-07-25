@@ -87,10 +87,12 @@ struct AuthView: View {
             errorMessage = nil
             Task {
                 do {
-                    try await AuthService.shared.signInWithApple(credential: credential)
+                    let isNewAccount = try await AuthService.shared.signInWithApple(credential: credential)
                     await MainActor.run {
                         isLoading = false
-                        showChooseUsername = true
+                        if isNewAccount {
+                            showChooseUsername = true
+                        }
                     }
                 } catch {
                     await MainActor.run {
@@ -114,10 +116,12 @@ struct AuthView: View {
         errorMessage = nil
         Task {
             do {
-                try await AuthService.shared.signInWithGoogle(presenting: vc)
+                let isNewAccount = try await AuthService.shared.signInWithGoogle(presenting: vc)
                 await MainActor.run {
                     isLoading = false
-                    showChooseUsername = true
+                    if isNewAccount {
+                        showChooseUsername = true
+                    }
                 }
             } catch {
                 await MainActor.run {
