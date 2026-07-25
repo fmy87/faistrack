@@ -167,8 +167,16 @@ struct TrackDetailView: View {
             // enforces the same admin-only restriction server-side, so
             // this button is a convenience, not the actual security
             // boundary.
-            if canDelete {
-                ToolbarItem(placement: .navigationBarTrailing) {
+            //
+            // The `if` has to live *inside* the ToolbarItem's own content
+            // closure (a plain @ViewBuilder, fine since iOS 13), not around
+            // the ToolbarItem itself — conditionally including a whole
+            // ToolbarItem needs ToolbarContentBuilder's buildIf, which only
+            // exists from iOS 16. This app targets iOS 15+, so the
+            // ToolbarItem is always declared; it just renders nothing for
+            // non-admin accounts.
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if canDelete {
                     Button(role: .destructive) {
                         showDeleteConfirm = true
                     } label: {
