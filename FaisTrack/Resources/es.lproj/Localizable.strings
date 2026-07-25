@@ -17,7 +17,7 @@
 "onboarding.page3.subtitle" = "Observa cómo crecen tus estadísticas después de cada recorrido.";
 
 /* Auth */
-"auth.tagline" = "Registra cada recorrido, automáticamente";
+"auth.tagline" = "Crea tu circuito. Compite por el récord.";
 "auth.appleSignIn" = "Iniciar sesión con Apple";
 "auth.googleSignIn" = "Iniciar sesión con Google";
 "auth.error.appleCredential" = "Respuesta inesperada al iniciar sesión con Apple. Inténtalo de nuevo.";

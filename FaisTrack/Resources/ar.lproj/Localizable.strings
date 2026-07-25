@@ -17,7 +17,7 @@
 "onboarding.page3.subtitle" = "تابع نمو إحصائياتك بعد كل رحلة.";
 
 /* Auth */
-"auth.tagline" = "سجّل كل رحلة، تلقائياً";
+"auth.tagline" = "أنشئ مسارك. تنافس على الرقم القياسي.";
 "auth.appleSignIn" = "تسجيل الدخول بـ Apple";
 "auth.googleSignIn" = "تسجيل الدخول بـ Google";
 "auth.error.appleCredential" = "استجابة غير متوقعة من تسجيل الدخول بـ Apple. يرجى المحاولة مرة أخرى.";

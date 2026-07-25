@@ -563,6 +563,19 @@ class FirebaseService {
     /// Firestore's `in` operator caps at 30 values and throws on an empty
     /// array — both handled here so callers can just pass a friends list
     /// straight through regardless of size.
+    ///
+    /// Also guards against a stale "driving" status: broadcastLiveStatus()
+    /// only ever writes `isDriving: false` when the app cleanly detects the
+    /// drive ending. If the app gets force-quit, crashes, or the OS kills
+    /// it in the background mid-drive, that write never happens — the last
+    /// thing Firestore ever hears is "driving," and it stays that way
+    /// forever, showing a friend as "driving now" for days after they
+    /// actually stopped. `updatedAt` gets refreshed every ~15s while a
+    /// drive is genuinely ongoing (see locationBroadcastInterval), so
+    /// anything older than this cutoff is treated as stopped regardless of
+    /// what the stored flag says.
+    private static let liveStatusStaleAfter: TimeInterval = 10 * 60
+
     func getFriendsLiveStatus(friendUIDs: [String]) async throws -> [String: Bool] {
         guard !friendUIDs.isEmpty else { return [:] }
         let snapshot = try await db.collection("liveStatus")
@@ -570,7 +583,11 @@ class FirebaseService {
             .getDocuments()
         var result: [String: Bool] = [:]
         for doc in snapshot.documents {
-            result[doc.documentID] = doc.data()["isDriving"] as? Bool ?? false
+            let data = doc.data()
+            let isDriving = data["isDriving"] as? Bool ?? false
+            let isFresh = (data["updatedAt"] as? Timestamp)
+                .map { Date().timeIntervalSince($0.dateValue()) < Self.liveStatusStaleAfter } ?? false
+            result[doc.documentID] = isDriving && isFresh
         }
         return result
     }
@@ -579,7 +596,8 @@ class FirebaseService {
     /// returns friends who are both currently driving AND have a location
     /// present (Ghost Mode / a drive that just ended means no lat/lng gets
     /// written at all, so those friends are naturally excluded here rather
-    /// than needing a separate check).
+    /// than needing a separate check). Same staleness guard as
+    /// getFriendsLiveStatus — see its docs for why that's needed at all.
     func getFriendsLiveLocations(friendUIDs: [String]) async throws -> [FriendMapPin] {
         guard !friendUIDs.isEmpty else { return [] }
         let snapshot = try await db.collection("liveStatus")
@@ -588,7 +606,9 @@ class FirebaseService {
         var pins: [FriendMapPin] = []
         for doc in snapshot.documents {
             let data = doc.data()
-            guard data["isDriving"] as? Bool == true,
+            let isFresh = (data["updatedAt"] as? Timestamp)
+                .map { Date().timeIntervalSince($0.dateValue()) < Self.liveStatusStaleAfter } ?? false
+            guard data["isDriving"] as? Bool == true, isFresh,
                   let lat = data["latitude"] as? Double,
                   let lng = data["longitude"] as? Double else { continue }
             // A friend's own uid, not self — getUser() would fail now that
