@@ -38,25 +38,13 @@ struct FlameWelcomeText: View {
                 EmberParticlesView()
                     .frame(height: 150)
 
-                HStack(spacing: 1) {
+                HStack(spacing: 2) {
                     ForEach(Array(letters.enumerated()), id: \.offset) { index, letter in
                         Text(String(letter))
                             .font(.system(size: 46, weight: .black, design: .rounded))
                             .italic()
                             .kerning(0.5)
-                            .foregroundStyle(flameGradient(time: time, letterIndex: index))
-                            .overlay(
-                                // The shine sweep — a narrow bright band that
-                                // crosses the word, masked to only ever show
-                                // through the letter shapes themselves.
-                                shineOverlay(letterIndex: index, totalLetters: letters.count, shinePhase: shinePhase)
-                                    .mask(
-                                        Text(String(letter))
-                                            .font(.system(size: 46, weight: .black, design: .rounded))
-                                            .italic()
-                                            .kerning(0.5)
-                                    )
-                            )
+                            .foregroundStyle(flameGradient(time: time, letterIndex: index, shinePhase: shinePhase, totalLetters: letters.count))
                             .scaleEffect(hasIgnited ? breathe : 0.2)
                             .opacity(hasIgnited ? 1 : 0)
                             .animation(
@@ -76,31 +64,52 @@ struct FlameWelcomeText: View {
         .accessibilityLabel(text)
     }
 
-    private func shineOverlay(letterIndex: Int, totalLetters: Int, shinePhase: Double) -> some View {
-        // The sweep travels the width of the whole word; each letter's
-        // brightness depends on how close the current sweep position is to
-        // that letter's position in the word.
-        let letterPosition = Double(letterIndex) / Double(max(totalLetters - 1, 1))
-        let distance = abs(shinePhase - letterPosition)
-        let intensity = max(0, 1 - distance * 6)
-        return Color.white.opacity(intensity * 0.85)
-    }
-
     /// A gradient whose stops drift slightly over time and per-letter, so
     /// the flame fill looks like it's actually licking/moving rather than a
     /// static 3-color print — the per-letter phase offset keeps it from
     /// reading as one uniform wave sweeping the whole word in lockstep.
-    private func flameGradient(time: Double, letterIndex: Int) -> LinearGradient {
+    ///
+    /// The shine sweep is blended directly into these same stops (mixing
+    /// each toward white based on how close the sweep currently is to this
+    /// letter) rather than being drawn as a second, separately-masked
+    /// overlay view on top. That older approach rendered the letter glyph
+    /// twice — once as the actual fill, once again as a mask shape for the
+    /// shine — and relied on both renders lining up pixel-for-pixel despite
+    /// each going through its own independent text layout pass. For most
+    /// letters they happened to match closely enough not to notice; for at
+    /// least one (a reported case: "m") they didn't, and the mismatch was
+    /// severe enough to blank the letter out rather than just misplace a
+    /// highlight. A single gradient on a single glyph render can't have
+    /// this class of bug at all, since there's only ever one render to
+    /// begin with.
+    private func flameGradient(time: Double, letterIndex: Int, shinePhase: Double, totalLetters: Int) -> LinearGradient {
         let phase = time * 1.6 + Double(letterIndex) * 0.3
         let shift = sin(phase) * 0.15
+
+        let letterPosition = Double(letterIndex) / Double(max(totalLetters - 1, 1))
+        let distance = abs(shinePhase - letterPosition)
+        let shineIntensity = max(0, 1 - distance * 6) * 0.85
+
         return LinearGradient(
             stops: [
-                Gradient.Stop(color: .yellow, location: max(0, 0.0 + shift)),
-                Gradient.Stop(color: .ftAccentOrange, location: min(max(0, 0.5 + shift), 1)),
-                Gradient.Stop(color: .speedRed, location: min(1, 1.0 + shift))
+                Gradient.Stop(color: mixWithWhite(.yellow, amount: shineIntensity), location: max(0, 0.0 + shift)),
+                Gradient.Stop(color: mixWithWhite(.ftAccentOrange, amount: shineIntensity), location: min(max(0, 0.5 + shift), 1)),
+                Gradient.Stop(color: mixWithWhite(.speedRed, amount: shineIntensity), location: min(1, 1.0 + shift))
             ],
             startPoint: .top, endPoint: .bottom
         )
+    }
+
+    /// Linear RGB interpolation toward white — deliberately simple (no
+    /// color-space conversion beyond what UIColor gives for free) since
+    /// this only needs to look like "this color, brightened," not be
+    /// perceptually exact.
+    private func mixWithWhite(_ color: Color, amount: Double) -> Color {
+        guard amount > 0 else { return color }
+        var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        UIColor(color).getRed(&r, green: &g, blue: &b, alpha: &a)
+        let t = min(max(amount, 0), 1)
+        return Color(red: r + (1 - r) * t, green: g + (1 - g) * t, blue: b + (1 - b) * t, opacity: a)
     }
 }
 
