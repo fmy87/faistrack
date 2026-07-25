@@ -151,7 +151,7 @@
 
 // Tracks / Compete feature
 "tab.tracks" = "Circuitos";
-"tracks.empty" = "Aún no hay circuitos. ¡Publica un recorrido como circuito para empezar!";
+"tracks.empty" = "Aún no hay circuitos. Toca + para grabar uno tú mismo.";
 "tracks.noAttempts" = "Aún no hay intentos";
 "tracks.distance" = "Distancia";
 "tracks.bestTime" = "Mejor tiempo";

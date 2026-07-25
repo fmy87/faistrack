@@ -151,7 +151,7 @@
 
 // Tracks / Compete feature
 "tab.tracks" = "Tracks";
-"tracks.empty" = "No tracks yet. Publish a drive as a track to get started!";
+"tracks.empty" = "No tracks yet. Tap + to record one yourself.";
 "tracks.noAttempts" = "No attempts yet";
 "tracks.distance" = "Distance";
 "tracks.bestTime" = "Best Time";

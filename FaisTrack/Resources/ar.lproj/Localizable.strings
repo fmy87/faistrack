@@ -151,7 +151,7 @@
 
 // Tracks / Compete feature
 "tab.tracks" = "المسارات";
-"tracks.empty" = "لا توجد مسارات بعد. انشر إحدى رحلاتك كمسار للبدء!";
+"tracks.empty" = "لا توجد مسارات بعد. اضغط على + لتسجيل مسار بنفسك.";
 "tracks.noAttempts" = "لا توجد محاولات بعد";
 "tracks.distance" = "المسافة";
 "tracks.bestTime" = "أفضل وقت";

@@ -111,6 +111,18 @@ struct AuthView: View {
                         isLoading = false
                         if isNewAccount {
                             showChooseUsername = true
+                        } else {
+                            // Nothing was ever telling AppState to move past
+                            // the auth screen for a *returning* sign-in —
+                            // only the new-account path (via
+                            // ChooseUsernameView → SafetyView →
+                            // PermissionsView) ever reached
+                            // `currentScreen = .main`. A returning user's
+                            // sign-in succeeded, but the screen just sat
+                            // there until the next full app launch, when
+                            // AppState.init()'s own checkAuthState() call
+                            // finally caught up.
+                            appState.checkAuthState()
                         }
                     }
                 } catch {
@@ -140,6 +152,8 @@ struct AuthView: View {
                     isLoading = false
                     if isNewAccount {
                         showChooseUsername = true
+                    } else {
+                        appState.checkAuthState()
                     }
                 }
             } catch {
