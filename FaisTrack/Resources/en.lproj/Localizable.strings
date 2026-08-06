@@ -9,15 +9,15 @@
 
 /* Onboarding */
 "onboarding.continue" = "Continue";
-"onboarding.page1.title" = "Track Your Driving Performance";
-"onboarding.page1.subtitle" = "Record your routes, track your personal bests, and compare stats with friends — all in one place.";
+"onboarding.page1.title" = "Record Your Lap Times";
+"onboarding.page1.subtitle" = "Record laps on closed circuits and legal motorsport venues, track your personal bests, and compare stats with friends.";
 "onboarding.page2.title" = "Compete with Friends";
 "onboarding.page2.subtitle" = "Add friends to compare stats and compete on leaderboards.";
 "onboarding.page3.title" = "See Your Stats";
 "onboarding.page3.subtitle" = "Watch your stats grow after every drive.";
 
 /* Auth */
-"auth.tagline" = "Track your drives. Compare your best.";
+"auth.tagline" = "Record your laps. Chase your best.";
 "auth.appleSignIn" = "Sign in with Apple";
 "auth.googleSignIn" = "Sign in with Google";
 "auth.error.appleCredential" = "Unexpected Apple sign-in response. Please try again.";
@@ -29,7 +29,7 @@
 "safety.rule1" = "Obey all traffic laws and posted speed limits.";
 "safety.rule2" = "Use a proper phone mount if you need to view the app.";
 "safety.rule3" = "Never hold or interact with your phone while driving.";
-"safety.rule4" = "FaisTrack does not condone racing or illegal road behavior.";
+"safety.rule4" = "FaisTrack's track and racing features are intended only for closed circuits, private property, or sanctioned motorsport events — never public roads.";
 "safety.rule5" = "You use FaisTrack, including any racing or timed track features, entirely at your own risk.";
 "safety.rule6" = "FaisTrack and its developer are not liable for any accidents, injuries, damages, or losses arising from use of the app.";
 "safety.rule7" = "You are solely responsible for complying with all traffic laws and regulations; FaisTrack is not liable for any violations, fines, or citations.";
@@ -160,7 +160,8 @@
 "tracks.leaderboard" = "Leaderboard";
 "tracks.defaultName" = "Untitled Track";
 "createTrack.title" = "Create Track";
-"createTrack.explainer" = "Record a new track by driving the route yourself. Tap Start, get ready during the countdown, then drive — tap End Race when you reach your finish point.";
+"createTrack.explainer" = "Record a lap by driving the route yourself on a closed circuit, private property, or sanctioned motorsport venue. Tap Start, get ready during the countdown, then drive — tap End Race when you reach your finish point.";
+"createTrack.closedCircuitConfirm" = "I confirm this recording will take place on a closed circuit, private property, or sanctioned motorsport event — not a public road.";
 "createTrack.startCountdown" = "Start";
 "createTrack.namePlaceholder" = "Name this track";
 "createTrack.save" = "Save Track";

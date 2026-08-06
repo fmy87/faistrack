@@ -10,6 +10,7 @@ struct CreateTrackView: View {
     @State private var ownedTrackCount: Int?
     @State private var showPaywall = false
     @State private var displayMode: DisplayMode = .speed
+    @State private var confirmedClosedCircuit = false
     var onCreated: (() -> Void)?
 
     private enum DisplayMode { case speed, map }
@@ -138,9 +139,36 @@ struct CreateTrackView: View {
                     Text(NSLocalizedString("createTrack.explainer", comment: ""))
                         .font(.system(size: 16)).foregroundColor(.ftTextSecondary)
                         .multilineTextAlignment(.center)
+
+                    // Required, not just a suggestion — this is the actual
+                    // enforcement point behind FaisTrack's positioning as a
+                    // closed-circuit/track-day tool rather than a public-road
+                    // racing app. A general safety disclaimer at signup
+                    // (SafetyView) isn't enough on its own if the track
+                    // creation flow itself doesn't require reaffirming it at
+                    // the moment it actually matters — right before someone
+                    // is about to record a "track" that could, technically,
+                    // be any public road. The Start button stays disabled
+                    // until this is checked.
+                    Button(action: { confirmedClosedCircuit.toggle() }) {
+                        HStack(alignment: .top, spacing: 10) {
+                            Image(systemName: confirmedClosedCircuit ? "checkmark.square.fill" : "square")
+                                .foregroundColor(confirmedClosedCircuit ? .ftAccent : .ftTextSecondary)
+                                .font(.system(size: 20))
+                            Text(NSLocalizedString("createTrack.closedCircuitConfirm", comment: ""))
+                                .font(.system(size: 13))
+                                .foregroundColor(.ftTextSecondary)
+                                .multilineTextAlignment(.leading)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.horizontal, 8)
+
                     FTPrimaryButton(title: NSLocalizedString("createTrack.startCountdown", comment: "")) {
                         service.beginCountdown()
                     }
+                    .disabled(!confirmedClosedCircuit)
+                    .opacity(confirmedClosedCircuit ? 1 : 0.5)
                 }
             }
         }

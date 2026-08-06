@@ -9,15 +9,15 @@
 
 /* Onboarding */
 "onboarding.continue" = "Continuar";
-"onboarding.page1.title" = "Sigue tu rendimiento al conducir";
-"onboarding.page1.subtitle" = "Registra tus recorridos, sigue tus mejores marcas y compara estadísticas con amigos — todo en un solo lugar.";
+"onboarding.page1.title" = "Registra tus tiempos por vuelta";
+"onboarding.page1.subtitle" = "Registra vueltas en circuitos cerrados y eventos de motorsport autorizados, sigue tus mejores marcas y compara estadísticas con amigos.";
 "onboarding.page2.title" = "Compite con amigos";
 "onboarding.page2.subtitle" = "Añade amigos para comparar estadísticas y competir en las clasificaciones.";
 "onboarding.page3.title" = "Ve tus estadísticas";
 "onboarding.page3.subtitle" = "Observa cómo crecen tus estadísticas después de cada recorrido.";
 
 /* Auth */
-"auth.tagline" = "Registra tus recorridos. Compara tus mejores marcas.";
+"auth.tagline" = "Registra tus vueltas. Supera tu mejor marca.";
 "auth.appleSignIn" = "Iniciar sesión con Apple";
 "auth.googleSignIn" = "Iniciar sesión con Google";
 "auth.error.appleCredential" = "Respuesta inesperada al iniciar sesión con Apple. Inténtalo de nuevo.";
@@ -29,7 +29,7 @@
 "safety.rule1" = "Cumple todas las leyes de tránsito y los límites de velocidad señalizados.";
 "safety.rule2" = "Usa un soporte adecuado para el teléfono si necesitas ver la app.";
 "safety.rule3" = "Nunca sostengas ni manipules tu teléfono mientras conduces.";
-"safety.rule4" = "FaisTrack no promueve las carreras ni comportamientos ilegales en la vía.";
+"safety.rule4" = "Las funciones de circuito y carrera de FaisTrack están destinadas únicamente a circuitos cerrados, propiedad privada o eventos de motorsport autorizados — nunca a vías públicas.";
 "safety.rule5" = "Usas FaisTrack, incluidas las funciones de carreras o pistas con tiempo, bajo tu propio riesgo.";
 "safety.rule6" = "FaisTrack y su desarrollador no son responsables de accidentes, lesiones, daños o pérdidas derivados del uso de la app.";
 "safety.rule7" = "Eres el único responsable de cumplir todas las leyes y normativas de tránsito; FaisTrack no es responsable de infracciones, multas o citaciones.";
@@ -160,7 +160,8 @@
 "tracks.leaderboard" = "Clasificación";
 "tracks.defaultName" = "Circuito sin nombre";
 "createTrack.title" = "Crear circuito";
-"createTrack.explainer" = "Registra un nuevo circuito conduciendo la ruta tú mismo. Pulsa Iniciar, prepárate durante la cuenta atrás y luego conduce — pulsa Terminar carrera al llegar a tu punto de meta.";
+"createTrack.explainer" = "Registra una vuelta conduciendo la ruta tú mismo en un circuito cerrado, propiedad privada o evento de motorsport autorizado. Pulsa Iniciar, prepárate durante la cuenta atrás y luego conduce — pulsa Terminar carrera al llegar a tu punto de meta.";
+"createTrack.closedCircuitConfirm" = "Confirmo que esta grabación se realizará en un circuito cerrado, propiedad privada o evento de motorsport autorizado — no en una vía pública.";
 "createTrack.startCountdown" = "Iniciar";
 "createTrack.namePlaceholder" = "Nombra este circuito";
 "createTrack.save" = "Guardar circuito";
