@@ -9,15 +9,15 @@
 
 /* Onboarding */
 "onboarding.continue" = "Continuar";
-"onboarding.page1.title" = "Compite en tus propias calles";
-"onboarding.page1.subtitle" = "Grava un circuito en cualquier calle que conduzcas y compite por el mejor tiempo contra tus amigos y en la clasificación.";
+"onboarding.page1.title" = "Sigue tu rendimiento al conducir";
+"onboarding.page1.subtitle" = "Registra tus recorridos, sigue tus mejores marcas y compara estadísticas con amigos — todo en un solo lugar.";
 "onboarding.page2.title" = "Compite con amigos";
 "onboarding.page2.subtitle" = "Añade amigos para comparar estadísticas y competir en las clasificaciones.";
 "onboarding.page3.title" = "Ve tus estadísticas";
 "onboarding.page3.subtitle" = "Observa cómo crecen tus estadísticas después de cada recorrido.";
 
 /* Auth */
-"auth.tagline" = "Crea tu circuito. Compite por el récord.";
+"auth.tagline" = "Registra tus recorridos. Compara tus mejores marcas.";
 "auth.appleSignIn" = "Iniciar sesión con Apple";
 "auth.googleSignIn" = "Iniciar sesión con Google";
 "auth.error.appleCredential" = "Respuesta inesperada al iniciar sesión con Apple. Inténtalo de nuevo.";

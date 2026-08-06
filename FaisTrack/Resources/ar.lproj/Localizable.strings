@@ -9,15 +9,15 @@
 
 /* Onboarding */
 "onboarding.continue" = "متابعة";
-"onboarding.page1.title" = "تسابق في شوارعك";
-"onboarding.page1.subtitle" = "سجّل مساراً على أي طريق تقوده، ثم تنافس على أسرع وقت مع أصدقائك وفي لوحة المتصدرين.";
+"onboarding.page1.title" = "تتبع أداء قيادتك";
+"onboarding.page1.subtitle" = "سجّل مساراتك، تتبع أفضل أدائك، وقارن إحصائياتك مع أصدقائك — كل ذلك في مكان واحد.";
 "onboarding.page2.title" = "تنافس مع الأصدقاء";
 "onboarding.page2.subtitle" = "أضف أصدقاءك لمقارنة الإحصائيات والتنافس في قوائم المتصدرين.";
 "onboarding.page3.title" = "شاهد إحصائياتك";
 "onboarding.page3.subtitle" = "تابع نمو إحصائياتك بعد كل رحلة.";
 
 /* Auth */
-"auth.tagline" = "أنشئ مسارك. تنافس على الرقم القياسي.";
+"auth.tagline" = "تتبع رحلاتك. قارن أفضل نتائجك.";
 "auth.appleSignIn" = "تسجيل الدخول بـ Apple";
 "auth.googleSignIn" = "تسجيل الدخول بـ Google";
 "auth.error.appleCredential" = "استجابة غير متوقعة من تسجيل الدخول بـ Apple. يرجى المحاولة مرة أخرى.";

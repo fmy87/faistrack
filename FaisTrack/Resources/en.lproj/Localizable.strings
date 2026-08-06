@@ -9,15 +9,15 @@
 
 /* Onboarding */
 "onboarding.continue" = "Continue";
-"onboarding.page1.title" = "Race Your Own Streets";
-"onboarding.page1.subtitle" = "Record a track on any road you drive, then compete for the fastest time against friends and the leaderboard.";
+"onboarding.page1.title" = "Track Your Driving Performance";
+"onboarding.page1.subtitle" = "Record your routes, track your personal bests, and compare stats with friends — all in one place.";
 "onboarding.page2.title" = "Compete with Friends";
 "onboarding.page2.subtitle" = "Add friends to compare stats and compete on leaderboards.";
 "onboarding.page3.title" = "See Your Stats";
 "onboarding.page3.subtitle" = "Watch your stats grow after every drive.";
 
 /* Auth */
-"auth.tagline" = "Create your track. Race for the record.";
+"auth.tagline" = "Track your drives. Compare your best.";
 "auth.appleSignIn" = "Sign in with Apple";
 "auth.googleSignIn" = "Sign in with Google";
 "auth.error.appleCredential" = "Unexpected Apple sign-in response. Please try again.";
