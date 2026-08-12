@@ -46,7 +46,7 @@
 "permissions.motion.desc" = "يساعد في التأكد من أنك تقود سيارة.";
 "permissions.notifications" = "تفعيل الإشعارات";
 "permissions.notifications.desc" = "احصل على ملخص رحلاتك وتنبيهات أصدقائك.";
-"permissions.enable" = "تفعيل ومتابعة";
+"permissions.enable" = "متابعة";
 
 /* Garage */
 "garage.title" = "الجراج";

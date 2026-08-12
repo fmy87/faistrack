@@ -46,7 +46,7 @@
 "permissions.motion.desc" = "Helps confirm you are in a moving car.";
 "permissions.notifications" = "Enable Notifications";
 "permissions.notifications.desc" = "Get drive recaps and friend activity alerts.";
-"permissions.enable" = "Enable & Continue";
+"permissions.enable" = "Continue";
 
 /* Garage */
 "garage.title" = "Garage";

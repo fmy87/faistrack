@@ -46,7 +46,7 @@
 "permissions.motion.desc" = "Ayuda a confirmar que estás en un vehículo en movimiento.";
 "permissions.notifications" = "Activar notificaciones";
 "permissions.notifications.desc" = "Recibe resúmenes de recorridos y alertas de actividad de amigos.";
-"permissions.enable" = "Activar y continuar";
+"permissions.enable" = "Continuar";
 
 /* Garage */
 "garage.title" = "Garaje";
