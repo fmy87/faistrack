@@ -3,7 +3,6 @@ import CoreLocation
 
 struct TracksView: View {
     @StateObject private var viewModel = TracksViewModel()
-    @State private var showCreateTrack = false
     @State private var selectedTrackFromMap: Track?
     @State private var searchText = ""
     @State private var sortOption: TrackSortOption = .newest
@@ -105,16 +104,6 @@ struct TracksView: View {
             }
             .navigationTitle(NSLocalizedString("tab.tracks", comment: ""))
             .searchable(text: $searchText, prompt: NSLocalizedString("tracks.searchPrompt", comment: ""))
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button { showCreateTrack = true } label: {
-                        Image(systemName: "plus").foregroundColor(.ftAccent)
-                    }
-                }
-            }
-            .sheet(isPresented: $showCreateTrack) {
-                CreateTrackView(onCreated: { Task { await viewModel.load() } })
-            }
             .task {
                 LocationService.shared.startUpdating()
                 await viewModel.load()
@@ -189,7 +178,24 @@ struct TrackRowView: View {
 
 class TracksViewModel: ObservableObject {
     @Published var tracks: [Track] = []
+
+    /// Only ever shows tracks the admin account added (see AdminCreateTrackView).
+    ///
+    /// This is the actual fix behind Apple's Guideline 5 rejection — not a
+    /// wording change. Previously any signed-in user could create a
+    /// "track" out of any two points they drove between, meaning the app
+    /// could not honestly claim to be about "official race tracks": that
+    /// claim would only be true by coincidence of what a given user
+    /// happened to name their track, not because the app enforced anything.
+    /// Apple's reviewer correctly identified that as "users have the
+    /// ability to record a race" — a checkbox asking someone to self-report
+    /// they're on a closed circuit doesn't change what the software can
+    /// actually be used for. Filtering to admin-added tracks only means the
+    /// claim is now structurally true: nobody can turn an arbitrary public
+    /// road into a competable track, because the only tracks that exist are
+    /// the ones the developer personally verified and added.
     func load() async {
-        tracks = (try? await FirebaseService.shared.getTracks()) ?? []
+        let all = (try? await FirebaseService.shared.getTracks()) ?? []
+        tracks = all.filter { $0.ownerUID == AdminConfig.adminUID }
     }
 }

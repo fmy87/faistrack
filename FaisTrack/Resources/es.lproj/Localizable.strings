@@ -9,8 +9,8 @@
 
 /* Onboarding */
 "onboarding.continue" = "Continuar";
-"onboarding.page1.title" = "Registra tus tiempos por vuelta";
-"onboarding.page1.subtitle" = "Registra vueltas en circuitos cerrados y eventos de motorsport autorizados, sigue tus mejores marcas y compara estadísticas con amigos.";
+"onboarding.page1.title" = "Compite en circuitos oficiales";
+"onboarding.page1.subtitle" = "Marca tu tiempo por vuelta en circuitos oficiales y verificados — nunca en vías públicas — y compara tu mejor marca con amigos.";
 "onboarding.page2.title" = "Compite con amigos";
 "onboarding.page2.subtitle" = "Añade amigos para comparar estadísticas y competir en las clasificaciones.";
 "onboarding.page3.title" = "Ve tus estadísticas";
@@ -151,7 +151,7 @@
 
 // Tracks / Compete feature
 "tab.tracks" = "Circuitos";
-"tracks.empty" = "Aún no hay circuitos. Toca + para grabar uno tú mismo.";
+"tracks.empty" = "Aún no hay circuitos oficiales — vuelve a comprobarlo pronto.";
 "tracks.noAttempts" = "Aún no hay intentos";
 "tracks.distance" = "Distancia";
 "tracks.bestTime" = "Mejor tiempo";
@@ -393,7 +393,7 @@
 
 
 // MARK: - Track search and sort
-"tracks.searchPrompt" = "Buscar circuitos o creadores";
+"tracks.searchPrompt" = "Buscar circuitos oficiales";
 "tracks.noSearchResults" = "Ningún circuito coincide con tu búsqueda.";
 "tracks.sort.newest" = "Más recientes";
 "tracks.sort.shortest" = "Más cortos";

@@ -9,8 +9,8 @@
 
 /* Onboarding */
 "onboarding.continue" = "متابعة";
-"onboarding.page1.title" = "سجّل أوقات لفاتك";
-"onboarding.page1.subtitle" = "سجّل لفاتك على مضامير مغلقة وفعاليات رياضة سيارات مرخصة، تتبع أفضل أدائك، وقارن إحصائياتك مع أصدقائك.";
+"onboarding.page1.title" = "تسابق على مضامير رسمية";
+"onboarding.page1.subtitle" = "سجّل وقت لفتك على مضامير سباق رسمية وموثقة — وليس الطرق العامة أبداً — وقارن أفضل رقم لك مع أصدقائك.";
 "onboarding.page2.title" = "تنافس مع الأصدقاء";
 "onboarding.page2.subtitle" = "أضف أصدقاءك لمقارنة الإحصائيات والتنافس في قوائم المتصدرين.";
 "onboarding.page3.title" = "شاهد إحصائياتك";
@@ -151,7 +151,7 @@
 
 // Tracks / Compete feature
 "tab.tracks" = "المسارات";
-"tracks.empty" = "لا توجد مسارات بعد. اضغط على + لتسجيل مسار بنفسك.";
+"tracks.empty" = "لا توجد مضامير سباق رسمية بعد — يرجى المراجعة قريباً.";
 "tracks.noAttempts" = "لا توجد محاولات بعد";
 "tracks.distance" = "المسافة";
 "tracks.bestTime" = "أفضل وقت";
@@ -396,7 +396,7 @@
 
 
 // MARK: - Track search and sort
-"tracks.searchPrompt" = "ابحث عن مضمار أو منشئ";
+"tracks.searchPrompt" = "ابحث عن مضمار رسمي";
 "tracks.noSearchResults" = "لا توجد مضامير مطابقة لبحثك.";
 "tracks.sort.newest" = "الأحدث";
 "tracks.sort.shortest" = "الأقصر";

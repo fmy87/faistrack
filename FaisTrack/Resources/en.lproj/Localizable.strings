@@ -9,8 +9,8 @@
 
 /* Onboarding */
 "onboarding.continue" = "Continue";
-"onboarding.page1.title" = "Record Your Lap Times";
-"onboarding.page1.subtitle" = "Record laps on closed circuits and legal motorsport venues, track your personal bests, and compare stats with friends.";
+"onboarding.page1.title" = "Race Official Tracks";
+"onboarding.page1.subtitle" = "Set your lap time on official, verified race tracks — never public roads — and compare your best against friends.";
 "onboarding.page2.title" = "Compete with Friends";
 "onboarding.page2.subtitle" = "Add friends to compare stats and compete on leaderboards.";
 "onboarding.page3.title" = "See Your Stats";
@@ -151,7 +151,7 @@
 
 // Tracks / Compete feature
 "tab.tracks" = "Tracks";
-"tracks.empty" = "No tracks yet. Tap + to record one yourself.";
+"tracks.empty" = "No official race tracks yet — check back soon.";
 "tracks.noAttempts" = "No attempts yet";
 "tracks.distance" = "Distance";
 "tracks.bestTime" = "Best Time";
@@ -396,7 +396,7 @@
 
 
 // MARK: - Track search and sort
-"tracks.searchPrompt" = "Search tracks or creators";
+"tracks.searchPrompt" = "Search official tracks";
 "tracks.noSearchResults" = "No tracks match your search.";
 "tracks.sort.newest" = "Newest";
 "tracks.sort.shortest" = "Shortest";
